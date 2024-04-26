@@ -1,3 +1,3 @@
-# proyecto_final_grupo_6
+# taller_programacion_grupo_2
 
 A new Flutter project.
