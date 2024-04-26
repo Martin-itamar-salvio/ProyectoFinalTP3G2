@@ -1,0 +1,1 @@
+ C:\\Users\\usuario\\Desktop\\ORT\ CURSADA\\CUARTO\ CUATRI\\TP3\\ENTREGA_TP3\\ProyectoFinalG6\\.dart_tool\\flutter_build\\2fb3e958ea607b74d8941b6f0c676ecd\\native_assets.yaml: 
