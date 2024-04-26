@@ -26,10 +26,6 @@ flutter_lints
 3.0
 file:///C:/Users/User/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_lints-3.0.1/
 file:///C:/Users/User/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_lints-3.0.1/lib/
-go_router
-3.2
-file:///C:/Users/User/AppData/Local/Pub/Cache/hosted/pub.dev/go_router-13.2.1/
-file:///C:/Users/User/AppData/Local/Pub/Cache/hosted/pub.dev/go_router-13.2.1/lib/
 leak_tracker
 3.1
 file:///C:/Users/User/AppData/Local/Pub/Cache/hosted/pub.dev/leak_tracker-10.0.0/
@@ -46,10 +42,6 @@ lints
 3.0
 file:///C:/Users/User/AppData/Local/Pub/Cache/hosted/pub.dev/lints-3.0.0/
 file:///C:/Users/User/AppData/Local/Pub/Cache/hosted/pub.dev/lints-3.0.0/lib/
-logging
-2.19
-file:///C:/Users/User/AppData/Local/Pub/Cache/hosted/pub.dev/logging-1.2.0/
-file:///C:/Users/User/AppData/Local/Pub/Cache/hosted/pub.dev/logging-1.2.0/lib/
 matcher
 3.0
 file:///C:/Users/User/AppData/Local/Pub/Cache/hosted/pub.dev/matcher-0.12.16+1/
@@ -98,10 +90,10 @@ vm_service
 3.0
 file:///C:/Users/User/AppData/Local/Pub/Cache/hosted/pub.dev/vm_service-13.0.0/
 file:///C:/Users/User/AppData/Local/Pub/Cache/hosted/pub.dev/vm_service-13.0.0/lib/
-primera_login
+proyecto_final_grupo_6
 3.3
-file:///C:/Users/User/Desktop/ort/tp3/proyectos/primero-login/primera_login/
-file:///C:/Users/User/Desktop/ort/tp3/proyectos/primero-login/primera_login/lib/
+file:///C:/Users/User/Desktop/ort/tp3/tp%20final/ProyectoFinalG6/
+file:///C:/Users/User/Desktop/ort/tp3/tp%20final/ProyectoFinalG6/lib/
 sky_engine
 3.2
 file:///C:/flutter/bin/cache/pkg/sky_engine/
@@ -114,8 +106,4 @@ flutter_test
 3.2
 file:///C:/flutter/packages/flutter_test/
 file:///C:/flutter/packages/flutter_test/lib/
-flutter_web_plugins
-3.2
-file:///C:/flutter/packages/flutter_web_plugins/
-file:///C:/flutter/packages/flutter_web_plugins/lib/
 2

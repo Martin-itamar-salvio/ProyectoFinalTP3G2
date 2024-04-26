@@ -56,18 +56,6 @@
       "languageVersion": "3.2"
     },
     {
-      "name": "flutter_web_plugins",
-      "rootUri": "file:///C:/flutter/packages/flutter_web_plugins",
-      "packageUri": "lib/",
-      "languageVersion": "3.2"
-    },
-    {
-      "name": "go_router",
-      "rootUri": "file:///C:/Users/User/AppData/Local/Pub/Cache/hosted/pub.dev/go_router-13.2.1",
-      "packageUri": "lib/",
-      "languageVersion": "3.2"
-    },
-    {
       "name": "leak_tracker",
       "rootUri": "file:///C:/Users/User/AppData/Local/Pub/Cache/hosted/pub.dev/leak_tracker-10.0.0",
       "packageUri": "lib/",
@@ -90,12 +78,6 @@
       "rootUri": "file:///C:/Users/User/AppData/Local/Pub/Cache/hosted/pub.dev/lints-3.0.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
-    },
-    {
-      "name": "logging",
-      "rootUri": "file:///C:/Users/User/AppData/Local/Pub/Cache/hosted/pub.dev/logging-1.2.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.19"
     },
     {
       "name": "matcher",
@@ -176,13 +158,13 @@
       "languageVersion": "3.0"
     },
     {
-      "name": "primera_login",
+      "name": "proyecto_final_grupo_6",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-03-22T00:48:22.967284Z",
+  "generated": "2024-04-26T00:57:41.383398Z",
   "generator": "pub",
   "generatorVersion": "3.3.1"
 }
