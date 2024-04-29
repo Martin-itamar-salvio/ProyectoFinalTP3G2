@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/entities/cartera.dart';
 import 'package:proyecto_final_grupo_6/screens/cartera_screen.dart';
+import 'package:go_router/go_router.dart';
 
 class MenuScreen extends StatelessWidget {
   static const String name = "menu";

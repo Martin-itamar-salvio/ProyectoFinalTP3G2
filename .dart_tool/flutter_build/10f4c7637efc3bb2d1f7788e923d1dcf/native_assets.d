@@ -1,0 +1,1 @@
+ C:\\Users\\gonma\\.vscode\\Ultimo\ Cuatri\\ProyectoFinalTP3G2\\.dart_tool\\flutter_build\\10f4c7637efc3bb2d1f7788e923d1dcf\\native_assets.yaml: 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/screens/menu_screen.dart';
 import 'package:proyecto_final_grupo_6/screens/registro_screen.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatelessWidget {
   static const String name = "login";
@@ -67,8 +67,8 @@ class _LoginView extends StatelessWidget {
             children: [
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 247, 224, 20),
-                  foregroundColor: Color.fromARGB(255, 0, 0, 0),
+                  backgroundColor: const Color.fromARGB(255, 247, 224, 20),
+                  foregroundColor: const Color.fromARGB(255, 0, 0, 0),
                 ),
                 onPressed: () {
                   // Validar usuario y contraseña
@@ -87,8 +87,8 @@ class _LoginView extends StatelessWidget {
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 0, 0, 0),
-                  foregroundColor: Color.fromARGB(255, 247, 232, 21),
+                  backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+                  foregroundColor: const Color.fromARGB(255, 247, 232, 21),
                 ),
                 onPressed: () {
                   // Validar usuario y contraseña

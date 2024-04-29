@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+
 class RegistroScreen extends StatelessWidget {
   static const String name = "registro";
   const RegistroScreen({super.key});
@@ -97,7 +98,7 @@ class _RegistroView extends StatelessWidget {
                     // Por ejemplo, puedes guardar el estado en una variable
                   },
                 ),
-                Text(
+                const Text(
                   "No soy un robot",
                   style: TextStyle(fontSize: 15),
                 ),
@@ -109,8 +110,8 @@ class _RegistroView extends StatelessWidget {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color.fromARGB(255, 0, 0, 0),
-              foregroundColor: Color.fromARGB(255, 247, 224, 20),
+              backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+              foregroundColor: const Color.fromARGB(255, 247, 224, 20),
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
             ),
             onPressed: () {

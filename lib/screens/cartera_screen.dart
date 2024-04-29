@@ -6,7 +6,7 @@ class CarteraScreen extends StatelessWidget {
 
   final Cartera cartera;
 
-  const CarteraScreen({Key? key, required this.cartera});
+  const CarteraScreen({super.key, required this.cartera});
 
   @override
   Widget build(BuildContext context) {
@@ -90,9 +90,8 @@ class _CarteraScreenView extends StatelessWidget {
           Text("Precio: ${cartera.precio}"),
           ElevatedButton(
             onPressed: (
-              //crear la pestaña de carga o recibo de compra
-            ) {
-            },
+                //crear la pestaña de carga o recibo de compra
+                ) {},
             child: const Text("Comprar"),
           )
         ],
