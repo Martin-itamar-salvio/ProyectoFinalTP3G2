@@ -1,95 +1,116 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:proyecto_final_grupo_6/core/constants.dart';
 import 'package:proyecto_final_grupo_6/entities/cartera.dart';
 import 'package:proyecto_final_grupo_6/screens/cartera_screen.dart';
-import 'package:go_router/go_router.dart';
 
 class MenuScreen extends StatelessWidget {
-  static const String name = "menu";
+  static const String name = "menu_screen";
+  final String fullName;
 
-  const MenuScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: MenuView(),
-    );
-  }
-}
-
-class MenuView extends StatelessWidget {
-  const MenuView({super.key});
+  const MenuScreen({required this.fullName, super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("BELLIGRAU"),
-        /*  actions: [
-          IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              // Implementa la lógica para abrir/cerrar el menú
-            },
-          ),
-        ],*/
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ProductGrid(
-              products: Cartera.carteras,
-            ), //Super metodo de grid
+      body: _MenuView(fullName: fullName),
+    );
+  }
+}
 
-            // Aquí puedes agregar otros elementos de la pantalla
-            // como la lista de productos, por ejemplo
-          ],
-        ),
-      ),
-      drawer: Drawer(
-        width: 180,
-        // Contenido del menú desplegable
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 239, 255, 16),
+class _MenuView extends StatelessWidget {
+  final String fullName;
+  const _MenuView({required this.fullName, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(appName),
+          /*  actions: [
+            IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                // Implementa la lógica para abrir/cerrar el menú
+              },
               ),
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage: NetworkImage(
-                        'https://imgs.search.brave.com/iUabDJIyP6xS6dHnqUao3W0RVVaVmwu2k8pB2ZHfNb4/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NTFJK1NxTlZsakwu/anBn'), // Cambia por la ruta de tu imagen de perfil
-                    // O usa una imagen de red: backgroundImage: NetworkImage('URL_DE_LA_IMAGEN'),
-                  ),
-                  Text(
-                    "Usuario",
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      fontSize: 18,
+            ],*/
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              ProductGrid(
+                products: Cartera.carteras,
+              ), //Super metodo de grid
+              // Aquí puedes agregar otros elementos de la pantalla
+              // como la lista de productos, por ejemplo
+            ],
+          ),
+        ),
+        drawer: Drawer(
+          width: 180,
+          // Contenido del menú desplegable
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              DrawerHeader(
+                padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 239, 255, 16),
+                ),
+                child: Column(
+                  children: [
+                    const CircleAvatar(
+                      radius: 50,
+                      backgroundImage: NetworkImage('https://imgs.search.brave.com/iUabDJIyP6xS6dHnqUao3W0RVVaVmwu2k8pB2ZHfNb4/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NTFJK1NxTlZsakwu/anBn'), // Cambia por la ruta de tu imagen de perfil
+                        // O usa una imagen de red: backgroundImage: NetworkImage('URL_DE_LA_IMAGEN'),
                     ),
-                  ),
-                ],
+                    Text(
+                      fullName,
+                      style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0),
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            ListTile(
-              title: const Text("Perfil"),
-              onTap: () {
-                // Navegar a la pantalla 1
-              },
-            ),
-            ListTile(
-              title: const Text('Pantalla 2'),
-              onTap: () {
-                // Navegar a la pantalla 2
-              },
-            ),
-            // Agrega más ListTile según sea necesario para más opciones
-          ],
+              ListTile(
+                title: const Text("Inicio"),
+                onTap: () {
+                  // Navegar a la pantalla 1
+                },
+              ),
+              ListTile(
+                title: const Text("Perfil"),
+                onTap: () {
+                  // Navegar a la pantalla 1
+                },
+              ),
+              ListTile(
+                title: const Text("Favoritos"),
+                onTap: () {
+                  // Navegar a la pantalla 1
+                },
+              ),
+              ListTile(
+                title: const Text("Historial"),
+                onTap: () {
+                  // Navegar a la pantalla 1
+                },
+              ),
+              ListTile(
+                title: const Text("Configuracion"),
+                onTap: () {
+                  // Navegar a la pantalla 1
+                },
+              ),
+              // Agrega más ListTile según sea necesario para más opciones
+            ],
+          ),
         ),
-      ),
+      )
     );
   }
 }
