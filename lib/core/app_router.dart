@@ -12,18 +12,18 @@ final appRouter = GoRouter(routes: [
     builder: (context, state) => const LoginScreen(),
   ),
   GoRoute(
-      name: MenuScreen.name,
-      path: '/menu',
-      builder: (context, state) => const MenuScreen(),
-    ),
-    GoRoute(
-      name: RegistroScreen.name,
-      path: '/registro',
-      builder: (context, state) => const RegistroScreen(),
-    ),
-    GoRoute(
-      name: CarteraScreen.name,
-      path: '/carteraProducto',
-      builder: (context, state) => CarteraScreen(cartera: state.extra as Cartera),
-    ),
+    name: MenuScreen.name,
+    path: '/menu',
+    builder: (context, state) => MenuScreen(fullName: state.extra as String),
+  ),
+  GoRoute(
+    name: RegistroScreen.name,
+    path: '/registro',
+    builder: (context, state) => const RegistroScreen(),
+  ),
+  GoRoute(
+    name: CarteraScreen.name,
+    path: '/carteraProducto',
+    builder: (context, state) => CarteraScreen(cartera: state.extra as Cartera),
+  ),
 ]);

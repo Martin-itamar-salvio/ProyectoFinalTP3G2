@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:proyecto_final_grupo_6/data/user_datasource.dart';
 import 'package:proyecto_final_grupo_6/screens/menu_screen.dart';
 import 'package:proyecto_final_grupo_6/screens/registro_screen.dart';
-import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatelessWidget {
   static const String name = "login";
@@ -18,6 +19,22 @@ class LoginScreen extends StatelessWidget {
 class _LoginView extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+
+
+  String _validateUser(String username, String password) {
+    String fullName = '';
+    bool isValid = false;
+    int i = 0;
+
+    while (!isValid && i < users.length) {
+      isValid = username == users[i].username && password == users[i].password;
+      if(isValid) fullName = '${users[i].nombre}, ${users[i].apellido}';
+      i += 1;
+    }
+
+    return fullName;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,11 +88,17 @@ class _LoginView extends StatelessWidget {
                   foregroundColor: const Color.fromARGB(255, 0, 0, 0),
                 ),
                 onPressed: () {
-                  // Validar usuario y contraseña
-                  //final String enteredUsername = _usernameController.text;
-                  //final String enteredPassword = _passwordController.text;
-
-                  context.pushNamed(MenuScreen.name);
+                  String fullName = _validateUser(_usernameController.text,_passwordController.text);
+                  if(fullName != ''){
+                    context.pushNamed(MenuScreen.name, extra: fullName);
+                  }else{
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Error al iniciar sesión. Usuario o contraseña incorrectos.'),
+                        backgroundColor: Colors.red,
+                      )
+                    );
+                  }
                 },
                 child: const Text(
                   "Entrar",
