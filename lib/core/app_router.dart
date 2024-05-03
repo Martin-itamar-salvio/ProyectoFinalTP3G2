@@ -1,9 +1,9 @@
 import 'package:go_router/go_router.dart';
-import 'package:proyecto_final_grupo_6/entities/cartera.dart';
-import 'package:proyecto_final_grupo_6/screens/cartera_screen.dart';
-import 'package:proyecto_final_grupo_6/screens/login_screen.dart';
-import 'package:proyecto_final_grupo_6/screens/menu_screen.dart';
-import 'package:proyecto_final_grupo_6/screens/registro_screen.dart';
+import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
+import 'package:proyecto_final_grupo_6/presentations/screens/cartera_screen.dart';
+import 'package:proyecto_final_grupo_6/presentations/screens/home_screen.dart';
+import 'package:proyecto_final_grupo_6/presentations/screens/login_screen.dart';
+import 'package:proyecto_final_grupo_6/presentations/screens/registro_screen.dart';
 
 final appRouter = GoRouter(routes: [
   GoRoute(
@@ -12,9 +12,10 @@ final appRouter = GoRouter(routes: [
     builder: (context, state) => const LoginScreen(),
   ),
   GoRoute(
-    name: MenuScreen.name,
-    path: '/menu',
-    builder: (context, state) => MenuScreen(fullName: state.extra as String),
+    name: HomeScreen.name,
+    path: '/inicio',
+    //builder: (context, state) => HomeScreen(fullName: state.extra as String),
+    builder: (context, state) => const HomeScreen(),
   ),
   GoRoute(
     name: RegistroScreen.name,
