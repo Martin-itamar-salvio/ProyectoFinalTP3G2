@@ -20,7 +20,7 @@ class MenuScreen extends StatelessWidget {
 
 class _MenuView extends StatelessWidget {
   final String fullName;
-  const _MenuView({required this.fullName, super.key});
+  const _MenuView({required this.fullName});
 
   @override
   Widget build(BuildContext context) {
