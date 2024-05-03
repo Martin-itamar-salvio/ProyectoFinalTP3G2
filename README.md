@@ -1,6 +1,6 @@
-tpCarteras “BELLIGRAU”
+#PROYECTO “BELLIGRAU”
 
-# Maquetado en FIgma
+# Maquetado en Figma
 Link: https://www.figma.com/file/d9YQl8UiTgl41cpmTbt5fI/Proyecto-Carteras?type=design&node-id=0-1&mode=design
 
 # Repositorios
