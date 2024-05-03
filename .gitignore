@@ -29,6 +29,8 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+.package_config.json
+.package_config_subset
 
 # Symbolication related
 app.*.symbols
