@@ -63,7 +63,7 @@
     },
     {
       "name": "go_router",
-      "rootUri": "file:///C:/Users/Usuario/AppData/Local/Pub/Cache/hosted/pub.dev/go_router-14.0.1",
+      "rootUri": "file:///C:/Users/Usuario/AppData/Local/Pub/Cache/hosted/pub.dev/go_router-14.0.2",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
@@ -182,7 +182,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-04-29T23:41:53.193868Z",
+  "generated": "2024-04-30T00:19:50.728607Z",
   "generator": "pub",
   "generatorVersion": "3.3.1"
 }
