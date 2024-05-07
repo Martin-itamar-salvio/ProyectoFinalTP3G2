@@ -2,27 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/core/data/cartera_datasource.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
+import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/cartera_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String name = "home_screen";
+  final User usuario;
 
-  const HomeScreen({super.key});
+  const HomeScreen({required this.usuario, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: MyAppBar(),
-      drawer: DrawerMenu(),
-      body: _MenuView(),
+    return Scaffold(
+      appBar: const MyAppBar(),
+      drawer: DrawerMenu(usuario: usuario),
+      body: _MenuView(usuario: usuario),
     );
   }
 }
 
 class _MenuView extends StatelessWidget {
-  const _MenuView({super.key});
+  final User usuario;
+  const _MenuView({super.key, required this.usuario});
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +35,7 @@ class _MenuView extends StatelessWidget {
           children: [
             _ProductGrid(
               products: carteras,
+              usuario: usuario,
             ),
           ],
         ),
@@ -43,8 +47,9 @@ class _MenuView extends StatelessWidget {
 //Tocar aca para modificar la grilla
 class _ProductGrid extends StatelessWidget {
   final List<Cartera> products;
+  final User usuario;
 
-  const _ProductGrid({super.key, required this.products});
+  const _ProductGrid({super.key, required this.products, required this.usuario});
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +67,7 @@ class _ProductGrid extends StatelessWidget {
         itemBuilder: (context, index) {
           //crea los item dentro de la grilla
           final product = products[index];
-          return ProductCard(product: product);
+          return ProductCard(product: product, usuario: usuario);
         },
       ),
     );
@@ -72,14 +77,15 @@ class _ProductGrid extends StatelessWidget {
 //Tocar aca para modificar las carteras
 class ProductCard extends StatelessWidget {
   final Cartera product;
+  final User usuario;
 
-  const ProductCard({super.key, required this.product});
+  const ProductCard({super.key, required this.product, required this.usuario});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.pushNamed(CarteraScreen.name, extra: product);
+        context.pushNamed(CarteraScreen.name, extra: {"product": product, "usuario": usuario});
       },
       child: Card(
         elevation: 4,

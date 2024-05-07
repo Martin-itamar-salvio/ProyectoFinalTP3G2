@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/core/constants.dart';
 import 'package:proyecto_final_grupo_6/core/data/user_datasource.dart';
+import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/home_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/registro_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/exit.dart';
@@ -29,18 +30,18 @@ class _LoginView extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  String _validateUser(String username, String password) {
-    String fullName = '';
+  User? _validateUser(String username, String password) {
+    User? usuario;
     bool isValid = false;
     int i = 0;
 
     while (!isValid && i < users.length) {
       isValid = username == users[i].username && password == users[i].password;
-      if(isValid) fullName = '${users[i].nombre}, ${users[i].apellido}';
+      if(isValid) usuario = users[i];
       i += 1;
     }
 
-    return fullName;
+    return usuario;
   }
 
   @override
@@ -101,10 +102,11 @@ class _LoginView extends StatelessWidget {
                   foregroundColor: const Color.fromARGB(255, 0, 0, 0),
                 ),
                 onPressed: () {
-                  String fullName = _validateUser(_usernameController.text,_passwordController.text);
-                  if(fullName != ''){
+                  User? usuario = _validateUser(_usernameController.text,_passwordController.text);
+                  if(usuario != null){
                     //context.pushNamed(HomeScreen.name, extra: fullName);
-                    context.pushNamed(HomeScreen.name);
+                    //context.pushNamed(HomeScreen.name);
+                    context.pushNamed(HomeScreen.name, extra: usuario);
                   }else{
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(

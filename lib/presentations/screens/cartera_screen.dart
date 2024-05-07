@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_final_grupo_6/core/constants.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
+import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
 
 class CarteraScreen extends StatelessWidget {
   static const String name = "cartera_screen";
-
   final Cartera cartera;
+  final User usuario;
 
-  const CarteraScreen({super.key, required this.cartera});
+  const CarteraScreen({super.key, required this.cartera, required this.usuario});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MyAppBar(),
-      drawer: const DrawerMenu(),
+      drawer: DrawerMenu(usuario: usuario),
       body: _CarteraScreenView(
         cartera: cartera,
       )
