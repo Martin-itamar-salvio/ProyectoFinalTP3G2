@@ -64,6 +64,6 @@ final appRouter = GoRouter(routes: [
   GoRoute(
     name: CarritoScreen.name,
     path: '/carrito',
-    builder: (context, state) => const CarritoScreen(),
+    builder: (context, state) => CarritoScreen(usuario: state.extra as User),
   ),
 ]);
