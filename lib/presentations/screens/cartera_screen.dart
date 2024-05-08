@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_final_grupo_6/core/constants.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
@@ -15,7 +14,7 @@ class CarteraScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MyAppBar(),
+      appBar: MyAppBar(usuario: usuario),
       drawer: DrawerMenu(usuario: usuario),
       body: _CarteraScreenView(
         cartera: cartera,
@@ -34,7 +33,7 @@ class _CarteraScreenView extends StatelessWidget {
       child: Column(
         children: [
           ClipRRect(
-            child: Image.network(
+            child: Image.asset(
               cartera.poster,
               width: 300,
               height: 300,
@@ -44,7 +43,7 @@ class _CarteraScreenView extends StatelessWidget {
             height: 20,
           ),
           Text(" ${cartera.titulo}"),
-          Text("Precio: ${cartera.precio}"),
+          Text("Precio: \$${cartera.precio.round()}"),
           Text("Cantida: ${cartera.cantidad}"),
           Text("Tipo de Cartera: ${cartera.tipo}"),
           ElevatedButton(

@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MyAppBar(),
+      appBar: MyAppBar(usuario: usuario),
       drawer: DrawerMenu(usuario: usuario),
       body: _MenuView(usuario: usuario),
     );
@@ -98,7 +98,7 @@ class ProductCard extends StatelessWidget {
             ClipRRect(
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(10)),
-              child: Image.network(
+              child: Image.asset(
                 product.poster,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -117,7 +117,7 @@ class ProductCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    "\$${product.precio}",
+                    "\$${product.precio.round()}",
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
