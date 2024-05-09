@@ -27,10 +27,10 @@ class _CarritoView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<Cartera> carrito = ref.watch(carritoProvider);
+    final List<Cartera> carritoProv = ref.watch(carritoProvider);
     double subTotal = ref.watch(subTotalProvider);
 
-    if(carrito.isEmpty){
+    if(carritoProv.isEmpty){
       return const Column(
         children: [
           Expanded(
@@ -48,9 +48,9 @@ class _CarritoView extends ConsumerWidget {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: carrito.length,
+              itemCount: carritoProv.length,
               itemBuilder: (context, index) {
-                final Cartera producto = carrito[index];
+                final Cartera producto = carritoProv[index];
                 return _ProductView(producto: producto);
               }
             )
@@ -87,7 +87,6 @@ class _CarritoView extends ConsumerWidget {
                 TextButton(
                   onPressed: (){
                     context.pop();
-                    //ref.read(subTotalProvider.notifier).state++;
                   },
                   child: Container(
                     color: Colors.yellow.shade300,
@@ -128,12 +127,12 @@ class _CarritoView extends ConsumerWidget {
   }
 }
 
-class _ProductView extends StatelessWidget {
+class _ProductView extends ConsumerWidget {
   final Cartera producto;
   const _ProductView({super.key, required this.producto});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Card(
       color: Colors.yellow.shade300,
       elevation: 5.0,
@@ -179,43 +178,56 @@ class _ProductView extends StatelessWidget {
                 ],
               )
             ),
-            _CantidadBotonesView(producto: producto),
-            IconButton(
-              onPressed: () { },
-              icon: const Icon(
-                Icons.delete,
-                color: Colors.black,
-              )
-            ),
+            _CantidadBotonesView(producto: producto)
           ],
         ),
       ),
     );
-
-    /*
-    return ListTile(
-      title: Text(producto.titulo),
-      subtitle: Text(producto.tipo),
-      leading: Image.network(producto.poster, width: 70, height: 70),
-      trailing: const Icon(Icons.delete),
-      onTap: (){ /*No hace nada, porque solo puede eliminar el item*/ }
-    );
-    */
   }
 }
 
-class _CantidadBotonesView extends StatelessWidget {
+class _CantidadBotonesView extends ConsumerWidget {
   final Cartera producto;
   const _CantidadBotonesView({super.key, required this.producto});
 
   @override
-  Widget build(BuildContext context) {
-   return Row(
-     children: [
-       IconButton(onPressed: () {}, icon: const Icon(Icons.remove)),
-       Text('${producto.cantidad}'),
-       IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
-     ],
-   );
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Row(
+      children: [
+        IconButton(
+          onPressed: () {
+            ref.read(carritoProvider.notifier).restarCantidadProducto(producto);
+            ref.read(subTotalProvider.notifier).state = calcularSubtotal(ref.watch(carritoProvider));
+          },
+          icon: const Icon(Icons.remove)
+        ),
+        Text('${producto.cantidad}'),
+        IconButton(
+          onPressed: () {
+            ref.read(carritoProvider.notifier).sumarCantidadProducto(producto);
+            ref.read(subTotalProvider.notifier).state = calcularSubtotal(ref.watch(carritoProvider));
+          },
+          icon: const Icon(Icons.add)
+        ),
+        IconButton(
+          onPressed: () {
+            ref.read(carritoProvider.notifier).eliminarProducto(producto.titulo);
+            ref.read(subTotalProvider.notifier).state = calcularSubtotal(ref.watch(carritoProvider));
+          },
+          icon: const Icon(
+            Icons.delete,
+            color: Colors.black,
+          )
+        ),
+      ],
+    );
   }
+}
+
+double calcularSubtotal(List<Cartera> carrito){
+  double retorno = 0;
+  for (var e in carrito) {
+    retorno += e.precio * e.cantidad;
+  }
+  return retorno;
 }

@@ -1,7 +1,7 @@
 
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
 
-final List<Cartera> carrito = [
+List<Cartera> carrito = [
   Cartera(
     titulo: "Cartera 7",
     precio: 4000,
