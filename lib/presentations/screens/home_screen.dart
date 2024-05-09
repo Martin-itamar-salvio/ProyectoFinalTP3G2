@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
 }
 
 class _MenuView extends StatelessWidget {
-  const _MenuView({super.key});
+  const _MenuView();
 
   @override
   Widget build(BuildContext context) {

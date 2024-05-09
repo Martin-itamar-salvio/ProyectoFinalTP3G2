@@ -3,6 +3,7 @@ import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/cartera_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/home_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/login_screen.dart';
+import 'package:proyecto_final_grupo_6/presentations/screens/recibo_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/registro_screen.dart';
 
 final appRouter = GoRouter(routes: [
@@ -26,5 +27,10 @@ final appRouter = GoRouter(routes: [
     name: CarteraScreen.name,
     path: '/carteraProducto',
     builder: (context, state) => CarteraScreen(cartera: state.extra as Cartera),
+  ),
+    GoRoute(
+    name: ReciboScreen.name,
+    path: '/recibo',
+    builder: (context, state) => const ReciboScreen(),
   ),
 ]);
