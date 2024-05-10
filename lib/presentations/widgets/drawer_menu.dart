@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/core/constants.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
+import 'package:proyecto_final_grupo_6/presentations/screens/login_screen.dart';
 
 class DrawerMenu extends StatefulWidget {
   final User usuario;
@@ -20,14 +21,14 @@ class _DrawerMenuState extends State<DrawerMenu> {
       child: NavigationDrawer(
         selectedIndex: selectedScreen,
         onDestinationSelected: (value) {
+          final menuItemsAux = [...menuItems.where((e) => e.role == roleDefault || e.role == widget.usuario.role)];
           selectedScreen = value;
           setState(() { });
-          if(menuItems[value].params){
-            Object param = menuItems[value].title == "Inicio" ? widget.usuario
-                            : Object();
-            context.push(menuItems[value].link, extra: param);
+          if(menuItemsAux[value].params){
+            final Object param = menuItemsAux[value].title == "Inicio" ? widget.usuario : Object();
+            context.push(menuItemsAux[value].link, extra: param);
           }else{
-            context.push(menuItems[value].link);
+            context.push(menuItemsAux[value].link);
           }
         },
         children: [
