@@ -28,7 +28,7 @@ class _CarritoView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final List<Cartera> carritoProv = ref.watch(carritoProvider);
-    double subTotal = ref.watch(subTotalProvider);
+    final double subTotal = ref.watch(subTotalProvider);
 
     if(carritoProv.isEmpty){
       return const Column(
