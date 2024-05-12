@@ -4,7 +4,8 @@ import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
-import 'package:proyecto_final_grupo_6/presentations/screens/recibo_screen.dart';
+
+import 'compra_screen.dart';
 
 class CarteraScreen extends StatelessWidget {
   static const String name = "cartera_screen";
@@ -83,7 +84,7 @@ class CarteraScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     // Lógica para comprar
-                    context.pushNamed(ReciboScreen.name);
+                    context.pushNamed(CompraScreen.name, extra: usuario);
                   },
                   child: const Text("Comprar"),
                 ),

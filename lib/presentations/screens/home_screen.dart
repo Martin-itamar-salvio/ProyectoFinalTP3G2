@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
 
 class _MenuView extends StatelessWidget {
   final User usuario;
-  const _MenuView({super.key, required this.usuario});
+  const _MenuView({required this.usuario});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class _ProductGrid extends StatelessWidget {
   final List<Cartera> products;
   final User usuario;
 
-  const _ProductGrid({super.key, required this.products, required this.usuario});
+  const _ProductGrid({required this.products, required this.usuario});
 
   @override
   Widget build(BuildContext context) {

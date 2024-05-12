@@ -23,7 +23,7 @@ class CarritoScreen extends ConsumerWidget {
 }
 
 class _CarritoView extends ConsumerWidget {
-  const _CarritoView({super.key});
+  const _CarritoView();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -129,7 +129,7 @@ class _CarritoView extends ConsumerWidget {
 
 class _ProductView extends ConsumerWidget {
   final Cartera producto;
-  const _ProductView({super.key, required this.producto});
+  const _ProductView({required this.producto});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -188,7 +188,7 @@ class _ProductView extends ConsumerWidget {
 
 class _CantidadBotonesView extends ConsumerWidget {
   final Cartera producto;
-  const _CantidadBotonesView({super.key, required this.producto});
+  const _CantidadBotonesView({required this.producto});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

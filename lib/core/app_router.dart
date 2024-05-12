@@ -12,6 +12,8 @@ import 'package:proyecto_final_grupo_6/presentations/screens/publicar_screen.dar
 import 'package:proyecto_final_grupo_6/presentations/screens/recibo_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/registro_screen.dart';
 
+import '../presentations/screens/compra_screen.dart';
+
 final appRouter = GoRouter(routes: [
   GoRoute(
     name: LoginScreen.name,
@@ -70,5 +72,10 @@ final appRouter = GoRouter(routes: [
     name: ReciboScreen.name,
     path: '/recibo',
     builder: (context, state) => const ReciboScreen(),
+  ),
+   GoRoute(
+    name: CompraScreen.name,
+    path: '/compra',
+    builder: (context, state) =>  CompraScreen(state.extra as User),
   ),
 ]);

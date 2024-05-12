@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/core/constants.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
-import 'package:proyecto_final_grupo_6/presentations/screens/login_screen.dart';
 
 class DrawerMenu extends StatefulWidget {
   final User usuario;
