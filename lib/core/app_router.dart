@@ -26,9 +26,18 @@ final appRouter = GoRouter(routes: [
     builder: (context, state) => HomeScreen(usuario: state.extra as User),
   ),
   GoRoute(
-    name: PerfilScreen.name,
     path: '/perfil',
-    builder: (context, state) => const PerfilScreen(),
+    builder: (context, state) {
+      final User usuario = User( //Usuario hardcodeado
+          nombre: 'Juan',
+          apellido: 'Pérez',
+          username: 'juanperez',
+          password: 'contraseña',
+          role: 'usuario',
+        );
+
+        return PerfilScreen(usuario: usuario);
+      },
   ),
   GoRoute(
     name: FavoritoScreen.name,
