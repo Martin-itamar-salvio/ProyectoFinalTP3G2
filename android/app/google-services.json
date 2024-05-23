@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "998191787388",
+    "project_id": "belligrau-e8c3a",
+    "storage_bucket": "belligrau-e8c3a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998191787388:android:0c0d05bea4d2e6ab0748f9",
+        "android_client_info": {
+          "package_name": "com.example.proyecto_final_grupo_6"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACGGds7gURgya_u8GMOxispFaTwJTt7lE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
