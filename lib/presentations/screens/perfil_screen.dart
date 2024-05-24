@@ -5,6 +5,7 @@ class PerfilScreen extends StatelessWidget {
   static const String name = "perfil_screen";
   final User usuario;
 
+  // ignore: use_super_parameters
   const PerfilScreen({Key? key, required this.usuario}) : super(key: key);
 
   @override
@@ -21,7 +22,7 @@ class PerfilScreen extends StatelessWidget {
             Center(
               child: Stack(
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 50,
                     backgroundImage: AssetImage('assets/images/user_avatar.png'),
                   ),
@@ -29,7 +30,7 @@ class PerfilScreen extends StatelessWidget {
                     bottom: 0,
                     right: 0,
                     child: IconButton(
-                      icon: Icon(Icons.edit),
+                      icon: const Icon(Icons.edit),
                       onPressed: () {
                         // Acción para cambiar la foto de perfil
                       },
@@ -58,7 +59,7 @@ class PerfilScreen extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 5),
         Container(
@@ -72,7 +73,7 @@ class PerfilScreen extends StatelessWidget {
             children: [
               Text(value),
               IconButton(
-                icon: Icon(Icons.edit),
+                icon: const Icon(Icons.edit),
                 onPressed: () {
                 },
               ),
