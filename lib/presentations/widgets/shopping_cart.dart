@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
+// ignore: implementation_imports
 import 'package:badges/src/badge.dart' as badge;
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
