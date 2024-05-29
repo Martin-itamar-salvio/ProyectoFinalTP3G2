@@ -9,10 +9,10 @@ import 'compra_screen.dart';
 
 class CarteraScreen extends StatelessWidget {
   static const String name = "cartera_screen";
-  final Cartera cartera;
+  final Cartera product;
   final User usuario;
 
-  const CarteraScreen({super.key, required this.cartera, required this.usuario});
+  const CarteraScreen({super.key, required this.product, required this.usuario});
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +29,8 @@ class CarteraScreen extends StatelessWidget {
               padding: const EdgeInsets.all(5),
               child: Center(
                 child: ClipRRect(
-                  child: Image.asset(
-                    cartera.poster,
+                  child: Image.network(
+                    product.imagen,
                     width: 300,
                     height: 300,
                   ),
@@ -45,7 +45,7 @@ class CarteraScreen extends StatelessWidget {
                 children: [
                   const SizedBox(width: 10), // Espacio entre icono y título
                   Text(
-                    cartera.titulo,
+                    product.nombre,
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -69,7 +69,7 @@ class CarteraScreen extends StatelessWidget {
                 margin: const EdgeInsets.only(top: 10),
                 padding: const EdgeInsets.all(10),
                 child: Text(
-                  "Precio: ${cartera.precio}",
+                  "Precio: ${product.precio}",
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Color.fromARGB(255, 99, 99, 99),
@@ -84,7 +84,13 @@ class CarteraScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     // Lógica para comprar
-                    context.pushNamed(CompraScreen.name, extra: usuario);
+                    context.pushNamed(
+                      CompraScreen.name,
+                      extra: {
+                        "usuario": usuario,
+                        "product": product,
+                      },
+                    );
                   },
                   child: const Text("Comprar"),
                 ),
@@ -131,47 +137,3 @@ class CarteraScreen extends StatelessWidget {
     );
   }
 }
-
-/*
-      body: _CarteraScreenView(
-        cartera: cartera,
-      )
-    );
-  }
-}
-
-class _CarteraScreenView extends StatelessWidget {
-  final Cartera cartera;
-  const _CarteraScreenView({required this.cartera});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          ClipRRect(
-            child: Image.asset(
-              cartera.poster,
-              width: 300,
-              height: 300,
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Text(" ${cartera.titulo}"),
-          Text("Precio: \$${cartera.precio.round()}"),
-          Text("Cantida: ${cartera.cantidad}"),
-          Text("Tipo de Cartera: ${cartera.tipo}"),
-          ElevatedButton(
-            onPressed: (
-                //crear la pestaña de carga o recibo de compra
-                ) {},
-            child: const Text("Comprar"),
-          )
-        ],
-      ),
-    );
-  }
-}
-*/

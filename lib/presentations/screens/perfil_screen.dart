@@ -23,7 +23,7 @@ class PerfilScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 50,
-                    backgroundImage: AssetImage('assets/images/user_avatar.png'),
+                    backgroundImage: NetworkImage(''),
                   ),
                   Positioned(
                     bottom: 0,
@@ -42,7 +42,7 @@ class PerfilScreen extends StatelessWidget {
             _buildEditableField('Nombre', usuario.nombre),
             _buildEditableField('Apellido', usuario.apellido),
             _buildEditableField('Nombre de usuario', usuario.username),
-            _buildEditableField('Rol', usuario.role),
+            _buildEditableField('Rol', usuario.rol),
             _buildEditableField('Correo electrónico', 'ejemplo@correo.com'),
             _buildEditableField('Dirección', 'Calle Principal 123'),
             _buildEditableField('Teléfono', '123456789'),

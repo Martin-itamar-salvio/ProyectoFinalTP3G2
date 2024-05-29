@@ -20,7 +20,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
       child: NavigationDrawer(
         selectedIndex: selectedScreen,
         onDestinationSelected: (value) {
-          final menuItemsAux = [...menuItems.where((e) => e.role == roleDefault || e.role == widget.usuario.role)];
+          final menuItemsAux = [...menuItems.where((e) => e.role == roleDefault || e.role == widget.usuario.rol)];
           selectedScreen = value;
           setState(() { });
           if(menuItemsAux[value].params){
@@ -56,7 +56,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
               ],
             ),
           ),
-          ...menuItems.where((e) => e.role == roleDefault || e.role == widget.usuario.role).map((item) => NavigationDrawerDestination(
+          ...menuItems.where((e) => e.role == roleDefault || e.role == widget.usuario.rol).map((item) => NavigationDrawerDestination(
             icon: Icon(item.icon),
             label: Text(item.title)
           )),

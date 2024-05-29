@@ -142,7 +142,7 @@ class _ProductView extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.max,
           children: [
-            Image.asset(producto.poster, width: 70, height: 70),
+            Image.asset(producto.imagen, width: 70, height: 70),
             SizedBox(
               width: 130,
               child: Column(
@@ -155,7 +155,7 @@ class _ProductView extends ConsumerWidget {
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     text: TextSpan(
-                      text: '${producto.titulo}\n',
+                      text: '${producto.nombre}\n',
                       style: const TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -163,7 +163,7 @@ class _ProductView extends ConsumerWidget {
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     text: TextSpan(
-                      text: '${producto.tipo}\n',
+                      text: '${producto.modelo}\n',
                       style: const TextStyle(color: Colors.black, fontSize: 16.0),
                     ),
                   ),
@@ -201,7 +201,7 @@ class _CantidadBotonesView extends ConsumerWidget {
           },
           icon: const Icon(Icons.remove)
         ),
-        Text('${producto.cantidad}'),
+        Text('${producto.stock}'),
         IconButton(
           onPressed: () {
             ref.read(carritoProvider.notifier).sumarCantidadProducto(producto);
@@ -211,7 +211,7 @@ class _CantidadBotonesView extends ConsumerWidget {
         ),
         IconButton(
           onPressed: () {
-            ref.read(carritoProvider.notifier).eliminarProducto(producto.titulo);
+            ref.read(carritoProvider.notifier).eliminarProducto(producto.nombre);
             ref.read(subTotalProvider.notifier).state = calcularSubtotal(ref.watch(carritoProvider));
           },
           icon: const Icon(
@@ -227,7 +227,7 @@ class _CantidadBotonesView extends ConsumerWidget {
 double calcularSubtotal(List<Cartera> carrito){
   double retorno = 0;
   for (var e in carrito) {
-    retorno += e.precio * e.cantidad;
+    retorno += e.precio * e.stock;
   }
   return retorno;
 }

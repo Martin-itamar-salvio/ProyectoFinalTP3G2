@@ -9,14 +9,14 @@ class CarritoStateNotifier extends StateNotifier<List<Cartera>> {
   CarritoStateNotifier(state) : super(state ?? []);
   
   void eliminarProducto(String titulo) {
-    state = state.where((p) => p.titulo != titulo).toList();
+    state = state.where((p) => p.nombre != titulo).toList();
   }
 
   void sumarCantidadProducto(Cartera producto) {
     List<Cartera> carritoAux = [...state];
     for (var e in carritoAux) {
-      if(e.titulo == producto.titulo){
-        e.cantidad++;
+      if(e.nombre == producto.nombre){
+        e.stock++;
       }
     }
     state = carritoAux;
@@ -25,8 +25,8 @@ class CarritoStateNotifier extends StateNotifier<List<Cartera>> {
   void restarCantidadProducto(Cartera producto) {
     List<Cartera> carritoAux = [...state];
     for (var e in carritoAux) {
-      if(e.titulo == producto.titulo && e.cantidad > 1){
-        e.cantidad--;
+      if(e.nombre == producto.nombre && e.stock > 1){
+        e.stock--;
       }
     }
     state = carritoAux;

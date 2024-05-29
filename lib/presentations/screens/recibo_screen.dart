@@ -1,19 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
+import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
+import 'package:proyecto_final_grupo_6/presentations/screens/home_screen.dart';
 
 class ReciboScreen extends StatelessWidget {
   static const String name = "recibo";
+  final User usuario;
+  final Cartera product;
+  final String tarjeta;
+  final String codigo;
+  final String titular;
+  final String email;
+  final String pais;
+  final String codigoPostal;
+  final String direccion;
 
-  const ReciboScreen({super.key});
+  const ReciboScreen({
+    super.key,
+    required this.usuario,
+    required this.product,
+    required this.tarjeta,
+    required this.codigo,
+    required this.titular,
+    required this.email,
+    required this.pais,
+    required this.codigoPostal,
+    required this.direccion,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-    //  appBar: MyAppBar(usuario: usuario),
-    //  drawer: DrawerMenu(usuario: usuario),
+    return Scaffold(
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(20.0),
-          child: ReciboCard(),
+          padding: const EdgeInsets.all(20.0),
+          child: ReciboCard(
+            usuario: usuario,
+            product: product,
+            tarjeta: tarjeta,
+            codigo: codigo,
+            titular: titular,
+            email: email,
+            pais: pais,
+            codigoPostal: codigoPostal,
+            direccion: direccion,
+          ),
         ),
       ),
     );
@@ -21,7 +53,28 @@ class ReciboScreen extends StatelessWidget {
 }
 
 class ReciboCard extends StatelessWidget {
-  const ReciboCard({super.key});
+  final User usuario;
+  final Cartera product;
+  final String tarjeta;
+  final String codigo;
+  final String titular;
+  final String email;
+  final String pais;
+  final String codigoPostal;
+  final String direccion;
+
+  const ReciboCard({
+    super.key,
+    required this.usuario,
+    required this.product,
+    required this.tarjeta,
+    required this.codigo,
+    required this.titular,
+    required this.email,
+    required this.pais,
+    required this.codigoPostal,
+    required this.direccion,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,16 +93,80 @@ class ReciboCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Nombre y Apellido del Usuario',
-              style: TextStyle(
+            Text(
+              'Usuario: ${usuario.nombre} ${usuario.apellido}',
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Producto: ${product.nombre}',
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Precio: ${product.precio}',
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Número de tarjeta: $tarjeta',
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Código verificador: $codigo',
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Nombre del titular: $titular',
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Email: $email',
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'País: $pais',
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Código postal: $codigoPostal',
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Dirección: $direccion',
+              style: const TextStyle(
                 fontSize: 16,
               ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Lógica para aceptar el recibo
+                context.goNamed(HomeScreen.name, extra: usuario);
+
               },
               child: const Text('Aceptar'),
             ),

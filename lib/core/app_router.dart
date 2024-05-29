@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
+import 'package:proyecto_final_grupo_6/presentations/screens/carga_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/carrito_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/cartera_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/config_screen.dart';
@@ -28,16 +29,16 @@ final appRouter = GoRouter(routes: [
   GoRoute(
     path: '/perfil',
     builder: (context, state) {
-      final User usuario = User( //Usuario hardcodeado
+      final User usuario = User(
           nombre: 'Juan',
           apellido: 'Pérez',
           username: 'juanperez',
           password: 'contraseña',
-          role: 'usuario',
-        );
-
-        return PerfilScreen(usuario: usuario);
-      },
+          rol: 'usuario',
+          fotoPerfil: 'Foto',
+          email: 'email');
+      return PerfilScreen(usuario: usuario);
+    },
   ),
   GoRoute(
     name: FavoritoScreen.name,
@@ -65,26 +66,50 @@ final appRouter = GoRouter(routes: [
     builder: (context, state) => const RegistroScreen(),
   ),
   GoRoute(
-    name: CarteraScreen.name,
-    path: '/carteraProducto',
-    builder: (context, state) {
-      final data = state.extra! as Map<Object,dynamic>;
-      return CarteraScreen(cartera: data["product"], usuario: data["usuario"]);
-    }//=> {CarteraScreen(cartera: state.extra as Cartera),
-  ),
-  GoRoute(
     name: CarritoScreen.name,
     path: '/carrito',
     builder: (context, state) => CarritoScreen(usuario: state.extra as User),
   ),
-    GoRoute(
-    name: ReciboScreen.name,
-    path: '/recibo',
-    builder: (context, state) => const ReciboScreen(),
+  GoRoute(
+    name: CarteraScreen.name,
+    path: '/carteraProducto',
+    builder: (context, state) {
+      final data = state.extra! as Map<Object, dynamic>;
+      return CarteraScreen(product: data["product"], usuario: data["usuario"]);
+    },
   ),
-   GoRoute(
+  GoRoute(
     name: CompraScreen.name,
     path: '/compra',
-    builder: (context, state) =>  CompraScreen(state.extra as User),
+    builder: (context, state) {
+      final data = state.extra! as Map<Object, dynamic>;
+      return CompraScreen(usuario: data["usuario"], product: data["product"]);
+    },
+  ),
+  GoRoute(
+    name: CargaScreen.name,
+    path: '/carga',
+    builder: (context, state) {
+      final data = state.extra! as Map<Object, dynamic>;
+      return CargaScreen(data: data);
+    },
+  ),
+  GoRoute(
+    name: ReciboScreen.name,
+    path: '/recibo',
+    builder: (context, state) {
+      final data = state.extra! as Map<Object, dynamic>;
+      return ReciboScreen(
+        usuario: data["usuario"],
+        product: data["product"],
+        tarjeta: data["tarjeta"],
+        codigo: data["codigo"],
+        titular: data["titular"],
+        email: data["email"],
+        pais: data["pais"],
+        codigoPostal: data["codigoPostal"],
+        direccion: data["direccion"],
+      );
+    },
   ),
 ]);

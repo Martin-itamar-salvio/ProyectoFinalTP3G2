@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/core/constants.dart';
-import 'package:proyecto_final_grupo_6/core/data/user_datasource.dart';
-import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/home_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/registro_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/exit.dart';
+import 'package:proyecto_final_grupo_6/services/firebase_services.dart';
 
 class LoginScreen extends StatelessWidget {
   static const String name = "login_screen";
@@ -30,18 +29,21 @@ class _LoginView extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  User? _validateUser(String username, String password) {
-    User? usuario;
-    bool isValid = false;
-    int i = 0;
+  Future<void> _login(BuildContext context) async {
+    final username = _usernameController.text;
+    final password = _passwordController.text;
 
-    while (!isValid && i < users.length) {
-      isValid = username == users[i].username && password == users[i].password;
-      if(isValid) usuario = users[i];
-      i += 1;
+    final usuario = await getUser(username, password);
+    if (usuario != null) {
+      context.pushNamed(HomeScreen.name, extra: usuario);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error al iniciar sesión. Usuario o contraseña incorrectos.'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
-
-    return usuario;
   }
 
   @override
@@ -101,21 +103,7 @@ class _LoginView extends StatelessWidget {
                   backgroundColor: const Color.fromARGB(255, 247, 224, 20),
                   foregroundColor: const Color.fromARGB(255, 0, 0, 0),
                 ),
-                onPressed: () {
-                  User? usuario = _validateUser(_usernameController.text,_passwordController.text);
-                  if(usuario != null){
-                    //context.pushNamed(HomeScreen.name, extra: fullName);
-                    //context.pushNamed(HomeScreen.name);
-                    context.pushNamed(HomeScreen.name, extra: usuario);
-                  }else{
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Error al iniciar sesión. Usuario o contraseña incorrectos.'),
-                        backgroundColor: Colors.red,
-                      )
-                    );
-                  }
-                },
+                onPressed: () => _login(context),
                 child: const Text(
                   "Entrar",
                   style: TextStyle(fontSize: 18),
