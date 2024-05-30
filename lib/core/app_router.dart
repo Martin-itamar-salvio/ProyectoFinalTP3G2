@@ -4,12 +4,11 @@ import 'package:proyecto_final_grupo_6/presentations/screens/carga_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/carrito_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/cartera_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/config_screen.dart';
-import 'package:proyecto_final_grupo_6/presentations/screens/favorito_screen.dart';
+import 'package:proyecto_final_grupo_6/presentations/screens/gestion_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/historial_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/home_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/login_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/perfil_screen.dart';
-import 'package:proyecto_final_grupo_6/presentations/screens/publicar_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/recibo_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/registro_screen.dart';
 
@@ -41,22 +40,18 @@ final appRouter = GoRouter(routes: [
     },
   ),
   GoRoute(
-    name: FavoritoScreen.name,
-    path: '/favoritos',
-    builder: (context, state) => const FavoritoScreen(),
+    name: GestionScreen.name, 
+    path: '/gestion',
+    builder: (context, state) => const GestionScreen(),
   ),
   GoRoute(
     name: HistorialScrenn.name,
     path: '/historial',
     builder: (context, state) => const HistorialScrenn(),
   ),
+
   GoRoute(
-    name: PublicarScreen.name,
-    path: '/publicar',
-    builder: (context, state) => const PublicarScreen(),
-  ),
-  GoRoute(
-    name: ConfigScreen.name,
+    name: ConfigScreen.name, //vemos
     path: '/config',
     builder: (context, state) => const ConfigScreen(),
   ),

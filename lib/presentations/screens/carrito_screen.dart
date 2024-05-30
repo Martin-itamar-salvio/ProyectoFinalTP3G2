@@ -6,7 +6,7 @@ import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
 import 'package:proyecto_final_grupo_6/presentations/providers/cart_provider.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
-
+//visual
 class CarritoScreen extends ConsumerWidget {
   static const String name = "carrito_screen";
   final User usuario;

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_final_grupo_6/presentations/entities/user.dart'; // Asegúrate de importar la clase User si aún no lo has hecho
+import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
 
 class PerfilScreen extends StatelessWidget {
   static const String name = "perfil_screen";
   final User usuario;
 
-  // ignore: use_super_parameters
-  const PerfilScreen({Key? key, required this.usuario}) : super(key: key);
+  const PerfilScreen({super.key, required this.usuario});
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +21,9 @@ class PerfilScreen extends StatelessWidget {
             Center(
               child: Stack(
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 50,
-                    backgroundImage: NetworkImage(''),
+                    backgroundImage: NetworkImage(usuario.fotoPerfil ?? ''),
                   ),
                   Positioned(
                     bottom: 0,
@@ -44,9 +43,9 @@ class PerfilScreen extends StatelessWidget {
             _buildEditableField('Apellido', usuario.apellido),
             _buildEditableField('Nombre de usuario', usuario.username),
             _buildEditableField('Rol', usuario.rol),
-            _buildEditableField('Correo electrónico', 'ejemplo@correo.com'),
-            _buildEditableField('Dirección', 'Calle Principal 123'),
-            _buildEditableField('Teléfono', '123456789'),
+            _buildEditableField('Correo electrónico', usuario.email),
+            _buildEditableField('Dirección', usuario.direccion ?? 'No disponible'),
+            _buildEditableField('Teléfono', usuario.telefono ?? 'No disponible'),
           ],
         ),
       ),
@@ -75,6 +74,7 @@ class PerfilScreen extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.edit),
                 onPressed: () {
+                  // Acción para editar el campo
                 },
               ),
             ],

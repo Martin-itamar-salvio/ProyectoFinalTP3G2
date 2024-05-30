@@ -2,7 +2,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:proyecto_final_grupo_6/core/carrito.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
-
+//logica
 final StateNotifierProvider<CarritoStateNotifier, List<Cartera>> carritoProvider = StateNotifierProvider<CarritoStateNotifier, List<Cartera>>((ref) => CarritoStateNotifier(carrito));
 
 class CarritoStateNotifier extends StateNotifier<List<Cartera>> {

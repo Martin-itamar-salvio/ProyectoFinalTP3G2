@@ -1,6 +1,6 @@
 
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
-
+//no tocar
 List<Cartera> carrito = [
   // Cartera(
   //   titulo: "Cartera 7",
