@@ -71,7 +71,7 @@ class _GestionView extends StatelessWidget {
 
   //agregar cartera
   Widget _buildAgregarCartera(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     String nombre = '';
     double precio = 0.0;
     String imagen = '';
@@ -85,7 +85,7 @@ class _GestionView extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
-            key: _formKey,
+            key: formKey,
             child: Column(
               children: <Widget>[
                 TextFormField(
@@ -145,8 +145,8 @@ class _GestionView extends StatelessWidget {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      _formKey.currentState?.save();
+                    if (formKey.currentState?.validate() ?? false) {
+                      formKey.currentState?.save();
                       final cartera = Cartera(
                         nombre: nombre,
                         precio: precio,
@@ -173,7 +173,7 @@ class _GestionView extends StatelessWidget {
   }
   //modiciar cartera
   Widget _buildModificarCartera(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     String nombre = '';
     double precio = 0.0;
     String imagen = '';
@@ -221,7 +221,7 @@ class _GestionView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Form(
-                    key: _formKey,
+                    key: formKey,
                     child: Column(
                       children: <Widget>[
                         TextFormField(
@@ -291,8 +291,8 @@ class _GestionView extends StatelessWidget {
                         const SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: () {
-                            if (_formKey.currentState?.validate() ?? false) {
-                              _formKey.currentState?.save();
+                            if (formKey.currentState?.validate() ?? false) {
+                              formKey.currentState?.save();
                               final cartera = Cartera(
                                 nombre: nombre,
                                 precio: precio,

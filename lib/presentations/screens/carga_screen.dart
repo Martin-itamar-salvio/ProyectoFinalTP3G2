@@ -43,13 +43,13 @@ class __CargaViewState extends State<_CargaView> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const CircularProgressIndicator(),
-          const SizedBox(height: 20),
-          const Text("Procesando compra", style: TextStyle(fontSize: 16)),
+          CircularProgressIndicator(),
+          SizedBox(height: 20),
+          Text("Procesando compra", style: TextStyle(fontSize: 16)),
         ],
       ),
     );

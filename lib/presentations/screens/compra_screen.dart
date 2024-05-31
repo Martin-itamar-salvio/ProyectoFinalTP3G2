@@ -13,7 +13,7 @@ class CompraScreen extends ConsumerWidget {
   final User usuario;
   final Cartera product;
 
-  CompraScreen({required this.usuario, required this.product});
+  CompraScreen({super.key, required this.usuario, required this.product});
 
   final _formKey = GlobalKey<FormState>();
 
