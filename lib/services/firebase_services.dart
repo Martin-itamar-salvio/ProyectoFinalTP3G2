@@ -9,6 +9,7 @@ import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
 Stream<List<Cartera>> fetchCarteras() {
   return FirebaseFirestore.instance
       .collection('Carteras')
+      .where('estado', isNotEqualTo: 'delete') // Agregamos el filtro aquí
       .snapshots()
       .map((querySnapshot) {
     return querySnapshot.docs.map((doc) {
@@ -16,6 +17,7 @@ Stream<List<Cartera>> fetchCarteras() {
     }).toList();
   });
 }
+
 
 Future<void> registerUser(User user) async {
   await FirebaseFirestore.instance
@@ -80,6 +82,22 @@ Future<void> updateCarteraByName(String nombre, Cartera cartera) async {
     throw Exception('Cartera no encontrada');
   }
 }
+
+//Eliminar cartera
+Future<void> deleteCartera(String nombreCartera) async {
+  final collectionRef = FirebaseFirestore.instance.collection('Carteras');
+  final querySnapshot = await collectionRef.where('nombre', isEqualTo: nombreCartera).get();
+
+  if (querySnapshot.docs.isNotEmpty) {
+    final docId = querySnapshot.docs.first.id;
+    await collectionRef.doc(docId).update({'estado': 'delete'});
+  } else {
+    // Maneja el caso en el que no se encuentra la cartera
+    throw Exception('Cartera no encontrada');
+  }
+}
+
+
 
 
 //Manejo de Storage

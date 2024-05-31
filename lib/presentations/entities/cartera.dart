@@ -7,6 +7,7 @@ class Cartera {
   int stock;
   String modelo;
   String descripcion;
+  String? estado;
 
   Cartera({
     required this.nombre,
@@ -15,6 +16,7 @@ class Cartera {
     required this.stock,
     required this.modelo,
     required this.descripcion,
+    this.estado,
   });
 
   factory Cartera.fromFirestore(DocumentSnapshot doc) {
@@ -26,6 +28,7 @@ class Cartera {
       stock: data['stock'] ?? 0,
       modelo: data['modelo'] ?? '',
       descripcion: data['descripcion'] ?? '',
+      
     );
   }
 }
