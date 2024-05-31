@@ -1,21 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
-import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
-
+import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
 import 'compra_screen.dart';
 
-class CarteraScreen extends StatelessWidget {
+class CarteraScreen extends ConsumerWidget {
   static const String name = "cartera_screen";
   final Cartera product;
-  final User usuario;
 
-  const CarteraScreen({super.key, required this.product, required this.usuario});
+  const CarteraScreen({super.key, required this.product});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final usuario = ref.watch(userProvider);
+
+    if (usuario == null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Cartera'),
+        ),
+        body: const Center(
+          child: Text('No se ha iniciado sesión'),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: MyAppBar(usuario: usuario),
       drawer: DrawerMenu(usuario: usuario),
@@ -25,7 +37,6 @@ class CarteraScreen extends StatelessWidget {
           children: [
             const SizedBox(height: 20), // Margen superior para la imagen
             Padding(
-              //imagen
               padding: const EdgeInsets.all(5),
               child: Center(
                 child: ClipRRect(
@@ -39,7 +50,6 @@ class CarteraScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10), // Espacio entre imagen y título
             Padding(
-              //titulo
               padding: const EdgeInsets.only(left: 20),
               child: Row(
                 children: [
@@ -51,9 +61,7 @@ class CarteraScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(
-                    width: 200,
-                  ),
+                  const Spacer(),
                   IconButton(
                     icon: const Icon(Icons.favorite_border),
                     onPressed: () {
@@ -83,7 +91,6 @@ class CarteraScreen extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    // Lógica para comprar
                     context.pushNamed(
                       CompraScreen.name,
                       extra: {
@@ -106,9 +113,7 @@ class CarteraScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             Container(
               color: Colors.brown.shade200, // Fondo marrón claro
               padding: const EdgeInsets.all(20),

@@ -1,14 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
+import 'package:proyecto_final_grupo_6/services/firebase_services.dart';
 
-class PerfilScreen extends StatelessWidget {
+class PerfilScreen extends ConsumerWidget {
   static const String name = "perfil_screen";
-  final User usuario;
-
-  const PerfilScreen({super.key, required this.usuario});
+  
+  const PerfilScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final usuario = ref.watch(userProvider);
+
+    if (usuario == null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Perfil'),
+        ),
+        body: const Center(
+          child: Text('No se ha iniciado sesión'),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Perfil'),
@@ -39,20 +54,38 @@ class PerfilScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            _buildEditableField('Nombre', usuario.nombre),
-            _buildEditableField('Apellido', usuario.apellido),
-            _buildEditableField('Nombre de usuario', usuario.username),
-            _buildEditableField('Rol', usuario.rol),
-            _buildEditableField('Correo electrónico', usuario.email),
-            _buildEditableField('Dirección', usuario.direccion ?? 'No disponible'),
-            _buildEditableField('Teléfono', usuario.telefono ?? 'No disponible'),
+            _buildEditableField(context, 'Nombre', usuario.nombre, (value) {
+              usuario.nombre = value;
+              _updateUser(context, ref, usuario);
+            }),
+            _buildEditableField(context, 'Apellido', usuario.apellido, (value) {
+              usuario.apellido = value;
+              _updateUser(context, ref, usuario);
+            }),
+            _buildEditableField(context, 'Nombre de usuario', usuario.username, null), // No editable
+            _buildEditableField(context, 'Rol', usuario.rol, (value) {
+              usuario.rol = value;
+              _updateUser(context, ref, usuario);
+            }),
+            _buildEditableField(context, 'Correo electrónico', usuario.email, (value) {
+              usuario.email = value;
+              _updateUser(context, ref, usuario);
+            }),
+            _buildEditableField(context, 'Dirección', usuario.direccion ?? 'No disponible', (value) {
+              usuario.direccion = value;
+              _updateUser(context, ref, usuario);
+            }),
+            _buildEditableField(context, 'Teléfono', usuario.telefono ?? 'No disponible', (value) {
+              usuario.telefono = value;
+              _updateUser(context, ref, usuario);
+            }),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildEditableField(String title, String value) {
+  Widget _buildEditableField(BuildContext context, String title, String value, Function(String)? onSave) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -70,18 +103,64 @@ class PerfilScreen extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(value),
-              IconButton(
-                icon: const Icon(Icons.edit),
-                onPressed: () {
-                  // Acción para editar el campo
-                },
-              ),
+              Expanded(child: Text(value)),
+              if (onSave != null)
+                IconButton(
+                  icon: const Icon(Icons.edit),
+                  onPressed: () async {
+                    final newValue = await _showEditDialog(context, title, value);
+                    if (newValue != null && onSave != null) {
+                      onSave(newValue);
+                    }
+                  },
+                ),
             ],
           ),
         ),
         const SizedBox(height: 20),
       ],
     );
+  }
+
+  Future<String?> _showEditDialog(BuildContext context, String title, String currentValue) async {
+    TextEditingController controller = TextEditingController(text: currentValue);
+
+    return showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Editar $title'),
+        content: TextField(
+          controller: controller,
+          decoration: InputDecoration(hintText: 'Ingrese $title'),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(controller.text);
+            },
+            child: const Text('Guardar'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _updateUser(BuildContext context, WidgetRef ref, User updatedUser) async {
+    try {
+      await ref.read(userProvider.notifier).updateUser(updatedUser);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Perfil actualizado')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al actualizar el perfil: $e')),
+      );
+    }
   }
 }

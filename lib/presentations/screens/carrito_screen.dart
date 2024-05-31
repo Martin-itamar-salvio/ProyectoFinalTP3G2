@@ -2,22 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
-import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
 import 'package:proyecto_final_grupo_6/presentations/providers/cart_provider.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
+
 //visual
 class CarritoScreen extends ConsumerWidget {
   static const String name = "carrito_screen";
-  final User usuario;
-  const CarritoScreen({super.key, required this.usuario});
+  
+  const CarritoScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final usuario = ref.watch(userProvider);
+
+    if (usuario == null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Carrito'),
+        ),
+        body: const Center(
+          child: Text('No se ha iniciado sesión'),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: MyAppBar(usuario: usuario),
       drawer: DrawerMenu(usuario: usuario),
-      body: const _CarritoView()
+      body: const _CarritoView(),
     );
   }
 }
@@ -30,20 +44,20 @@ class _CarritoView extends ConsumerWidget {
     final List<Cartera> carritoProv = ref.watch(carritoProvider);
     final double subTotal = ref.watch(subTotalProvider);
 
-    if(carritoProv.isEmpty){
+    if (carritoProv.isEmpty) {
       return const Column(
         children: [
           Expanded(
             child: Center(
               child: Text(
-                'El carrito esta vacio',
+                'El carrito está vacío',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
-              )
-            )
-          )
+              ),
+            ),
+          ),
         ],
       );
-    }else{
+    } else {
       return Column(
         children: [
           Expanded(
@@ -52,8 +66,8 @@ class _CarritoView extends ConsumerWidget {
               itemBuilder: (context, index) {
                 final Cartera producto = carritoProv[index];
                 return _ProductView(producto: producto);
-              }
-            )
+              },
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
@@ -85,7 +99,7 @@ class _CarritoView extends ConsumerWidget {
                   ),
                 ),
                 TextButton(
-                  onPressed: (){
+                  onPressed: () {
                     context.pop();
                   },
                   child: Container(
@@ -100,10 +114,10 @@ class _CarritoView extends ConsumerWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  )
+                  ),
                 ),
                 TextButton(
-                  onPressed: (){},
+                  onPressed: () {},
                   child: Container(
                     color: Colors.yellow.shade300,
                     alignment: Alignment.center,
@@ -116,12 +130,12 @@ class _CarritoView extends ConsumerWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  )
-                )
+                  ),
+                ),
               ],
-            )
-          )
-        ]
+            ),
+          ),
+        ],
       );
     }
   }
@@ -148,15 +162,17 @@ class _ProductView extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    height: 5.0,
-                  ),
+                  const SizedBox(height: 5.0),
                   RichText(
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     text: TextSpan(
                       text: '${producto.nombre}\n',
-                      style: const TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   RichText(
@@ -176,9 +192,9 @@ class _ProductView extends ConsumerWidget {
                     ),
                   ),
                 ],
-              )
+              ),
             ),
-            _CantidadBotonesView(producto: producto)
+            _CantidadBotonesView(producto: producto),
           ],
         ),
       ),
@@ -199,7 +215,7 @@ class _CantidadBotonesView extends ConsumerWidget {
             ref.read(carritoProvider.notifier).restarCantidadProducto(producto);
             ref.read(subTotalProvider.notifier).state = calcularSubtotal(ref.watch(carritoProvider));
           },
-          icon: const Icon(Icons.remove)
+          icon: const Icon(Icons.remove),
         ),
         Text('${producto.stock}'),
         IconButton(
@@ -207,7 +223,7 @@ class _CantidadBotonesView extends ConsumerWidget {
             ref.read(carritoProvider.notifier).sumarCantidadProducto(producto);
             ref.read(subTotalProvider.notifier).state = calcularSubtotal(ref.watch(carritoProvider));
           },
-          icon: const Icon(Icons.add)
+          icon: const Icon(Icons.add),
         ),
         IconButton(
           onPressed: () {
@@ -217,14 +233,14 @@ class _CantidadBotonesView extends ConsumerWidget {
           icon: const Icon(
             Icons.delete,
             color: Colors.black,
-          )
+          ),
         ),
       ],
     );
   }
 }
 
-double calcularSubtotal(List<Cartera> carrito){
+double calcularSubtotal(List<Cartera> carrito) {
   double retorno = 0;
   for (var e in carrito) {
     retorno += e.precio * e.stock;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
@@ -6,15 +7,28 @@ import 'package:proyecto_final_grupo_6/presentations/screens/cartera_screen.dart
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
 import 'package:proyecto_final_grupo_6/services/firebase_services.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   static const String name = "home_screen";
-  final User usuario;
 
-  const HomeScreen({required this.usuario, super.key});
+  const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final usuario = ref.watch(userProvider);
+
+    if (usuario == null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Inicio'),
+        ),
+        body: const Center(
+          child: Text('No se ha iniciado sesión'),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: MyAppBar(usuario: usuario),
       drawer: DrawerMenu(usuario: usuario),
@@ -23,12 +37,12 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class _MenuView extends StatelessWidget {
+class _MenuView extends ConsumerWidget {
   final User usuario;
   const _MenuView({required this.usuario});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
@@ -41,8 +55,7 @@ class _MenuView extends StatelessWidget {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(
-                      child: Text('No hay carteras disponibles'));
+                  return const Center(child: Text('No hay carteras disponibles'));
                 } else {
                   List<Cartera> carteras = snapshot.data!;
                   return _ProductGrid(products: carteras, usuario: usuario);
@@ -85,6 +98,7 @@ class _ProductGrid extends StatelessWidget {
     );
   }
 }
+
 //Tocar aca para modificar las carteras
 class ProductCard extends StatelessWidget {
   final Cartera product;

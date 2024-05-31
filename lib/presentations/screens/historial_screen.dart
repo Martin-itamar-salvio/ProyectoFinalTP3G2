@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 
-class HistorialScrenn extends StatelessWidget {
+class HistorialScreen extends StatelessWidget {
   static const String name = "historial_screen";
-  const HistorialScrenn({super.key});
+  const HistorialScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

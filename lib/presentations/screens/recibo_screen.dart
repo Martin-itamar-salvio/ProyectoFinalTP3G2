@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/home_screen.dart';
 
-class ReciboScreen extends StatelessWidget {
+class ReciboScreen extends ConsumerWidget {
   static const String name = "recibo";
-  final User usuario;
   final Cartera product;
   final String tarjeta;
   final String codigo;
@@ -18,7 +19,6 @@ class ReciboScreen extends StatelessWidget {
 
   const ReciboScreen({
     super.key,
-    required this.usuario,
     required this.product,
     required this.tarjeta,
     required this.codigo,
@@ -30,7 +30,20 @@ class ReciboScreen extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final usuario = ref.watch(userProvider);
+
+    if (usuario == null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Recibo de compra'),
+        ),
+        body: const Center(
+          child: Text('No se ha iniciado sesión'),
+        ),
+      );
+    }
+
     return Scaffold(
       body: Center(
         child: Padding(
@@ -166,7 +179,6 @@ class ReciboCard extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 context.goNamed(HomeScreen.name, extra: usuario);
-
               },
               child: const Text('Aceptar'),
             ),

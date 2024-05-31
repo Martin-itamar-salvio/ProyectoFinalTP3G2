@@ -3,22 +3,33 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
-import '../entities/user.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
 import '../widgets/drawer_menu.dart';
 import 'carga_screen.dart';
 
-// ignore: must_be_immutable
 class CompraScreen extends ConsumerWidget {
   static const String name = "compra_screen";
-  final User usuario;
   final Cartera product;
 
-  CompraScreen({super.key, required this.usuario, required this.product});
+  CompraScreen({super.key, required this.product});
 
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final usuario = ref.watch(userProvider);
+
+    if (usuario == null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Compra'),
+        ),
+        body: const Center(
+          child: Text('No se ha iniciado sesión'),
+        ),
+      );
+    }
+
     final tarjetaController = TextEditingController();
     final codigoController = TextEditingController();
     final titularController = TextEditingController();
@@ -51,6 +62,12 @@ class CompraScreen extends ConsumerWidget {
                   ),
                   keyboardType: TextInputType.number,
                   style: const TextStyle(fontSize: 16.0),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, ingrese el número de tarjeta';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -61,6 +78,12 @@ class CompraScreen extends ConsumerWidget {
                   ),
                   keyboardType: TextInputType.number,
                   style: const TextStyle(fontSize: 16.0),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, ingrese el código verificador';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -70,6 +93,12 @@ class CompraScreen extends ConsumerWidget {
                     hintText: 'Nombre y apellido',
                   ),
                   style: const TextStyle(fontSize: 16.0),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, ingrese el nombre del titular';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -80,6 +109,12 @@ class CompraScreen extends ConsumerWidget {
                   ),
                   keyboardType: TextInputType.emailAddress,
                   style: const TextStyle(fontSize: 16.0),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, ingrese su email';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -89,6 +124,12 @@ class CompraScreen extends ConsumerWidget {
                     hintText: 'Nombre del país',
                   ),
                   style: const TextStyle(fontSize: 16.0),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, ingrese el país';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -99,6 +140,12 @@ class CompraScreen extends ConsumerWidget {
                   ),
                   keyboardType: TextInputType.number,
                   style: const TextStyle(fontSize: 16.0),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, ingrese el código postal';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -108,6 +155,12 @@ class CompraScreen extends ConsumerWidget {
                     hintText: 'Dirección de facturación',
                   ),
                   style: const TextStyle(fontSize: 16.0),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, ingrese la dirección';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(

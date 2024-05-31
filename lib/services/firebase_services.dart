@@ -49,6 +49,14 @@ Future<User?> getUser(String username, String password) async {
     carroDeCompras: userData['carroDeCompras'],
   );
 }
+//Actualizar datos del perfil
+Future<void> updateUserInFirestore(User user) async {
+  await FirebaseFirestore.instance
+      .collection('Users')
+      .doc(user.username)
+      .update(user.toMap());
+}
+
 //Crear Cartera - Gestion
 Future<void> createCartera(Cartera cartera) async {
   await FirebaseFirestore.instance
