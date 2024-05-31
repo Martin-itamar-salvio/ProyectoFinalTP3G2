@@ -35,7 +35,7 @@ class _LoginView extends StatelessWidget {
 
     final usuario = await getUser(username, password);
     if (usuario != null) {
-      context.pushNamed(HomeScreen.name, extra: usuario);
+          context.pushNamed(HomeScreen.name, extra: usuario);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
