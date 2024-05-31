@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
 
@@ -42,4 +46,55 @@ Future<User?> getUser(String username, String password) async {
     email: userData['email'],
     carroDeCompras: userData['carroDeCompras'],
   );
+}
+//Crear Cartera - Gestion
+Future<void> createCartera(Cartera cartera) async {
+  await FirebaseFirestore.instance
+      .collection('Carteras')
+      .add({
+    'nombre': cartera.nombre,
+    'precio': cartera.precio,
+    'imagen': cartera.imagen,
+    'stock': cartera.stock,
+    'modelo': cartera.modelo,
+    'descripcion': cartera.descripcion,
+  });
+}
+//Modificar Cartera
+Future<void> updateCarteraByName(String nombre, Cartera cartera) async {
+  final collectionRef = FirebaseFirestore.instance.collection('Carteras');
+  final querySnapshot = await collectionRef.where('nombre', isEqualTo: nombre).get();
+
+  if (querySnapshot.docs.isNotEmpty) {
+    final docId = querySnapshot.docs.first.id;
+    await collectionRef.doc(docId).update({
+      'nombre': cartera.nombre,
+      'precio': cartera.precio,
+      'imagen': cartera.imagen,
+      'stock': cartera.stock,
+      'modelo': cartera.modelo,
+      'descripcion': cartera.descripcion,
+    });
+  } else {
+    // Maneja el caso en el que no se encuentra la cartera
+    throw Exception('Cartera no encontrada');
+  }
+}
+
+
+//Manejo de Storage
+Future<String?> uploadImage() async {
+  final ImagePicker picker = ImagePicker();
+  final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+  if (image == null) {
+    return null;
+  }
+
+  final String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+  final Reference storageRef = FirebaseStorage.instance.ref().child('carteras/$fileName');
+  final UploadTask uploadTask = storageRef.putFile(File(image.path));
+  final TaskSnapshot taskSnapshot = await uploadTask;
+
+  return await taskSnapshot.ref.getDownloadURL();
 }
