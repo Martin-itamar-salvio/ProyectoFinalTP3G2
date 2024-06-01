@@ -5,7 +5,8 @@ import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
 import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
-import 'compra_screen.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/cart_provider.dart';
+import 'carrito_screen.dart';
 
 class CarteraScreen extends ConsumerWidget {
   static const String name = "cartera_screen";
@@ -91,18 +92,20 @@ class CarteraScreen extends ConsumerWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
+                    ref.read(carritoProvider.notifier).agregarProducto(product);
+                    ref.read(subTotalProvider.notifier).state = calcularSubtotal(ref.watch(carritoProvider));
+                    
                     context.pushNamed(
-                      CompraScreen.name,
-                      extra: {
-                        "usuario": usuario,
-                        "product": product,
-                      },
+                      CarritoScreen.name,
                     );
                   },
                   child: const Text("Comprar"),
                 ),
                 ElevatedButton(
                   onPressed: () {
+                    ref.read(carritoProvider.notifier).agregarProducto(product);
+                    ref.read(subTotalProvider.notifier).state = calcularSubtotal(ref.watch(carritoProvider));
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text("Producto añadido al carrito"),

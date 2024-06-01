@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/cart_provider.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
 import '../widgets/drawer_menu.dart';
@@ -9,15 +9,16 @@ import 'carga_screen.dart';
 
 class CompraScreen extends ConsumerWidget {
   static const String name = "compra_screen";
-  final Cartera product;
 
-  CompraScreen({super.key, required this.product});
+  CompraScreen({super.key});
 
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final usuario = ref.watch(userProvider);
+    final carrito = ref.watch(carritoProvider);
+    final subTotal = ref.watch(subTotalProvider);
 
     if (usuario == null) {
       return Scaffold(
@@ -49,11 +50,58 @@ class CompraScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Image.network(
-                  product.imagen,
-                  width: 200,
+                // Tarjeta de Detalles del Carrito
+                Card(
+                  elevation: 5.0,
+                  margin: const EdgeInsets.only(bottom: 20.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Detalles del Carrito',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Divider(),
+                        ...carrito.map((producto) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('${producto.nombre} x${producto.stock}', style: const TextStyle(fontSize: 16.0)),
+                              Text('\$${producto.precio * producto.stock}', style: const TextStyle(fontSize: 16.0)),
+                            ],
+                          ),
+                        )).toList(),
+                        const Divider(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Precio Total:',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              '\$$subTotal',
+                              style: const TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 TextFormField(
                   controller: tarjetaController,
                   decoration: const InputDecoration(
@@ -168,7 +216,7 @@ class CompraScreen extends ConsumerWidget {
                     if (_formKey.currentState!.validate()) {
                       context.goNamed(CargaScreen.name, extra: {
                         "usuario": usuario,
-                        "product": product,
+                        "carrito": carrito,
                         "tarjeta": tarjetaController.text,
                         "codigo": codigoController.text,
                         "titular": titularController.text,

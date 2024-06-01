@@ -6,11 +6,12 @@ import 'package:proyecto_final_grupo_6/presentations/providers/cart_provider.dar
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
 import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
+import 'compra_screen.dart';
 
 //visual
 class CarritoScreen extends ConsumerWidget {
   static const String name = "carrito_screen";
-  
+
   const CarritoScreen({super.key});
 
   @override
@@ -117,7 +118,9 @@ class _CarritoView extends ConsumerWidget {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.pushNamed(CompraScreen.name);
+                  },
                   child: Container(
                     color: Colors.yellow.shade300,
                     alignment: Alignment.center,
@@ -156,7 +159,7 @@ class _ProductView extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.max,
           children: [
-            Image.asset(producto.imagen, width: 70, height: 70),
+            Image.network(producto.imagen, width: 70, height: 70),
             SizedBox(
               width: 130,
               child: Column(
@@ -238,12 +241,4 @@ class _CantidadBotonesView extends ConsumerWidget {
       ],
     );
   }
-}
-
-double calcularSubtotal(List<Cartera> carrito) {
-  double retorno = 0;
-  for (var e in carrito) {
-    retorno += e.precio * e.stock;
-  }
-  return retorno;
 }

@@ -63,10 +63,7 @@ class PerfilScreen extends ConsumerWidget {
               _updateUser(context, ref, usuario);
             }),
             _buildEditableField(context, 'Nombre de usuario', usuario.username, null), // No editable
-            _buildEditableField(context, 'Rol', usuario.rol, (value) {
-              usuario.rol = value;
-              _updateUser(context, ref, usuario);
-            }),
+
             _buildEditableField(context, 'Correo electrónico', usuario.email, (value) {
               usuario.email = value;
               _updateUser(context, ref, usuario);

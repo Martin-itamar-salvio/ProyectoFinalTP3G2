@@ -1,5 +1,4 @@
 import 'package:go_router/go_router.dart';
-import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/carga_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/carrito_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/cartera_screen.dart';
@@ -42,7 +41,7 @@ final appRouter = GoRouter(
       builder: (context, state) => const HistorialScreen(),
     ),
     GoRoute(
-      name: ConfigScreen.name, 
+      name: ConfigScreen.name,
       path: '/config',
       builder: (context, state) => const ConfigScreen(),
     ),
@@ -67,10 +66,7 @@ final appRouter = GoRouter(
     GoRoute(
       name: CompraScreen.name,
       path: '/compra',
-      builder: (context, state) {
-        final data = state.extra! as Map<Object, dynamic>;
-        return CompraScreen(product: data["product"]);
-      },
+      builder: (context, state) => CompraScreen(),
     ),
     GoRoute(
       name: CargaScreen.name,

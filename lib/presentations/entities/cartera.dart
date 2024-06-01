@@ -6,7 +6,7 @@ class Cartera {
   String imagen;
   int stock;
   String modelo;
-  String descripcion;
+  String? descripcion;
   String? estado;
 
   Cartera({
@@ -15,7 +15,7 @@ class Cartera {
     required this.imagen,
     required this.stock,
     required this.modelo,
-    required this.descripcion,
+    this.descripcion,
     this.estado,
   });
 

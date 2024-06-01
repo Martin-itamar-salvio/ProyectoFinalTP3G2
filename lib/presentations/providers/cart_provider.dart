@@ -1,36 +1,46 @@
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:proyecto_final_grupo_6/core/carrito.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
-//logica
-final StateNotifierProvider<CarritoStateNotifier, List<Cartera>> carritoProvider = StateNotifierProvider<CarritoStateNotifier, List<Cartera>>((ref) => CarritoStateNotifier(carrito));
+
+// Inicializa el carrito vacío
+final carritoProvider = StateNotifierProvider<CarritoStateNotifier, List<Cartera>>((ref) => CarritoStateNotifier([]));
 
 class CarritoStateNotifier extends StateNotifier<List<Cartera>> {
-  CarritoStateNotifier(state) : super(state ?? []);
-  
-  void eliminarProducto(String titulo) {
-    state = state.where((p) => p.nombre != titulo).toList();
+  CarritoStateNotifier(List<Cartera> state) : super(state);
+
+  void agregarProducto(Cartera producto) {
+    List<Cartera> carritoAux = [...state];
+    bool encontrado = false;
+    for (var e in carritoAux) {
+      if (e.nombre == producto.nombre) {
+        e.stock++;
+        encontrado = true;
+        break;
+      }
+    }
+    if (!encontrado) {
+      carritoAux.add(Cartera(nombre: producto.nombre, precio: producto.precio, imagen: producto.imagen, modelo: producto.modelo, stock: 1));
+    }
+    state = carritoAux;
+  }
+
+  void eliminarProducto(String nombre) {
+    state = state.where((p) => p.nombre != nombre).toList();
   }
 
   void sumarCantidadProducto(Cartera producto) {
-    List<Cartera> carritoAux = [...state];
-    for (var e in carritoAux) {
-      if(e.nombre == producto.nombre){
-        e.stock++;
-      }
-    }
-    state = carritoAux;
+    state = state.map((p) => p.nombre == producto.nombre ? Cartera(nombre: p.nombre, precio: p.precio, imagen: p.imagen, modelo: p.modelo, stock: p.stock + 1) : p).toList();
   }
 
   void restarCantidadProducto(Cartera producto) {
-    List<Cartera> carritoAux = [...state];
-    for (var e in carritoAux) {
-      if(e.nombre == producto.nombre && e.stock > 1){
-        e.stock--;
-      }
-    }
-    state = carritoAux;
+    state = state.map((p) => p.nombre == producto.nombre && p.stock > 1 ? Cartera(nombre: p.nombre, precio: p.precio, imagen: p.imagen, modelo: p.modelo, stock: p.stock - 1) : p).toList();
   }
 }
 
-StateProvider<double> subTotalProvider = StateProvider<double>((ref) => subTotal);
+double calcularSubtotal(List<Cartera> carrito) {
+  return carrito.fold(0, (total, producto) => total + producto.precio * producto.stock);
+}
+
+final subTotalProvider = StateProvider<double>((ref) {
+  final carrito = ref.watch(carritoProvider);
+  return calcularSubtotal(carrito);
+});
