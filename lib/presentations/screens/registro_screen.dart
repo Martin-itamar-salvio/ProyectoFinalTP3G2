@@ -175,7 +175,7 @@ class __RegistroViewState extends State<_RegistroView> {
                     rol: 'cliente',
                     fotoPerfil: null,
                     email: _emailController.text,
-                    carroDeCompras: null,
+                    historialCompras: null,
                   );
 
                   try {

@@ -215,13 +215,6 @@ class CompraScreen extends ConsumerWidget {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       context.goNamed(CargaScreen.name, extra: {
-                        "usuario": usuario,
-                        "carrito": carrito,
-                        "tarjeta": tarjetaController.text,
-                        "codigo": codigoController.text,
-                        "titular": titularController.text,
-                        "email": emailController.text,
-                        "pais": paisController.text,
                         "codigoPostal": codigoPostalController.text,
                         "direccion": direccionController.text,
                       });

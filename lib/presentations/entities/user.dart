@@ -1,3 +1,5 @@
+import 'package:proyecto_final_grupo_6/presentations/entities/compra.dart';
+
 class User {
   String nombre;
   String apellido;
@@ -6,7 +8,7 @@ class User {
   String rol;
   String? fotoPerfil;
   String email;
-  String? carroDeCompras;
+  List<Compra>? historialCompras;
   String? direccion;
   String? telefono;
 
@@ -18,7 +20,7 @@ class User {
     required this.rol,
     this.fotoPerfil,
     required this.email,
-    this.carroDeCompras,
+    this.historialCompras,
     this.direccion,
     this.telefono,
   });
@@ -32,7 +34,7 @@ class User {
       'rol': rol,
       'fotoPerfil': fotoPerfil,
       'email': email,
-      'carroDeCompras': carroDeCompras,
+      'carroDeCompras': historialCompras,
       'direccion': direccion,
       'telefono' : telefono,
     };

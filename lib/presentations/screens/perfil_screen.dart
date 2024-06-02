@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
-import 'package:proyecto_final_grupo_6/services/firebase_services.dart';
 
 class PerfilScreen extends ConsumerWidget {
   static const String name = "perfil_screen";

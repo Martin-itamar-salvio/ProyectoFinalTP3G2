@@ -46,7 +46,7 @@ Future<User?> getUser(String username, String password) async {
     rol: userData['rol'],
     fotoPerfil: userData['fotoPerfil'],
     email: userData['email'],
-    carroDeCompras: userData['carroDeCompras'],
+    historialCompras: userData['carroDeCompras'],
   );
 }
 //Actualizar datos del perfil

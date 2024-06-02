@@ -7,7 +7,7 @@ import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dar
 import 'package:proyecto_final_grupo_6/presentations/screens/home_screen.dart';
 
 class ReciboScreen extends ConsumerWidget {
-  static const String name = "recibo";
+  static const String name = "recibo_screen";
   final Cartera product;
   final String tarjeta;
   final String codigo;
