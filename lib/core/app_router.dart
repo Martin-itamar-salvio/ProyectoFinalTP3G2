@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:proyecto_final_grupo_6/presentations/entities/compra.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/carga_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/carrito_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/cartera_screen.dart';
@@ -71,27 +72,14 @@ final appRouter = GoRouter(
     GoRoute(
       name: CargaScreen.name,
       path: '/carga',
-      builder: (context, state) {
-        final data = state.extra! as Map<Object, dynamic>;
-        return CargaScreen(data: data);
-      },
+      builder: (context, state) => CargaScreen(compra: state.extra as Compra)
+
     ),
     GoRoute(
       name: ReciboScreen.name,
       path: '/recibo',
-      builder: (context, state) {
-        final data = state.extra! as Map<Object, dynamic>;
-        return ReciboScreen(
-          product: data["product"],
-          tarjeta: data["tarjeta"],
-          codigo: data["codigo"],
-          titular: data["titular"],
-          email: data["email"],
-          pais: data["pais"],
-          codigoPostal: data["codigoPostal"],
-          direccion: data["direccion"],
-        );
-      },
+      builder: (context, state) => ReciboScreen(compra: state.extra as Compra)
+
     ),
   ],
 );

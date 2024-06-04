@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/presentations/providers/cart_provider.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
+import '../entities/compra.dart';
 import '../widgets/drawer_menu.dart';
 import 'carga_screen.dart';
 
@@ -214,10 +215,19 @@ class CompraScreen extends ConsumerWidget {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      context.goNamed(CargaScreen.name, extra: {
-                        "codigoPostal": codigoPostalController.text,
-                        "direccion": direccionController.text,
-                      });
+                      final compra = Compra(
+                        usuario: usuario,
+                        id: DateTime.now().millisecondsSinceEpoch.toString(),
+                        direccion: direccionController.text,
+                        codigoPostal: codigoPostalController.text,
+                        total: subTotal,
+                        carteras: carrito,
+                      );
+
+                      usuario.historialCompras?.add(compra);
+                      
+                      
+                      context.goNamed(CargaScreen.name, extra: compra);
                     }
                   },
                   child: const Text('Realizar compra'),

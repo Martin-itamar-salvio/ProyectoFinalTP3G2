@@ -1,32 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
+import 'package:proyecto_final_grupo_6/presentations/entities/compra.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
 import 'recibo_screen.dart';
 
-class CargaScreen extends StatelessWidget {
+class CargaScreen extends ConsumerWidget {
   static const String name = "carga_screen";
-  final Map<Object, dynamic> data;
+  final Compra compra;
 
-  const CargaScreen({required this.data, super.key});
+  const CargaScreen({required this.compra, super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final usuario = data["usuario"] as User;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final usuario = ref.watch(userProvider);
 
     return Scaffold(
-      appBar: MyAppBar(usuario: usuario),
+      appBar: MyAppBar(usuario: usuario!),
       drawer: DrawerMenu(usuario: usuario),
-      body: _CargaView(data: data),
+      body: _CargaView(compra: compra),
     );
   }
 }
 
 class _CargaView extends StatefulWidget {
-  final Map<Object, dynamic> data;
+  final Compra compra;
 
-  const _CargaView({required this.data});
+  const _CargaView({required this.compra});
 
   @override
   __CargaViewState createState() => __CargaViewState();
@@ -37,7 +39,7 @@ class __CargaViewState extends State<_CargaView> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
-      context.goNamed(ReciboScreen.name, extra: widget.data);
+      context.goNamed(ReciboScreen.name, extra: widget.compra);
     });
   }
 
@@ -55,3 +57,4 @@ class __CargaViewState extends State<_CargaView> {
     );
   }
 }
+

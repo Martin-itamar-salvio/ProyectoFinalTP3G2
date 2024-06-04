@@ -18,4 +18,16 @@ class Compra {
     required this.carteras,
   });
  
+  Map<String, dynamic> toMap() {
+    return {
+      'usuario': usuario,
+      'id': id,
+      'direccion': direccion,
+      'codigoPostal': codigoPostal,
+      'total': total,
+      'carteras': carteras.map((c) => c.toMap()).toList(),
+    };
+  }
+
+
 }

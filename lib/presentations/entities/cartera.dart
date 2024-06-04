@@ -31,4 +31,17 @@ class Cartera {
       
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'nombre': nombre,
+      'precio': precio,
+      'imagen': imagen,
+      'stock': stock,
+      'modelo': modelo,
+      'descripcion': descripcion,
+    };
+  }
 }
+
+

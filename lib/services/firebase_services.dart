@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
+import 'package:proyecto_final_grupo_6/presentations/entities/compra.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
 
 Stream<List<Cartera>> fetchCarteras() {
@@ -56,6 +57,19 @@ Future<void> updateUserInFirestore(User user) async {
       .doc(user.username)
       .update(user.toMap());
 }
+
+// Agregar compra al historial de compras del usuario
+Future<void> addCompraToUser(User user, Compra compra) async {
+  final userDoc = FirebaseFirestore.instance.collection('Users').doc(user.username);
+  final snapshot = await userDoc.get();
+  if (snapshot.exists) {
+    List<dynamic> historial = snapshot.data()?['historialCompras'] ?? [];
+    historial.add(compra.toMap());
+    await userDoc.update({'historialCompras': historial});
+  }
+}
+
+
 
 //Crear Cartera - Gestion
 Future<void> createCartera(Cartera cartera) async {

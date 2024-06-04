@@ -105,7 +105,7 @@ class PerfilScreen extends ConsumerWidget {
                   icon: const Icon(Icons.edit),
                   onPressed: () async {
                     final newValue = await _showEditDialog(context, title, value);
-                    if (newValue != null && onSave != null) {
+                    if (newValue != null) {
                       onSave(newValue);
                     }
                   },
