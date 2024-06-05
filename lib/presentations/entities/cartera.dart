@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class Cartera {
   String nombre;
   double precio;
@@ -19,16 +17,15 @@ class Cartera {
     this.estado,
   });
 
-  factory Cartera.fromFirestore(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+  factory Cartera.fromMap(Map<String, dynamic> map) {
     return Cartera(
-      nombre: data['nombre'] ?? '',
-      precio: data['precio']?.toDouble() ?? 0.0,
-      imagen: data['imagen'] ?? '',
-      stock: data['stock'] ?? 0,
-      modelo: data['modelo'] ?? '',
-      descripcion: data['descripcion'] ?? '',
-      
+      nombre: map['nombre'] ?? '',
+      precio: map['precio']?.toDouble() ?? 0.0,
+      imagen: map['imagen'] ?? '',
+      stock: map['stock'] ?? 0,
+      modelo: map['modelo'] ?? '',
+      descripcion: map['descripcion'],
+      estado: map['estado'],
     );
   }
 
@@ -40,8 +37,7 @@ class Cartera {
       'stock': stock,
       'modelo': modelo,
       'descripcion': descripcion,
+      'estado': estado,
     };
   }
 }
-
-

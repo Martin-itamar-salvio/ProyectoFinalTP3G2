@@ -8,9 +8,9 @@ class User {
   String rol;
   String? fotoPerfil;
   String email;
-  List<Compra>? historialCompras;
-  String? direccion;
-  String? telefono;
+  List<Compra> historialCompras;
+  String direccion;
+  String telefono;
 
   User({
     required this.nombre,
@@ -20,9 +20,9 @@ class User {
     required this.rol,
     this.fotoPerfil,
     required this.email,
-    this.historialCompras,
-    this.direccion,
-    this.telefono,
+    required this.historialCompras,
+    required this.direccion,
+    required this.telefono,
   });
 
   Map<String, dynamic> toMap() {
@@ -34,9 +34,26 @@ class User {
       'rol': rol,
       'fotoPerfil': fotoPerfil,
       'email': email,
-      'carroDeCompras': historialCompras,
+      'historialCompras': historialCompras.map((c) => c.toMap()).toList(),
       'direccion': direccion,
-      'telefono' : telefono,
+      'telefono': telefono,
     };
+  }
+
+  factory User.fromMap(Map<String, dynamic> map) {
+    return User(
+      nombre: map['nombre'],
+      apellido: map['apellido'],
+      username: map['username'],
+      password: map['password'],
+      rol: map['rol'],
+      fotoPerfil: map['fotoPerfil'],
+      email: map['email'],
+      historialCompras: (map['historialCompras'] as List<dynamic>)
+          .map((item) => Compra.fromMap(item))
+          .toList(),
+      direccion: map['direccion'],
+      telefono: map['telefono'],
+    );
   }
 }

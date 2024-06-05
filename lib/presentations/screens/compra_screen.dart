@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/presentations/providers/cart_provider.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
+import 'package:proyecto_final_grupo_6/services/firebase_services.dart';
 import '../entities/compra.dart';
 import '../widgets/drawer_menu.dart';
 import 'carga_screen.dart';
@@ -213,7 +214,7 @@ class CompraScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       final compra = Compra(
                         usuario: usuario,
@@ -224,10 +225,15 @@ class CompraScreen extends ConsumerWidget {
                         carteras: carrito,
                       );
 
-                      usuario.historialCompras?.add(compra);
-                      
-                      
-                      context.goNamed(CargaScreen.name, extra: compra);
+                      try {
+                        await addCompraToUser(usuario, compra);
+                        context.goNamed(CargaScreen.name, extra: compra);
+                      } catch (e) {
+                        // Manejar error si falla la compra
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Error al realizar la compra: $e')),
+                        );
+                      }
                     }
                   },
                   child: const Text('Realizar compra'),

@@ -17,10 +17,10 @@ class Compra {
     required this.total,
     required this.carteras,
   });
- 
+
   Map<String, dynamic> toMap() {
     return {
-      'usuario': usuario,
+      'usuario': usuario.toMap(),
       'id': id,
       'direccion': direccion,
       'codigoPostal': codigoPostal,
@@ -29,5 +29,14 @@ class Compra {
     };
   }
 
-
+  factory Compra.fromMap(Map<String, dynamic> map) {
+    return Compra(
+      usuario: User.fromMap(map['usuario']),
+      id: map['id'],
+      direccion: map['direccion'],
+      codigoPostal: map['codigoPostal'],
+      total: map['total'],
+      carteras: (map['carteras'] as List<dynamic>).map((c) => Cartera.fromMap(c)).toList(),
+    );
+  }
 }
