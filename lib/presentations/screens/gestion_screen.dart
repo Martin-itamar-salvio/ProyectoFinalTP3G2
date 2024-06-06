@@ -75,7 +75,7 @@ class _GestionView extends StatelessWidget {
     String nombre = '';
     double precio = 0.0;
     String imagen = '';
-    int stock = 0;
+    int cantidad = 0;
     String modelo = '';
     String descripcion = '';
 
@@ -124,10 +124,10 @@ class _GestionView extends StatelessWidget {
                   ],
                 ),
                 TextFormField(
-                  decoration: const InputDecoration(labelText: 'Stock'),
+                  decoration: const InputDecoration(labelText: 'Cantidad'),
                   keyboardType: TextInputType.number,
                   onSaved: (value) {
-                    stock = int.tryParse(value ?? '0') ?? 0;
+                    cantidad = int.tryParse(value ?? '0') ?? 0;
                   },
                 ),
                 TextFormField(
@@ -151,7 +151,7 @@ class _GestionView extends StatelessWidget {
                         nombre: nombre,
                         precio: precio,
                         imagen: imagen,
-                        stock: stock,
+                        cantidad: cantidad,
                         modelo: modelo,
                         descripcion: descripcion,
                       );
@@ -177,7 +177,7 @@ class _GestionView extends StatelessWidget {
     String nombre = '';
     double precio = 0.0;
     String imagen = '';
-    int stock = 0;
+    int cantidad = 0;
     String modelo = '';
     String descripcion = '';
 
@@ -210,7 +210,7 @@ class _GestionView extends StatelessWidget {
                       nombre = selectedCartera['nombre'];
                       precio = selectedCartera['precio'].toDouble();
                       imagen = selectedCartera['imagen'];
-                      stock = selectedCartera['stock'];
+                      cantidad = selectedCartera['cantidad'];
                       modelo = selectedCartera['modelo'];
                       descripcion = selectedCartera['descripcion'];
                     }
@@ -265,11 +265,11 @@ class _GestionView extends StatelessWidget {
                           ],
                         ),
                         TextFormField(
-                          initialValue: stock.toString(),
-                          decoration: const InputDecoration(labelText: 'Stock'),
+                          initialValue: cantidad.toString(),
+                          decoration: const InputDecoration(labelText: 'Cantidad'),
                           keyboardType: TextInputType.number,
                           onSaved: (value) {
-                            stock = int.tryParse(value ?? '0') ?? 0;
+                            cantidad = int.tryParse(value ?? '0') ?? 0;
                           },
                         ),
                         TextFormField(
@@ -297,7 +297,7 @@ class _GestionView extends StatelessWidget {
                                 nombre: nombre,
                                 precio: precio,
                                 imagen: imagen,
-                                stock: stock,
+                                cantidad: cantidad,
                                 modelo: modelo,
                                 descripcion: descripcion,
                               );

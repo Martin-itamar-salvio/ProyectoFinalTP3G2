@@ -37,7 +37,7 @@ class ReciboScreen extends ConsumerWidget {
             const Text('Artículos comprados:', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
             ...compra.carteras.map((cartera) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 5.0),
-              child: Text('${cartera.nombre} x${cartera.stock} - \$${cartera.precio * cartera.stock}', style: const TextStyle(fontSize: 16.0)),
+              child: Text('${cartera.nombre} x${cartera.cantidad} - \$${cartera.precio * cartera.cantidad}', style: const TextStyle(fontSize: 16.0)),
             )).toList(),
             const Spacer(),
             Center(

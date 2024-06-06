@@ -220,7 +220,7 @@ class _CantidadBotonesView extends ConsumerWidget {
           },
           icon: const Icon(Icons.remove),
         ),
-        Text('${producto.stock}'),
+        Text('${producto.cantidad}'),
         IconButton(
           onPressed: () {
             ref.read(carritoProvider.notifier).sumarCantidadProducto(producto);

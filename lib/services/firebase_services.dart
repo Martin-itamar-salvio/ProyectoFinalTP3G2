@@ -7,18 +7,8 @@ import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/compra.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
 
-Stream<List<Cartera>> fetchCarteras() {
-  return FirebaseFirestore.instance
-      .collection('Carteras')
-      .where('estado', isNotEqualTo: 'delete')
-      .snapshots()
-      .map((querySnapshot) {
-    return querySnapshot.docs.map((doc) {
-      return Cartera.fromMap(doc.data() as Map<String, dynamic>);
-    }).toList();
-  });
-}
 
+//login
 Future<void> registerUser(User user) async {
   await FirebaseFirestore.instance
       .collection('Users')
@@ -66,13 +56,44 @@ Future<void> addCompraToUser(User user, Compra compra) async {
   }
 }
 
+//mostrar lista de compras en historial
+Future<List<Compra>> getComprasByUser(User user) async {
+  final userDoc = await FirebaseFirestore.instance
+      .collection('Users')
+      .doc(user.username)
+      .get();
+
+  if (!userDoc.exists) {
+    return [];
+  }
+
+  final data = userDoc.data();
+  final List<dynamic> comprasData = data?['historialCompras'] ?? [];
+
+  return comprasData.map((compraData) => Compra.fromMap(compraData)).toList();
+}
+
+
+//mostrar carteras menu
+Stream<List<Cartera>> fetchCarteras() {
+  return FirebaseFirestore.instance
+      .collection('Carteras')
+      .where('estado', isNotEqualTo: 'delete')
+      .snapshots()
+      .map((querySnapshot) {
+    return querySnapshot.docs.map((doc) {
+      return Cartera.fromMap(doc.data() as Map<String, dynamic>);
+    }).toList();
+  });
+}
+
 // Crear Cartera - Gestion
 Future<void> createCartera(Cartera cartera) async {
   await FirebaseFirestore.instance.collection('Carteras').add({
     'nombre': cartera.nombre,
     'precio': cartera.precio,
     'imagen': cartera.imagen,
-    'stock': cartera.stock,
+    'cantidad': cartera.cantidad,
     'modelo': cartera.modelo,
     'descripcion': cartera.descripcion,
     'estado': cartera.estado,
@@ -90,7 +111,7 @@ Future<void> updateCarteraByName(String nombre, Cartera cartera) async {
       'nombre': cartera.nombre,
       'precio': cartera.precio,
       'imagen': cartera.imagen,
-      'stock': cartera.stock,
+      'cantidad': cartera.cantidad,
       'modelo': cartera.modelo,
       'descripcion': cartera.descripcion,
       'estado': cartera.estado,
@@ -114,6 +135,9 @@ Future<void> deleteCartera(String nombreCartera) async {
     throw Exception('Cartera no encontrada');
   }
 }
+
+
+
 
 // Manejo de Storage
 Future<String?> uploadImage() async {

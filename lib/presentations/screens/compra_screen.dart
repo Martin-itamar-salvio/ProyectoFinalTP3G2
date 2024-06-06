@@ -74,8 +74,8 @@ class CompraScreen extends ConsumerWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('${producto.nombre} x${producto.stock}', style: const TextStyle(fontSize: 16.0)),
-                              Text('\$${producto.precio * producto.stock}', style: const TextStyle(fontSize: 16.0)),
+                              Text('${producto.nombre} x${producto.cantidad}', style: const TextStyle(fontSize: 16.0)),
+                              Text('\$${producto.precio * producto.cantidad}', style: const TextStyle(fontSize: 16.0)),
                             ],
                           ),
                         )).toList(),

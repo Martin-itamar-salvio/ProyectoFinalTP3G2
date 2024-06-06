@@ -12,13 +12,13 @@ class CarritoStateNotifier extends StateNotifier<List<Cartera>> {
     bool encontrado = false;
     for (var e in carritoAux) {
       if (e.nombre == producto.nombre) {
-        e.stock++;
+        e.cantidad++;
         encontrado = true;
         break;
       }
     }
     if (!encontrado) {
-      carritoAux.add(Cartera(nombre: producto.nombre, precio: producto.precio, imagen: producto.imagen, modelo: producto.modelo, stock: 1));
+      carritoAux.add(Cartera(nombre: producto.nombre, precio: producto.precio, imagen: producto.imagen, modelo: producto.modelo, cantidad: 1));
     }
     state = carritoAux;
   }
@@ -28,16 +28,16 @@ class CarritoStateNotifier extends StateNotifier<List<Cartera>> {
   }
 
   void sumarCantidadProducto(Cartera producto) {
-    state = state.map((p) => p.nombre == producto.nombre ? Cartera(nombre: p.nombre, precio: p.precio, imagen: p.imagen, modelo: p.modelo, stock: p.stock + 1) : p).toList();
+    state = state.map((p) => p.nombre == producto.nombre ? Cartera(nombre: p.nombre, precio: p.precio, imagen: p.imagen, modelo: p.modelo, cantidad: p.cantidad + 1) : p).toList();
   }
 
   void restarCantidadProducto(Cartera producto) {
-    state = state.map((p) => p.nombre == producto.nombre && p.stock > 1 ? Cartera(nombre: p.nombre, precio: p.precio, imagen: p.imagen, modelo: p.modelo, stock: p.stock - 1) : p).toList();
+    state = state.map((p) => p.nombre == producto.nombre && p.cantidad > 1 ? Cartera(nombre: p.nombre, precio: p.precio, imagen: p.imagen, modelo: p.modelo, cantidad: p.cantidad - 1) : p).toList();
   }
 }
 
 double calcularSubtotal(List<Cartera> carrito) {
-  return carrito.fold(0, (total, producto) => total + producto.precio * producto.stock);
+  return carrito.fold(0, (total, producto) => total + producto.precio * producto.cantidad);
 }
 
 final subTotalProvider = StateProvider<double>((ref) {
