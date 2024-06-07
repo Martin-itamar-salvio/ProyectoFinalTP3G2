@@ -56,21 +56,18 @@ Future<void> addCompraToUser(User user, Compra compra) async {
   }
 }
 
-//mostrar lista de compras en historial
-Future<List<Compra>> getComprasByUser(User user) async {
-  final userDoc = await FirebaseFirestore.instance
+
+Stream<List<Compra>> getComprasByUserStream(User user) {
+  final userDocStream = FirebaseFirestore.instance
       .collection('Users')
       .doc(user.username)
-      .get();
+      .snapshots();
 
-  if (!userDoc.exists) {
-    return [];
-  }
-
-  final data = userDoc.data();
-  final List<dynamic> comprasData = data?['historialCompras'] ?? [];
-
-  return comprasData.map((compraData) => Compra.fromMap(compraData)).toList();
+  return userDocStream.map((snapshot) {
+    final data = snapshot.data();
+    final List<dynamic> comprasData = data?['historialCompras'] ?? [];
+    return comprasData.map((compraData) => Compra.fromMap(compraData)).toList();
+  });
 }
 
 
