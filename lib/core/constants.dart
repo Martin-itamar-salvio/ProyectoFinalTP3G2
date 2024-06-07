@@ -9,7 +9,7 @@ final List<MenuItem> menuItems = [
   MenuItem(title: 'Inicio', subtitle: 'Inicio de Aplicacion', icon: Icons.home, link: '/inicio', role: "cliente", params: true),
   MenuItem(title: 'Perfil', subtitle: 'Perfil de Usuario', icon: Icons.person, link: '/perfil', role: "cliente", params: false),
   MenuItem(title: 'Historial de Compras', subtitle: 'Historial de Compras', icon: Icons.history, link: '/historial', role: "cliente", params: false),
-  MenuItem(title: 'Configuracion', subtitle: 'Configuracion de Aplicacion', icon: Icons.settings, link: '/config', role: "cliente", params: false),
   MenuItem(title: 'Gestion', subtitle: 'Gestion de Tienda', icon: Icons.content_paste_sharp, link: '/gestion', role: "admin", params: false),
+  MenuItem(title: 'Ventas', subtitle: 'Historial de Ventas', icon: Icons.content_paste_search_sharp, link: '/ventas', role: "admin", params: false),
   MenuItem(title: 'Cerrar Sesion', subtitle: 'Cerrar de Sesion', icon: Icons.logout, link: '/', role: "cliente", params: false),
 ];

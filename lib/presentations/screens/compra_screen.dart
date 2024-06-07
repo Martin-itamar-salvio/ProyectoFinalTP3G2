@@ -78,7 +78,7 @@ class CompraScreen extends ConsumerWidget {
                               Text('\$${producto.precio * producto.cantidad}', style: const TextStyle(fontSize: 16.0)),
                             ],
                           ),
-                        )).toList(),
+                        )),
                         const Divider(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -227,6 +227,11 @@ class CompraScreen extends ConsumerWidget {
 
                       try {
                         await addCompraToUser(usuario, compra);
+                        
+                        // Vaciar el carrito
+                        ref.read(carritoProvider.notifier).vaciarCarrito();
+
+                        // Ir a la pantalla de carga
                         context.goNamed(CargaScreen.name, extra: compra);
                       } catch (e) {
                         // Manejar error si falla la compra

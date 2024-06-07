@@ -56,20 +56,30 @@ Future<void> addCompraToUser(User user, Compra compra) async {
   }
 }
 
-
-Stream<List<Compra>> getComprasByUserStream(User user) {
-  final userDocStream = FirebaseFirestore.instance
+// motra historial de compra
+Stream<List<Compra>> fetchCompras(User user) {
+  return FirebaseFirestore.instance
       .collection('Users')
       .doc(user.username)
-      .snapshots();
-
-  return userDocStream.map((snapshot) {
+      .snapshots()
+      .map((snapshot) {
     final data = snapshot.data();
     final List<dynamic> comprasData = data?['historialCompras'] ?? [];
     return comprasData.map((compraData) => Compra.fromMap(compraData)).toList();
   });
 }
 
+// Método para obtener todas las compras
+Stream<List<Compra>> fetchAllCompras() {
+  return FirebaseFirestore.instance
+      .collection('Compras')
+      .snapshots()
+      .map((querySnapshot) {
+    return querySnapshot.docs.map((doc) {
+      return Compra.fromMap(doc.data());
+    }).toList();
+  });
+}
 
 //mostrar carteras menu
 Stream<List<Cartera>> fetchCarteras() {
@@ -79,7 +89,7 @@ Stream<List<Cartera>> fetchCarteras() {
       .snapshots()
       .map((querySnapshot) {
     return querySnapshot.docs.map((doc) {
-      return Cartera.fromMap(doc.data() as Map<String, dynamic>);
+      return Cartera.fromMap(doc.data());
     }).toList();
   });
 }

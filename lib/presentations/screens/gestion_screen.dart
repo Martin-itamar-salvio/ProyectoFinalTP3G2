@@ -67,8 +67,6 @@ class _GestionView extends StatelessWidget {
     );
   }
 
-
-
   //agregar cartera
   Widget _buildAgregarCartera(BuildContext context) {
     final formKey = GlobalKey<FormState>();
@@ -78,6 +76,7 @@ class _GestionView extends StatelessWidget {
     int cantidad = 0;
     String modelo = '';
     String descripcion = '';
+    int stock = 0;
 
     return ExpansionTile(
       title: const Text('Agregar Cartera'),
@@ -142,6 +141,12 @@ class _GestionView extends StatelessWidget {
                     descripcion = value ?? '';
                   },
                 ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Stock'),
+                  onSaved: (value) {
+                    stock = int.tryParse(value ?? '0') ?? 0;
+                  },
+                ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
@@ -154,6 +159,7 @@ class _GestionView extends StatelessWidget {
                         cantidad: cantidad,
                         modelo: modelo,
                         descripcion: descripcion,
+                        stock: stock,
                       );
                       createCartera(cartera);
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -171,6 +177,7 @@ class _GestionView extends StatelessWidget {
       ],
     );
   }
+
   //modiciar cartera
   Widget _buildModificarCartera(BuildContext context) {
     final formKey = GlobalKey<FormState>();
@@ -180,6 +187,7 @@ class _GestionView extends StatelessWidget {
     int cantidad = 0;
     String modelo = '';
     String descripcion = '';
+    int stock = 0;
 
     return ExpansionTile(
       title: const Text('Modificar Cartera'),
@@ -266,7 +274,8 @@ class _GestionView extends StatelessWidget {
                         ),
                         TextFormField(
                           initialValue: cantidad.toString(),
-                          decoration: const InputDecoration(labelText: 'Cantidad'),
+                          decoration:
+                              const InputDecoration(labelText: 'Cantidad'),
                           keyboardType: TextInputType.number,
                           onSaved: (value) {
                             cantidad = int.tryParse(value ?? '0') ?? 0;
@@ -288,6 +297,12 @@ class _GestionView extends StatelessWidget {
                             descripcion = value ?? '';
                           },
                         ),
+                        TextFormField(
+                          decoration: const InputDecoration(labelText: 'Stock'),
+                          onSaved: (value) {
+                            stock = int.tryParse(value ?? '0') ?? 0;
+                          },
+                        ),
                         const SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: () {
@@ -300,6 +315,7 @@ class _GestionView extends StatelessWidget {
                                 cantidad: cantidad,
                                 modelo: modelo,
                                 descripcion: descripcion,
+                                stock: stock,
                               );
                               updateCarteraByName(nombre, cartera);
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -322,6 +338,7 @@ class _GestionView extends StatelessWidget {
       ],
     );
   }
+
   //eliminar cartera
   Widget _buildEliminarCartera(BuildContext context) {
     final _formKey = GlobalKey<FormState>();

@@ -29,7 +29,8 @@ class _RegistroView extends StatefulWidget {
 class __RegistroViewState extends State<_RegistroView> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -38,7 +39,8 @@ class __RegistroViewState extends State<_RegistroView> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return SingleChildScrollView(
+        child: Center(
       child: Form(
         key: _formKey,
         child: Column(
@@ -163,22 +165,23 @@ class __RegistroViewState extends State<_RegistroView> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 0, 0, 0),
                 foregroundColor: const Color.fromARGB(255, 247, 224, 20),
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               ),
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   final newUser = User(
-                    nombre: _nameController.text,
-                    apellido: _lastNameController.text,
-                    username: _usernameController.text,
-                    password: _passwordController.text,
-                    rol: 'cliente',
-                    fotoPerfil: '',
-                    email: _emailController.text,
-                    historialCompras: [],
-                    telefono: '',
-                    direccion: ''
-                  );
+                      nombre: _nameController.text,
+                      apellido: _lastNameController.text,
+                      username: _usernameController.text,
+                      password: _passwordController.text,
+                      rol: 'cliente',
+                      fotoPerfil:
+                          'https://firebasestorage.googleapis.com/v0/b/belligrau-e8c3a.appspot.com/o/perfil%20default.png?alt=media&token=44b0e6ca-bb58-4aa7-be36-e9edea117564',
+                      email: _emailController.text,
+                      historialCompras: [],
+                      telefono: '',
+                      direccion: '');
 
                   try {
                     await registerUser(newUser);
@@ -199,6 +202,6 @@ class __RegistroViewState extends State<_RegistroView> {
           ],
         ),
       ),
-    );
+    ));
   }
 }

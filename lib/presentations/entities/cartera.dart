@@ -6,6 +6,7 @@ class Cartera {
   String modelo;
   String? descripcion;
   String? estado;
+  int stock;
 
   Cartera({
     required this.nombre,
@@ -15,6 +16,7 @@ class Cartera {
     required this.modelo,
     this.descripcion,
     this.estado,
+    required this.stock,
   });
 
   factory Cartera.fromMap(Map<String, dynamic> map) {
@@ -26,6 +28,7 @@ class Cartera {
       modelo: map['modelo'] ?? '',
       descripcion: map['descripcion'],
       estado: map['estado'],
+      stock: map['stock'] ?? 0,
     );
   }
 
@@ -38,6 +41,7 @@ class Cartera {
       'modelo': modelo,
       'descripcion': descripcion,
       'estado': estado,
+      'stock' : stock,
     };
   }
 }

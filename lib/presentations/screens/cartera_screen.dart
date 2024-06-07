@@ -63,11 +63,19 @@ class CarteraScreen extends ConsumerWidget {
                     ),
                   ),
                   const Spacer(),
-                  IconButton(
-                    icon: const Icon(Icons.favorite_border),
-                    onPressed: () {
-                      // Lógica para agregar a favoritos
-                    },
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 10),
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        "Stock: ${product.stock}",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 99, 99, 99),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -93,8 +101,9 @@ class CarteraScreen extends ConsumerWidget {
                 ElevatedButton(
                   onPressed: () {
                     ref.read(carritoProvider.notifier).agregarProducto(product);
-                    ref.read(subTotalProvider.notifier).state = calcularSubtotal(ref.watch(carritoProvider));
-                    
+                    ref.read(subTotalProvider.notifier).state =
+                        calcularSubtotal(ref.watch(carritoProvider));
+
                     context.pushNamed(
                       CarritoScreen.name,
                     );
@@ -104,7 +113,8 @@ class CarteraScreen extends ConsumerWidget {
                 ElevatedButton(
                   onPressed: () {
                     ref.read(carritoProvider.notifier).agregarProducto(product);
-                    ref.read(subTotalProvider.notifier).state = calcularSubtotal(ref.watch(carritoProvider));
+                    ref.read(subTotalProvider.notifier).state =
+                        calcularSubtotal(ref.watch(carritoProvider));
 
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(

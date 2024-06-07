@@ -3,7 +3,7 @@ import 'package:proyecto_final_grupo_6/presentations/entities/compra.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/carga_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/carrito_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/cartera_screen.dart';
-import 'package:proyecto_final_grupo_6/presentations/screens/config_screen.dart';
+import 'package:proyecto_final_grupo_6/presentations/screens/ventas_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/gestion_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/historial_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/home_screen.dart';
@@ -42,9 +42,9 @@ final appRouter = GoRouter(
       builder: (context, state) => const HistorialScreen(),
     ),
     GoRoute(
-      name: ConfigScreen.name,
-      path: '/config',
-      builder: (context, state) => const ConfigScreen(),
+      name: VentasScreen.name,
+      path: '/ventas',
+      builder: (context, state) => const VentasScreen(),
     ),
     GoRoute(
       name: RegistroScreen.name,
