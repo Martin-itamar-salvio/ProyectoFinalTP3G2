@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
 import 'package:proyecto_final_grupo_6/services/firebase_services.dart';
 
@@ -33,22 +31,9 @@ class _GestionView extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(16.0),
       children: [
-        // ExpansionTile(
-        //   title: const Text('Usuarios'),
-        //   children: [
-        //     _buildExpansionTile('Modificar Usuario'),
-        //     _buildExpansionTile('Eliminar Usuario'),
-        //     _buildExpansionTile('Mostrar Usuario'),
-        //   ],
-        // ),
-        ExpansionTile(
-          title: const Text('Cartera'),
-          children: [
-            _buildAgregarCartera(context),
-            _buildModificarCartera(context),
-            _buildEliminarCartera(context),
-          ],
-        ),
+        _buildAgregarCartera(context),
+        _buildModificarCartera(context),
+        _buildEliminarCartera(context),
       ],
     );
   }
@@ -67,15 +52,16 @@ class _GestionView extends StatelessWidget {
     );
   }
 
-  //agregar cartera
+  //Agregar cartera
   Widget _buildAgregarCartera(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
+    final _formKey = GlobalKey<FormState>();
     String nombre = '';
     double precio = 0.0;
     String imagen = '';
     int cantidad = 0;
     String modelo = '';
-    String descripcion = '';
+    String? descripcion;
+    String? estado;
     int stock = 0;
 
     return ExpansionTile(
@@ -84,91 +70,139 @@ class _GestionView extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
-            key: formKey,
+            key: _formKey,
             child: Column(
               children: <Widget>[
                 TextFormField(
                   decoration: const InputDecoration(labelText: 'Nombre'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, ingrese un nombre';
+                    }
+                    return null;
+                  },
                   onSaved: (value) {
-                    nombre = value ?? '';
+                    if (value != null) {
+                      nombre = value;
+                    }
                   },
                 ),
                 TextFormField(
                   decoration: const InputDecoration(labelText: 'Precio'),
                   keyboardType: TextInputType.number,
-                  onSaved: (value) {
-                    precio = double.tryParse(value ?? '0') ?? 0.0;
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, ingrese un precio';
+                    }
+                    return null;
                   },
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        decoration:
-                            const InputDecoration(labelText: 'Imagen (URL)'),
-                        onSaved: (value) {
-                          imagen = value ?? '';
-                        },
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.upload_file),
-                      onPressed: () async {
-                        final url = await uploadImage();
-                        if (url != null) {
-                          imagen = url;
-                        }
-                      },
-                    ),
-                  ],
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Cantidad'),
-                  keyboardType: TextInputType.number,
                   onSaved: (value) {
-                    cantidad = int.tryParse(value ?? '0') ?? 0;
-                  },
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Modelo'),
-                  onSaved: (value) {
-                    modelo = value ?? '';
-                  },
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Descripción'),
-                  onSaved: (value) {
-                    descripcion = value ?? '';
+                    if (value != null) {
+                      precio = double.parse(value);
+                    }
                   },
                 ),
                 TextFormField(
                   decoration: const InputDecoration(labelText: 'Stock'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, ingrese el stock';
+                    }
+                    return null;
+                  },
                   onSaved: (value) {
-                    stock = int.tryParse(value ?? '0') ?? 0;
+                    if (value != null) {
+                      stock = int.parse(value);
+                    }
                   },
                 ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Modelo'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, ingrese el modelo';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    if (value != null) {
+                      modelo = value;
+                    }
+                  },
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Descripcion'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, ingrese un nombre';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    if (value != null) {
+                      descripcion = value;
+                    }
+                  },
+                ),
+                FutureBuilder<List<String>>(
+                  future: getUploadedImages(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    final images = snapshot.data!;
+
+                    return DropdownButtonFormField<String>(
+                      items: images.map((url) {
+                        return DropdownMenuItem<String>(
+                          value: url,
+                          child: Image.network(url, width: 100, height: 100),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        if (value != null) {
+                          imagen = value;
+                        }
+                      },
+                      decoration: const InputDecoration(
+                          labelText: 'Seleccionar Imagen'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, selecciona una imagen';
+                        }
+                        return null;
+                      },
+                    );
+                  },
+                ),
+                // Añade aquí más campos para cantidad, modelo, descripción, etc.
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    if (formKey.currentState?.validate() ?? false) {
-                      formKey.currentState?.save();
-                      final cartera = Cartera(
+                    if (_formKey.currentState?.validate() ?? false) {
+                      _formKey.currentState?.save();
+                      // Llamar al método para agregar la cartera
+                      final nuevaCartera = Cartera(
                         nombre: nombre,
                         precio: precio,
                         imagen: imagen,
                         cantidad: cantidad,
                         modelo: modelo,
                         descripcion: descripcion,
+                        estado: estado,
                         stock: stock,
                       );
-                      createCartera(cartera);
+                      // Aquí debes agregar la lógica para guardar la nueva cartera en Firestore
+                      addCartera(nuevaCartera);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            content: Text('Cartera creada exitosamente')),
+                            content: Text('Cartera agregada correctamente')),
                       );
                     }
                   },
-                  child: const Text('Crear'),
+                  child: const Text('Agregar'),
                 ),
               ],
             ),
@@ -178,162 +212,169 @@ class _GestionView extends StatelessWidget {
     );
   }
 
-  //modiciar cartera
+// Modificar cartera
   Widget _buildModificarCartera(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
+    final _formKey = GlobalKey<FormState>();
+    String nombreSeleccionado = ''; // Inicializa aquí
     String nombre = '';
     double precio = 0.0;
     String imagen = '';
     int cantidad = 0;
     String modelo = '';
-    String descripcion = '';
+    String? descripcion;
+    String? estado;
     int stock = 0;
 
     return ExpansionTile(
       title: const Text('Modificar Cartera'),
       children: <Widget>[
-        StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('Carteras').snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(child: CircularProgressIndicator());
-            }
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('Carteras')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
 
-            final carteras = snapshot.data!.docs;
+                    final carteras = snapshot.data!.docs;
 
-            return Column(
-              children: [
-                DropdownButtonFormField<String>(
-                  items: carteras.map((doc) {
-                    return DropdownMenuItem<String>(
-                      value: doc['nombre'],
-                      child: Text(doc['nombre']),
+                    // Establece el valor inicial aquí
+                    nombreSeleccionado = carteras.first['nombre'];
+
+                    return DropdownButtonFormField<String>(
+                      value: nombreSeleccionado,
+                      items: carteras.map((doc) {
+                        return DropdownMenuItem<String>(
+                          value: doc['nombre'],
+                          child: Text(doc['nombre']),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        if (value != null) {
+                          nombreSeleccionado = value;
+                          final cartera = carteras.firstWhere(
+                              (doc) => doc['nombre'] == nombreSeleccionado);
+                          nombre = cartera['nombre'];
+                          precio = cartera['precio'];
+                          imagen = cartera['imagen'];
+                          cantidad = cartera['cantidad'];
+                          modelo = cartera['modelo'];
+                          descripcion = cartera['descripcion'];
+                          estado = cartera['estado'];
+                          stock = cartera['stock'];
+                        }
+                      },
+                      decoration: const InputDecoration(
+                          labelText: 'Seleccionar Cartera'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, selecciona una cartera';
+                        }
+                        return null;
+                      },
                     );
-                  }).toList(),
-                  onChanged: (value) {
+                  },
+                ),
+                TextFormField(
+                  initialValue: nombre,
+                  decoration: const InputDecoration(labelText: 'Nombre'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, ingrese un nombre';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
                     if (value != null) {
-                      final selectedCartera = carteras
-                          .firstWhere((doc) => doc['nombre'] == value)
-                          .data() as Map<String, dynamic>;
-                      nombre = selectedCartera['nombre'];
-                      precio = selectedCartera['precio'].toDouble();
-                      imagen = selectedCartera['imagen'];
-                      cantidad = selectedCartera['cantidad'];
-                      modelo = selectedCartera['modelo'];
-                      descripcion = selectedCartera['descripcion'];
+                      nombre = value;
                     }
                   },
-                  decoration:
-                      const InputDecoration(labelText: 'Seleccionar Cartera'),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Form(
-                    key: formKey,
-                    child: Column(
-                      children: <Widget>[
-                        TextFormField(
-                          initialValue: nombre,
-                          decoration:
-                              const InputDecoration(labelText: 'Nombre'),
-                          onSaved: (value) {
-                            nombre = value ?? '';
-                          },
-                        ),
-                        TextFormField(
-                          initialValue: precio.toString(),
-                          decoration:
-                              const InputDecoration(labelText: 'Precio'),
-                          keyboardType: TextInputType.number,
-                          onSaved: (value) {
-                            precio = double.tryParse(value ?? '0') ?? 0.0;
-                          },
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: TextFormField(
-                                initialValue: imagen,
-                                decoration: const InputDecoration(
-                                    labelText: 'Imagen (URL)'),
-                                onSaved: (value) {
-                                  imagen = value ?? '';
-                                },
-                              ),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.upload_file),
-                              onPressed: () async {
-                                final url = await uploadImage();
-                                if (url != null) {
-                                  imagen = url;
-                                }
-                              },
-                            ),
-                          ],
-                        ),
-                        TextFormField(
-                          initialValue: cantidad.toString(),
-                          decoration:
-                              const InputDecoration(labelText: 'Cantidad'),
-                          keyboardType: TextInputType.number,
-                          onSaved: (value) {
-                            cantidad = int.tryParse(value ?? '0') ?? 0;
-                          },
-                        ),
-                        TextFormField(
-                          initialValue: modelo,
-                          decoration:
-                              const InputDecoration(labelText: 'Modelo'),
-                          onSaved: (value) {
-                            modelo = value ?? '';
-                          },
-                        ),
-                        TextFormField(
-                          initialValue: descripcion,
-                          decoration:
-                              const InputDecoration(labelText: 'Descripción'),
-                          onSaved: (value) {
-                            descripcion = value ?? '';
-                          },
-                        ),
-                        TextFormField(
-                          decoration: const InputDecoration(labelText: 'Stock'),
-                          onSaved: (value) {
-                            stock = int.tryParse(value ?? '0') ?? 0;
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: () {
-                            if (formKey.currentState?.validate() ?? false) {
-                              formKey.currentState?.save();
-                              final cartera = Cartera(
-                                nombre: nombre,
-                                precio: precio,
-                                imagen: imagen,
-                                cantidad: cantidad,
-                                modelo: modelo,
-                                descripcion: descripcion,
-                                stock: stock,
-                              );
-                              updateCarteraByName(nombre, cartera);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text(
-                                        'Cartera modificada exitosamente')),
-                              );
-                            }
-                          },
-                          child: const Text('Modificar'),
-                        ),
-                      ],
-                    ),
-                  ),
+                TextFormField(
+                  initialValue: precio.toString(),
+                  decoration: const InputDecoration(labelText: 'Precio'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, ingrese un precio';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    if (value != null) {
+                      precio = double.parse(value);
+                    }
+                  },
+                ),
+                FutureBuilder<List<String>>(
+                  future: getUploadedImages(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    final images = snapshot.data!;
+
+                    return DropdownButtonFormField<String>(
+                      value: imagen,
+                      items: images.map((url) {
+                        return DropdownMenuItem<String>(
+                          value: url,
+                          child: Image.network(url, width: 100, height: 100),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        if (value != null) {
+                          imagen = value;
+                        }
+                      },
+                      decoration: const InputDecoration(
+                          labelText: 'Seleccionar Imagen'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, selecciona una imagen';
+                        }
+                        return null;
+                      },
+                    );
+                  },
+                ),
+                // Añade aquí más campos para cantidad, modelo, descripción, etc.
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      _formKey.currentState?.save();
+                      // Llamar al método para actualizar la cartera
+                      final carteraModificada = Cartera(
+                        nombre: nombre,
+                        precio: precio,
+                        imagen: imagen,
+                        cantidad: cantidad,
+                        modelo: modelo,
+                        descripcion: descripcion,
+                        estado: estado,
+                        stock: stock,
+                      );
+                      updateCartera(carteraModificada);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text('Cartera modificada correctamente')),
+                      );
+                    }
+                  },
+                  child: const Text('Modificar'),
                 ),
               ],
-            );
-          },
+            ),
+          ),
         ),
       ],
     );
@@ -408,23 +449,6 @@ class _GestionView extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  Future<String?> uploadImage() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-
-    if (image == null) {
-      return null;
-    }
-
-    final String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    final Reference storageRef =
-        FirebaseStorage.instance.ref().child('carteras/$fileName');
-    final UploadTask uploadTask = storageRef.putFile(File(image.path));
-    final TaskSnapshot taskSnapshot = await uploadTask;
-
-    return await taskSnapshot.ref.getDownloadURL();
   }
 
   void ocultarCartera(String nombre) {}

@@ -93,41 +93,34 @@ Stream<List<Cartera>> fetchCarteras() {
     }).toList();
   });
 }
-
-// Crear Cartera - Gestion
-Future<void> createCartera(Cartera cartera) async {
-  await FirebaseFirestore.instance.collection('Carteras').add({
-    'nombre': cartera.nombre,
-    'precio': cartera.precio,
-    'imagen': cartera.imagen,
-    'cantidad': cartera.cantidad,
-    'modelo': cartera.modelo,
-    'descripcion': cartera.descripcion,
-    'estado': cartera.estado,
-  });
+//Conseguir url de firestore
+Future<List<String>> getUploadedImages() async {
+  final ListResult result = await FirebaseStorage.instance.ref('carteras').listAll();
+  final List<String> urls = [];
+  for (var ref in result.items) {
+    final String url = await ref.getDownloadURL();
+    urls.add(url);
+  }
+  return urls;
 }
 
-// Modificar Cartera
-Future<void> updateCarteraByName(String nombre, Cartera cartera) async {
+//Agregar cartera
+Future<void> addCartera(Cartera cartera) async {
+  await FirebaseFirestore.instance.collection('Carteras').add(cartera.toMap());
+}
+// Modificar cartera
+Future<void> updateCartera(Cartera cartera) async {
   final collectionRef = FirebaseFirestore.instance.collection('Carteras');
-  final querySnapshot = await collectionRef.where('nombre', isEqualTo: nombre).get();
+  final querySnapshot = await collectionRef.where('nombre', isEqualTo: cartera.nombre).get();
 
   if (querySnapshot.docs.isNotEmpty) {
     final docId = querySnapshot.docs.first.id;
-    await collectionRef.doc(docId).update({
-      'nombre': cartera.nombre,
-      'precio': cartera.precio,
-      'imagen': cartera.imagen,
-      'cantidad': cartera.cantidad,
-      'modelo': cartera.modelo,
-      'descripcion': cartera.descripcion,
-      'estado': cartera.estado,
-    });
+    await collectionRef.doc(docId).update(cartera.toMap());
   } else {
-    // Maneja el caso en el que no se encuentra la cartera
     throw Exception('Cartera no encontrada');
   }
 }
+
 
 // Eliminar cartera
 Future<void> deleteCartera(String nombreCartera) async {
@@ -145,20 +138,3 @@ Future<void> deleteCartera(String nombreCartera) async {
 
 
 
-
-// Manejo de Storage
-Future<String?> uploadImage() async {
-  final ImagePicker picker = ImagePicker();
-  final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-
-  if (image == null) {
-    return null;
-  }
-
-  final String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-  final Reference storageRef = FirebaseStorage.instance.ref().child('carteras/$fileName');
-  final UploadTask uploadTask = storageRef.putFile(File(image.path));
-  final TaskSnapshot taskSnapshot = await uploadTask;
-
-  return await taskSnapshot.ref.getDownloadURL();
-}
