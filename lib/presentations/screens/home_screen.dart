@@ -166,7 +166,7 @@ class ProductCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "\$${product.precio}",
+                        "\$${product.precio.round()}",
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,

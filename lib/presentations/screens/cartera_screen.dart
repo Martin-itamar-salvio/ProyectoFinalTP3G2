@@ -62,31 +62,42 @@ class CarteraScreen extends ConsumerWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 10),
-                      padding: const EdgeInsets.all(10),
-                      child: Text(
-                        "Stock: ${product.stock}",
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 99, 99, 99),
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: Container(
+                padding: const EdgeInsets.only(left: 10),
+                child: Text(
+                  "Modelo: ${product.modelo}",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 99, 99, 99),
+                  ),
+                ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20),
               child: Container(
-                margin: const EdgeInsets.only(top: 10),
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.only(left: 10),
                 child: Text(
-                  "Precio: ${product.precio}",
+                  "Precio: \$${product.precio.round()}",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 99, 99, 99),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: Container(
+                padding: const EdgeInsets.only(left: 10),
+                child: Text(
+                  "Stock: ${product.stock.round()} unidades",
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Color.fromARGB(255, 99, 99, 99),
@@ -130,22 +141,23 @@ class CarteraScreen extends ConsumerWidget {
             Container(
               color: Colors.brown.shade200, // Fondo marrón claro
               padding: const EdgeInsets.all(20),
-              child: const Column(
+              width: 400,
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Descripción",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
-                    "Texto personalizado de la descripción del producto...",
-                    style: TextStyle(fontSize: 16),
+                    "${product.descripcion}",
+                    style: const TextStyle(fontSize: 16),
                   ),
-                  SizedBox(height: 60),
+                  const SizedBox(height: 60),
                 ],
               ),
             ),

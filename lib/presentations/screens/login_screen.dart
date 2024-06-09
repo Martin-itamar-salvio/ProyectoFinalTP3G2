@@ -101,7 +101,7 @@ class _LoginView extends ConsumerWidget {
                 ),
                 onPressed: () => _login(context, ref),
                 child: const Text(
-                  "Entrar",
+                  "Ingresar",
                   style: TextStyle(fontSize: 18),
                 ),
               ),

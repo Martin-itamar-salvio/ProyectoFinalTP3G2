@@ -1,0 +1,1 @@
+ C:\\Users\\Usuario\\Desktop\\Seba\\ORT\\Taller\ de\ Programacion\ 3\\Repositorios\\TP3\\main\\ProyectoFinalTP3G2\\.dart_tool\\flutter_build\\971f2c1cf120a2b48bdf51f1e5b10739\\native_assets.yaml: 
