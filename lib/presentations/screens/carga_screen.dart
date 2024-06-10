@@ -15,11 +15,9 @@ class CargaScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final usuario = ref.watch(userProvider);
-
     return Scaffold(
-      appBar: MyAppBar(usuario: usuario!),
-      drawer: DrawerMenu(usuario: usuario),
+      appBar: const MyAppBar(),
+      drawer: const DrawerMenu(),
       body: _CargaView(compra: compra),
     );
   }

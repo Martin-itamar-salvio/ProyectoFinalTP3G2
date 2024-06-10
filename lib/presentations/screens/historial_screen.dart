@@ -28,8 +28,8 @@ class HistorialScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      appBar: MyAppBar(usuario: usuario),
-      drawer: DrawerMenu(usuario: usuario),
+      appBar: const MyAppBar(),
+      drawer: const DrawerMenu(),
       body: _HistorialView(usuario: usuario),
     );
   }

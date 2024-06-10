@@ -4,6 +4,8 @@ import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dar
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/home_screen.dart';
+import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
+import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
 
 class ReciboScreen extends ConsumerWidget {
   static const String name = "recibo_screen";
@@ -16,9 +18,8 @@ class ReciboScreen extends ConsumerWidget {
     final usuario = ref.watch(userProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Recibo de Compra'),
-      ),
+      appBar: const MyAppBar(),
+      drawer: const DrawerMenu(),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(

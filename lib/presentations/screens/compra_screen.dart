@@ -42,8 +42,8 @@ class CompraScreen extends ConsumerWidget {
     final direccionController = TextEditingController();
 
     return Scaffold(
-      appBar: MyAppBar(usuario: usuario),
-      drawer: DrawerMenu(usuario: usuario),
+      appBar: const MyAppBar(),
+      drawer: const DrawerMenu(),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
@@ -226,6 +226,11 @@ class CompraScreen extends ConsumerWidget {
                       );
 
                       try {
+
+                        // Actualizar stock de las carteras
+                        
+
+                        // Agregar a usuarios
                         await addCompraToUser(usuario, compra);
                         
                         // Vaciar el carrito

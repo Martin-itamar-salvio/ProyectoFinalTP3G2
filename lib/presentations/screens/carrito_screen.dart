@@ -29,10 +29,10 @@ class CarritoScreen extends ConsumerWidget {
       );
     }
 
-    return Scaffold(
-      appBar: MyAppBar(usuario: usuario),
-      drawer: DrawerMenu(usuario: usuario),
-      body: const _CarritoView(),
+    return const Scaffold(
+      appBar: MyAppBar(),
+      drawer: DrawerMenu(),
+      body: _CarritoView(),
     );
   }
 }
@@ -89,7 +89,7 @@ class _CarritoView extends ConsumerWidget {
                         ),
                       ),
                       Text(
-                        '\$$subTotal',
+                        '\$${subTotal.round()}',
                         style: const TextStyle(
                           color: Colors.black,
                           fontSize: 18.0,

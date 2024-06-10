@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
+import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
+import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
 import 'package:proyecto_final_grupo_6/services/firebase_services.dart';
 
 class GestionScreen extends StatelessWidget {
@@ -12,11 +14,10 @@ class GestionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Gestión de Tienda'),
-      ),
-      body: const Center(
+    return const Scaffold(
+      appBar: MyAppBar(),
+      drawer: DrawerMenu(),
+      body: Center(
         child: _GestionView(),
       ),
     );
@@ -133,12 +134,6 @@ class _GestionView extends StatelessWidget {
                 ),
                 TextFormField(
                   decoration: const InputDecoration(labelText: 'Descripcion'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor, ingrese un nombre';
-                    }
-                    return null;
-                  },
                   onSaved: (value) {
                     if (value != null) {
                       descripcion = value;

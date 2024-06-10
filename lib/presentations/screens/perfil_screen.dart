@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
+import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
+import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
 
 class PerfilScreen extends ConsumerWidget {
   static const String name = "perfil_screen";
@@ -24,9 +26,8 @@ class PerfilScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Perfil'),
-      ),
+      appBar: const MyAppBar(),
+      drawer: const DrawerMenu(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -53,6 +54,7 @@ class PerfilScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 20),
+            _buildEditableField(context, 'Nombre de usuario', usuario.username, null), // No editable
             _buildEditableField(context, 'Nombre', usuario.nombre, (value) {
               usuario.nombre = value;
               _updateUser(context, ref, usuario);
@@ -61,8 +63,6 @@ class PerfilScreen extends ConsumerWidget {
               usuario.apellido = value;
               _updateUser(context, ref, usuario);
             }),
-            _buildEditableField(context, 'Nombre de usuario', usuario.username, null), // No editable
-
             _buildEditableField(context, 'Correo electrónico', usuario.email, (value) {
               usuario.email = value;
               _updateUser(context, ref, usuario);

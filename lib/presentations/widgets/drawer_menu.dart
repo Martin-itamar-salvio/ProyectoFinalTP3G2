@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/core/constants.dart';
 import 'package:proyecto_final_grupo_6/core/menu/menu_item.dart'; // Asegúrate de importar MenuItem
-import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
-//logica
-class DrawerMenu extends StatefulWidget {
-  final User usuario;
-  const DrawerMenu({required this.usuario, super.key});
+import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
+
+class DrawerMenu extends ConsumerStatefulWidget {
+  const DrawerMenu({super.key});
 
   @override
-  State<DrawerMenu> createState() => _DrawerMenuState();
+  ConsumerState<DrawerMenu> createState() => _DrawerMenuState();
 }
 
-class _DrawerMenuState extends State<DrawerMenu> {
+class _DrawerMenuState extends ConsumerState<DrawerMenu> {
   int selectedScreen = 0;
 
   @override
   Widget build(BuildContext context) {
+    final usuario = ref.watch(userProvider);
+    
     // Filtrar los elementos del menú según el rol del usuario
     final List<MenuItem> filteredMenuItems = menuItems.where((item) {
-      return item.role == roleDefault || item.role == widget.usuario.rol;
+      return item.role == roleDefault || item.role == usuario?.rol;
     }).toList();
 
     return SafeArea(
@@ -30,7 +32,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
           selectedScreen = value;
           setState(() {});
           if (menuItemsAux[value].params) {
-            final Object param = menuItemsAux[value].title == "Inicio" ? widget.usuario : Object();
+            final Object? param = menuItemsAux[value].title == "Inicio" ? usuario : Object();
             context.push(menuItemsAux[value].link, extra: param);
           } else {
             context.push(menuItemsAux[value].link);
@@ -46,7 +48,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
               children: [
                 const Icon(Icons.person, size: 100),
                 Text(
-                  '${widget.usuario.apellido}, ${widget.usuario.nombre}',
+                  '${usuario?.apellido}, ${usuario?.nombre}',
                   style: const TextStyle(
                     color: Color.fromARGB(255, 0, 0, 0),
                     fontSize: 18,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/core/constants.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/cart_provider.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/home_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/registro_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/exit.dart';
@@ -99,7 +100,10 @@ class _LoginView extends ConsumerWidget {
                   backgroundColor: const Color.fromARGB(255, 247, 224, 20),
                   foregroundColor: const Color.fromARGB(255, 0, 0, 0),
                 ),
-                onPressed: () => _login(context, ref),
+                onPressed: () {
+                  ref.read(carritoProvider.notifier).vaciarCarrito(); // Vaciar el carrito
+                  _login(context, ref);
+                },
                 child: const Text(
                   "Ingresar",
                   style: TextStyle(fontSize: 18),
