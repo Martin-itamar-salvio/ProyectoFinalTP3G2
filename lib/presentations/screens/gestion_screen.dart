@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
@@ -8,7 +7,6 @@ import 'package:proyecto_final_grupo_6/services/firebase_services.dart';
 
 class GestionScreen extends StatelessWidget {
   static const String name = "gestion_screen";
-  // final User usuario;
 
   const GestionScreen({super.key});
 
@@ -24,8 +22,16 @@ class GestionScreen extends StatelessWidget {
   }
 }
 
-class _GestionView extends StatelessWidget {
+class _GestionView extends StatefulWidget {
   const _GestionView();
+
+  @override
+  _GestionViewState createState() => _GestionViewState();
+}
+
+class _GestionViewState extends State<_GestionView> {
+  Cartera? _carteraEncontrada;
+  final _formKeyModificar = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -39,21 +45,7 @@ class _GestionView extends StatelessWidget {
     );
   }
 
-  Widget _buildExpansionTile(String title) {
-    return ExpansionTile(
-      title: Text(title),
-      children: <Widget>[
-        ListTile(
-          title: Text('Formulario $title'),
-          onTap: () {
-            // Acción para el menú correspondiente
-          },
-        ),
-      ],
-    );
-  }
-
-  //Agregar cartera
+  // Agregar cartera
   Widget _buildAgregarCartera(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     String nombre = '';
@@ -172,13 +164,11 @@ class _GestionView extends StatelessWidget {
                     );
                   },
                 ),
-                // Añade aquí más campos para cantidad, modelo, descripción, etc.
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
                       _formKey.currentState?.save();
-                      // Llamar al método para agregar la cartera
                       final nuevaCartera = Cartera(
                         nombre: nombre,
                         precio: precio,
@@ -189,7 +179,6 @@ class _GestionView extends StatelessWidget {
                         estado: estado,
                         stock: stock,
                       );
-                      // Aquí debes agregar la lógica para guardar la nueva cartera en Firestore
                       addCartera(nuevaCartera);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -207,14 +196,10 @@ class _GestionView extends StatelessWidget {
     );
   }
 
-// Modificar cartera
+  // Modificar cartera
   Widget _buildModificarCartera(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    String nombreSeleccionado = ''; // Inicializa aquí
-    String nombre = '';
+    String nombreBuscado = '';
     double precio = 0.0;
-    String imagen = '';
-    int cantidad = 0;
     String modelo = '';
     String? descripcion;
     String? estado;
@@ -226,147 +211,128 @@ class _GestionView extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
-            key: _formKey,
+            key: _formKeyModificar,
             child: Column(
               children: <Widget>[
-                StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('Carteras')
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-
-                    final carteras = snapshot.data!.docs;
-
-                    // Establece el valor inicial aquí
-                    nombreSeleccionado = carteras.first['nombre'];
-
-                    return DropdownButtonFormField<String>(
-                      value: nombreSeleccionado,
-                      items: carteras.map((doc) {
-                        return DropdownMenuItem<String>(
-                          value: doc['nombre'],
-                          child: Text(doc['nombre']),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        if (value != null) {
-                          nombreSeleccionado = value;
-                          final cartera = carteras.firstWhere(
-                              (doc) => doc['nombre'] == nombreSeleccionado);
-                          nombre = cartera['nombre'];
-                          precio = cartera['precio'];
-                          imagen = cartera['imagen'];
-                          cantidad = cartera['cantidad'];
-                          modelo = cartera['modelo'];
-                          descripcion = cartera['descripcion'];
-                          estado = cartera['estado'];
-                          stock = cartera['stock'];
-                        }
-                      },
-                      decoration: const InputDecoration(
-                          labelText: 'Seleccionar Cartera'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Por favor, selecciona una cartera';
-                        }
-                        return null;
-                      },
-                    );
-                  },
-                ),
                 TextFormField(
-                  initialValue: nombre,
-                  decoration: const InputDecoration(labelText: 'Nombre'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor, ingrese un nombre';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    if (value != null) {
-                      nombre = value;
-                    }
+                  decoration:
+                      const InputDecoration(labelText: 'Buscar por Nombre'),
+                  onChanged: (value) {
+                    nombreBuscado = value;
                   },
                 ),
-                TextFormField(
-                  initialValue: precio.toString(),
-                  decoration: const InputDecoration(labelText: 'Precio'),
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor, ingrese un precio';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    if (value != null) {
-                      precio = double.parse(value);
-                    }
-                  },
-                ),
-                FutureBuilder<List<String>>(
-                  future: getUploadedImages(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-
-                    final images = snapshot.data!;
-
-                    return DropdownButtonFormField<String>(
-                      value: imagen,
-                      items: images.map((url) {
-                        return DropdownMenuItem<String>(
-                          value: url,
-                          child: Image.network(url, width: 100, height: 100),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        if (value != null) {
-                          imagen = value;
-                        }
-                      },
-                      decoration: const InputDecoration(
-                          labelText: 'Seleccionar Imagen'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Por favor, selecciona una imagen';
-                        }
-                        return null;
-                      },
-                    );
-                  },
-                ),
-                // Añade aquí más campos para cantidad, modelo, descripción, etc.
-                const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      _formKey.currentState?.save();
-                      // Llamar al método para actualizar la cartera
-                      final carteraModificada = Cartera(
-                        nombre: nombre,
-                        precio: precio,
-                        imagen: imagen,
-                        cantidad: cantidad,
-                        modelo: modelo,
-                        descripcion: descripcion,
-                        estado: estado,
-                        stock: stock,
-                      );
-                      updateCartera(carteraModificada);
+                  onPressed: () async {
+                    final cartera = await buscarCarteraPorNombre(nombreBuscado);
+                    if (cartera != null) {
+                      setState(() {
+                        _carteraEncontrada = cartera;
+                        precio = cartera.precio;
+                        modelo = cartera.modelo;
+                        descripcion = cartera.descripcion;
+                        estado = cartera.estado;
+                        stock = cartera.stock;
+                      });
+                    } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Cartera modificada correctamente')),
+                        const SnackBar(content: Text('Cartera no encontrada')),
                       );
                     }
                   },
-                  child: const Text('Modificar'),
+                  child: const Text('Buscar'),
                 ),
+                if (_carteraEncontrada != null) ...[
+                  TextFormField(
+                    initialValue: _carteraEncontrada!.modelo,
+                    decoration: const InputDecoration(labelText: 'Modelo'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, ingrese el modelo';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      if (value != null) {
+                        modelo = value;
+                      }
+                    },
+                  ),
+                  TextFormField(
+                    initialValue: _carteraEncontrada!.precio.toString(),
+                    decoration: const InputDecoration(labelText: 'Precio'),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, ingrese un precio';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      if (value != null) {
+                        precio = double.parse(value);
+                      }
+                    },
+                  ),
+                  TextFormField(
+                    initialValue: _carteraEncontrada!.stock.toString(),
+                    decoration: const InputDecoration(labelText: 'Stock'),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, ingrese el stock';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      if (value != null) {
+                        stock = int.parse(value);
+                      }
+                    },
+                  ),
+                  TextFormField(
+                    initialValue: _carteraEncontrada!.descripcion,
+                    decoration: const InputDecoration(labelText: 'Descripcion'),
+                    onSaved: (value) {
+                      if (value != null) {
+                        descripcion = value;
+                      }
+                    },
+                  ),
+                  TextFormField(
+                    initialValue: _carteraEncontrada!.estado,
+                    decoration: const InputDecoration(labelText: 'Estado'),
+                    onSaved: (value) {
+                      if (value != null) {
+                        estado = value;
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formKeyModificar.currentState?.validate() ?? false) {
+                        _formKeyModificar.currentState?.save();
+                        final carteraModificada = Cartera(
+                          nombre: _carteraEncontrada!.nombre,
+                          precio: precio,
+                          imagen: _carteraEncontrada!.imagen,
+                          cantidad: _carteraEncontrada!.cantidad,
+                          modelo: modelo,
+                          descripcion: descripcion,
+                          estado: estado,
+                          stock: stock,
+                        );
+                        updateCartera(carteraModificada);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content:
+                                  Text('Cartera modificada correctamente')),
+                        );
+                      }
+                    },
+                    child: const Text('Modificar'),
+                  ),
+                ],
               ],
             ),
           ),
@@ -375,10 +341,10 @@ class _GestionView extends StatelessWidget {
     );
   }
 
-  //eliminar cartera
+  // Eliminar cartera
   Widget _buildEliminarCartera(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
-    String nombre = '';
+    String? nombreSeleccionado;
 
     return ExpansionTile(
       title: const Text('Eliminar Cartera'),
@@ -401,6 +367,7 @@ class _GestionView extends StatelessWidget {
                     final carteras = snapshot.data!.docs;
 
                     return DropdownButtonFormField<String>(
+                      value: nombreSeleccionado,
                       items: carteras.map((doc) {
                         return DropdownMenuItem<String>(
                           value: doc['nombre'],
@@ -408,9 +375,7 @@ class _GestionView extends StatelessWidget {
                         );
                       }).toList(),
                       onChanged: (value) {
-                        if (value != null) {
-                          nombre = value;
-                        }
+                        nombreSeleccionado = value;
                       },
                       decoration: const InputDecoration(
                           labelText: 'Seleccionar Cartera'),
@@ -427,12 +392,11 @@ class _GestionView extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
-                      _formKey.currentState?.save();
-                      // Llamar al método para ocultar la cartera
-                      deleteCartera(nombre);
+                      // Llamar al método para eliminar la cartera
+                      deleteCartera(nombreSeleccionado!);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            content: Text('Cartera marcada como eliminada')),
+                            content: Text('Cartera eliminada correctamente')),
                       );
                     }
                   },
@@ -445,6 +409,4 @@ class _GestionView extends StatelessWidget {
       ],
     );
   }
-
-  void ocultarCartera(String nombre) {}
 }

@@ -103,24 +103,26 @@ Future<List<String>> getUploadedImages() async {
   }
   return urls;
 }
+// Buscador de cartera
+ Future<Cartera?> buscarCarteraPorNombre(String nombre) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('Carteras')
+        .where('nombre', isEqualTo: nombre)
+        .get();
 
+    if (snapshot.docs.isNotEmpty) {
+      final doc = snapshot.docs.first;
+      return Cartera.fromMap(doc.data() as Map<String, dynamic>);
+    } else {
+      return null;
+    }
+  }
 // Agregar cartera
 Future<void> addCartera(Cartera cartera) async {
   await FirebaseFirestore.instance.collection('Carteras').add(cartera.toMap());
 }
 
 // Modificar cartera
-Future<void> updateCartera(Cartera cartera) async {
-  final collectionRef = FirebaseFirestore.instance.collection('Carteras');
-  final querySnapshot = await collectionRef.where('nombre', isEqualTo: cartera.nombre).get();
-
-  if (querySnapshot.docs.isNotEmpty) {
-    final docId = querySnapshot.docs.first.id;
-    await collectionRef.doc(docId).update(cartera.toMap());
-  } else {
-    throw Exception('Cartera no encontrada');
-  }
-}
 
 // Eliminar cartera
 Future<void> deleteCartera(String nombreCartera) async {
@@ -149,3 +151,14 @@ Future<void> updateStockCartera(Cartera cartera) async {
   }
 }
 
+Future<void> updateCartera(Cartera cartera) async {
+  final collectionRef = FirebaseFirestore.instance.collection('Carteras');
+  final querySnapshot = await collectionRef.where('nombre', isEqualTo: cartera.nombre).get();
+
+  if (querySnapshot.docs.isNotEmpty) {
+    final docId = querySnapshot.docs.first.id;
+    await collectionRef.doc(docId).update({"modelo": cartera.modelo, "precio": cartera.precio, "stock": cartera.stock, "estado": cartera.estado, "descripcion": cartera.descripcion});
+  } else {
+    throw Exception('Cartera no encontrada');
+  }
+}
