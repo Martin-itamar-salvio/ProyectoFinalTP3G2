@@ -62,6 +62,15 @@ class CarteraScreen extends ConsumerWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 200.0),
+                    child: IconButton(
+                      onPressed: () {
+                        context.pop();
+                      },
+                      icon: const Icon(Icons.arrow_back_ios_outlined)
+                    ),
+                  )
                 ],
               ),
             ),

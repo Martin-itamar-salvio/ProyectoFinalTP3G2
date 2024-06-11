@@ -163,6 +163,9 @@ class CompraScreen extends ConsumerWidget {
                     if (value == null || value.isEmpty) {
                       return 'Por favor, ingrese su email';
                     }
+                    if (!RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$').hasMatch(value)) {
+                      return 'Por favor, ingrese un email valido';
+                    }
                     return null;
                   },
                 ),
@@ -226,18 +229,36 @@ class CompraScreen extends ConsumerWidget {
                       );
 
                       try {
+                        int i = 0;
+                        bool puedoComprar = true;
 
-                        // Actualizar stock de las carteras
+                        while (puedoComprar && i < carrito.length) {
+                          puedoComprar = (carrito[i].stock - carrito[i].cantidad) >= 0;
+                          if (!puedoComprar) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('No puede realizar la compra: No hay suficiente stock de "${carrito[i].nombre}"')),
+                            );
+                          }
+                          i += 1;
+                        }
+
+                        if (puedoComprar) {
+                          // Actualizar Stock de todas las carteras
+                          for (var cartera in carrito){
+                            cartera.stock = cartera.stock - cartera.cantidad;
+                            cartera.estado = cartera.stock == 0 ? 'delete' : '';
+                            await updateStockCartera(cartera);
+                          }
+
+                          // Agregar a usuarios
+                          await addCompraToUser(usuario, compra);
                         
+                          // Vaciar el carrito
+                          ref.read(carritoProvider.notifier).vaciarCarrito();
 
-                        // Agregar a usuarios
-                        await addCompraToUser(usuario, compra);
-                        
-                        // Vaciar el carrito
-                        ref.read(carritoProvider.notifier).vaciarCarrito();
-
-                        // Ir a la pantalla de carga
-                        context.goNamed(CargaScreen.name, extra: compra);
+                          // Ir a la pantalla de carga
+                          context.goNamed(CargaScreen.name, extra: compra);
+                        }
                       } catch (e) {
                         // Manejar error si falla la compra
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -247,6 +268,12 @@ class CompraScreen extends ConsumerWidget {
                     }
                   },
                   child: const Text('Realizar compra'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    context.pop();
+                  },
+                  child: const Text('Cancelar'),
                 ),
               ],
             ),

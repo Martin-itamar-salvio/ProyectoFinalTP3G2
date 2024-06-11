@@ -7,8 +7,7 @@ import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/compra.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
 
-
-//login
+// Login
 Future<void> registerUser(User user) async {
   await FirebaseFirestore.instance
       .collection('Users')
@@ -56,7 +55,7 @@ Future<void> addCompraToUser(User user, Compra compra) async {
   }
 }
 
-// motra historial de compra
+// Mostrar historial de compra
 Stream<List<Compra>> fetchCompras(User user) {
   return FirebaseFirestore.instance
       .collection('Users')
@@ -81,7 +80,7 @@ Stream<List<Compra>> fetchAllCompras() {
   });
 }
 
-//mostrar carteras menu
+// Mostrar carteras menu
 Stream<List<Cartera>> fetchCarteras() {
   return FirebaseFirestore.instance
       .collection('Carteras')
@@ -93,7 +92,8 @@ Stream<List<Cartera>> fetchCarteras() {
     }).toList();
   });
 }
-//Conseguir url de firestore
+
+// Conseguir url de firestore
 Future<List<String>> getUploadedImages() async {
   final ListResult result = await FirebaseStorage.instance.ref('carteras').listAll();
   final List<String> urls = [];
@@ -104,10 +104,11 @@ Future<List<String>> getUploadedImages() async {
   return urls;
 }
 
-//Agregar cartera
+// Agregar cartera
 Future<void> addCartera(Cartera cartera) async {
   await FirebaseFirestore.instance.collection('Carteras').add(cartera.toMap());
 }
+
 // Modificar cartera
 Future<void> updateCartera(Cartera cartera) async {
   final collectionRef = FirebaseFirestore.instance.collection('Carteras');
@@ -120,7 +121,6 @@ Future<void> updateCartera(Cartera cartera) async {
     throw Exception('Cartera no encontrada');
   }
 }
-
 
 // Eliminar cartera
 Future<void> deleteCartera(String nombreCartera) async {
@@ -136,5 +136,16 @@ Future<void> deleteCartera(String nombreCartera) async {
   }
 }
 
+// Actualizar Stock Cartera
+Future<void> updateStockCartera(Cartera cartera) async {
+  final collectionRef = FirebaseFirestore.instance.collection('Carteras');
+  final querySnapshot = await collectionRef.where('nombre', isEqualTo: cartera.nombre).get();
 
+  if (querySnapshot.docs.isNotEmpty) {
+    final docId = querySnapshot.docs.first.id;
+    await collectionRef.doc(docId).update({ "stock": cartera.stock, "estado": cartera.estado});
+  } else {
+    throw Exception('Cartera no encontrada');
+  }
+}
 
