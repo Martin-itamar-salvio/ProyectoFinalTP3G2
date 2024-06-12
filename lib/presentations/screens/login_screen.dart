@@ -36,7 +36,7 @@ class _LoginView extends ConsumerWidget {
 
     final usuario = await getUser(username, password);
     if (usuario != null) {
-      ref.read(userProvider.notifier).state = usuario;
+      ref.read(userProvider.notifier).setUser(usuario);
       context.pushNamed(HomeScreen.name);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

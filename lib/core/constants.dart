@@ -4,7 +4,7 @@ import 'package:proyecto_final_grupo_6/core/menu/menu_item.dart';
 const String appName = "BELLIGRAU";
 const String roleDefault = "all";
 
-//validar el rol del usuario
+//Items de menu limitados por el rol
 final List<MenuItem> menuItems = [
   MenuItem(title: 'Inicio', subtitle: 'Inicio de Aplicacion', icon: Icons.home, link: '/inicio', role: "all", params: true),
   MenuItem(title: 'Perfil', subtitle: 'Perfil de Usuario', icon: Icons.person, link: '/perfil', role: "all", params: false),

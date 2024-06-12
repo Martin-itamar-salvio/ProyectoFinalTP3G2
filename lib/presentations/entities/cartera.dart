@@ -19,19 +19,6 @@ class Cartera {
     required this.stock,
   });
 
-  factory Cartera.fromMap(Map<String, dynamic> map) {
-    return Cartera(
-      nombre: map['nombre'] ?? '',
-      precio: map['precio']?.toDouble() ?? 0.0,
-      imagen: map['imagen'] ?? '',
-      cantidad: map['cantidad'] ?? 0,
-      modelo: map['modelo'] ?? '',
-      descripcion: map['descripcion'],
-      estado: map['estado'],
-      stock: map['stock'] ?? 0,
-    );
-  }
-
   Map<String, dynamic> toMap() {
     return {
       'nombre': nombre,
@@ -43,5 +30,18 @@ class Cartera {
       'estado': estado,
       'stock' : stock,
     };
+  }
+  
+  factory Cartera.fromMap(Map<String, dynamic> map) {
+    return Cartera(
+      nombre: map['nombre'] ?? '',
+      precio: map['precio']?.toDouble() ?? 0.0,
+      imagen: map['imagen'] ?? '',
+      cantidad: map['cantidad'] ?? 0,
+      modelo: map['modelo'] ?? '',
+      descripcion: map['descripcion'],
+      estado: map['estado'],
+      stock: map['stock'] ?? 0,
+    );
   }
 }

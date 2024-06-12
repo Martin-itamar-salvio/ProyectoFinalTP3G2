@@ -123,7 +123,17 @@ Future<void> addCartera(Cartera cartera) async {
 }
 
 // Modificar cartera
+Future<void> updateCartera(Cartera cartera) async {
+  final collectionRef = FirebaseFirestore.instance.collection('Carteras');
+  final querySnapshot = await collectionRef.where('nombre', isEqualTo: cartera.nombre).get();
 
+  if (querySnapshot.docs.isNotEmpty) {
+    final docId = querySnapshot.docs.first.id;
+    await collectionRef.doc(docId).update({"modelo": cartera.modelo, "precio": cartera.precio, "stock": cartera.stock, "estado": cartera.estado, "descripcion": cartera.descripcion});
+  } else {
+    throw Exception('Cartera no encontrada');
+  }
+}
 // Eliminar cartera
 Future<void> deleteCartera(String nombreCartera) async {
   final collectionRef = FirebaseFirestore.instance.collection('Carteras');
@@ -151,14 +161,3 @@ Future<void> updateStockCartera(Cartera cartera) async {
   }
 }
 
-Future<void> updateCartera(Cartera cartera) async {
-  final collectionRef = FirebaseFirestore.instance.collection('Carteras');
-  final querySnapshot = await collectionRef.where('nombre', isEqualTo: cartera.nombre).get();
-
-  if (querySnapshot.docs.isNotEmpty) {
-    final docId = querySnapshot.docs.first.id;
-    await collectionRef.doc(docId).update({"modelo": cartera.modelo, "precio": cartera.precio, "stock": cartera.stock, "estado": cartera.estado, "descripcion": cartera.descripcion});
-  } else {
-    throw Exception('Cartera no encontrada');
-  }
-}

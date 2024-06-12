@@ -227,11 +227,6 @@ class _GestionViewState extends State<_GestionView> {
                     if (cartera != null) {
                       setState(() {
                         _carteraEncontrada = cartera;
-                        precio = cartera.precio;
-                        modelo = cartera.modelo;
-                        descripcion = cartera.descripcion;
-                        estado = cartera.estado;
-                        stock = cartera.stock;
                       });
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -243,6 +238,7 @@ class _GestionViewState extends State<_GestionView> {
                 ),
                 if (_carteraEncontrada != null) ...[
                   TextFormField(
+                    key: ValueKey(_carteraEncontrada!.modelo),
                     initialValue: _carteraEncontrada!.modelo,
                     decoration: const InputDecoration(labelText: 'Modelo'),
                     validator: (value) {
@@ -258,6 +254,7 @@ class _GestionViewState extends State<_GestionView> {
                     },
                   ),
                   TextFormField(
+                    key: ValueKey(_carteraEncontrada!.precio),
                     initialValue: _carteraEncontrada!.precio.toString(),
                     decoration: const InputDecoration(labelText: 'Precio'),
                     keyboardType: TextInputType.number,
@@ -274,6 +271,7 @@ class _GestionViewState extends State<_GestionView> {
                     },
                   ),
                   TextFormField(
+                    key: ValueKey(_carteraEncontrada!.stock),
                     initialValue: _carteraEncontrada!.stock.toString(),
                     decoration: const InputDecoration(labelText: 'Stock'),
                     keyboardType: TextInputType.number,
@@ -290,6 +288,7 @@ class _GestionViewState extends State<_GestionView> {
                     },
                   ),
                   TextFormField(
+                    key: ValueKey(_carteraEncontrada!.descripcion),
                     initialValue: _carteraEncontrada!.descripcion,
                     decoration: const InputDecoration(labelText: 'Descripcion'),
                     onSaved: (value) {
@@ -299,6 +298,7 @@ class _GestionViewState extends State<_GestionView> {
                     },
                   ),
                   TextFormField(
+                    key: ValueKey(_carteraEncontrada!.estado),
                     initialValue: _carteraEncontrada!.estado,
                     decoration: const InputDecoration(labelText: 'Estado'),
                     onSaved: (value) {
