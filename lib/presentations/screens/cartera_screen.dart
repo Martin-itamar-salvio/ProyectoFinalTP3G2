@@ -4,19 +4,19 @@ import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
-import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
-import 'package:proyecto_final_grupo_6/presentations/providers/cart_provider.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/usuario_provider.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/carrito_provider.dart';
 import 'carrito_screen.dart';
 
 class CarteraScreen extends ConsumerWidget {
   static const String name = "cartera_screen";
-  final Cartera product;
+  final Cartera producto;
 
-  const CarteraScreen({super.key, required this.product});
+  const CarteraScreen({super.key, required this.producto});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final usuario = ref.watch(userProvider);
+    final usuario = ref.watch(usuarioProvider);
 
     if (usuario == null) {
       return Scaffold(
@@ -42,7 +42,7 @@ class CarteraScreen extends ConsumerWidget {
               child: Center(
                 child: ClipRRect(
                   child: Image.network(
-                    product.imagen,
+                    producto.imagen,
                     width: 300,
                     height: 300,
                   ),
@@ -56,7 +56,7 @@ class CarteraScreen extends ConsumerWidget {
                 children: [
                   const SizedBox(width: 10), // Espacio entre icono y título
                   Text(
-                    product.nombre,
+                    producto.nombre,
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -80,7 +80,7 @@ class CarteraScreen extends ConsumerWidget {
               child: Container(
                 padding: const EdgeInsets.only(left: 10),
                 child: Text(
-                  "Modelo: ${product.modelo}",
+                  "Modelo: ${producto.modelo}",
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Color.fromARGB(255, 99, 99, 99),
@@ -93,7 +93,7 @@ class CarteraScreen extends ConsumerWidget {
               child: Container(
                 padding: const EdgeInsets.only(left: 10),
                 child: Text(
-                  "Precio: \$${product.precio.round()}",
+                  "Precio: \$${producto.precio.round()}",
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Color.fromARGB(255, 99, 99, 99),
@@ -106,7 +106,7 @@ class CarteraScreen extends ConsumerWidget {
               child: Container(
                 padding: const EdgeInsets.only(left: 10),
                 child: Text(
-                  "Stock: ${product.stock.round()} unidades",
+                  "Stock: ${producto.stock.round()} unidades",
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Color.fromARGB(255, 99, 99, 99),
@@ -120,7 +120,7 @@ class CarteraScreen extends ConsumerWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    ref.read(carritoProvider.notifier).agregarProducto(product);
+                    ref.read(carritoProvider.notifier).agregarProducto(producto);
                     ref.read(subTotalProvider.notifier).state =
                         calcularSubtotal(ref.watch(carritoProvider));
 
@@ -132,7 +132,7 @@ class CarteraScreen extends ConsumerWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    ref.read(carritoProvider.notifier).agregarProducto(product);
+                    ref.read(carritoProvider.notifier).agregarProducto(producto);
                     ref.read(subTotalProvider.notifier).state =
                         calcularSubtotal(ref.watch(carritoProvider));
 
@@ -163,7 +163,7 @@ class CarteraScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "${product.descripcion}",
+                    "${producto.descripcion}",
                     style: const TextStyle(fontSize: 16),
                   ),
                   const SizedBox(height: 60),

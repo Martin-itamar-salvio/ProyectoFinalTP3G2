@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
-import 'package:proyecto_final_grupo_6/presentations/providers/cart_provider.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/carrito_provider.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
-import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/usuario_provider.dart';
 import 'compra_screen.dart';
 
 //visual
@@ -16,7 +16,7 @@ class CarritoScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final usuario = ref.watch(userProvider);
+    final usuario = ref.watch(usuarioProvider);
 
     if (usuario == null) {
       return Scaffold(
@@ -66,7 +66,7 @@ class _CarritoView extends ConsumerWidget {
               itemCount: carritoProv.length,
               itemBuilder: (context, index) {
                 final Cartera producto = carritoProv[index];
-                return _ProductView(producto: producto);
+                return _ProductoView(producto: producto);
               },
             ),
           ),
@@ -144,9 +144,9 @@ class _CarritoView extends ConsumerWidget {
   }
 }
 
-class _ProductView extends ConsumerWidget {
+class _ProductoView extends ConsumerWidget {
   final Cartera producto;
-  const _ProductView({required this.producto});
+  const _ProductoView({required this.producto});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

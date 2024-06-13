@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/compra.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
 import 'recibo_screen.dart';
 
-class CargaScreen extends ConsumerWidget {
+class CargaScreen extends StatelessWidget {
   static const String name = "carga_screen";
   final Compra compra;
 
   const CargaScreen({required this.compra, super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MyAppBar(),
       drawer: const DrawerMenu(),

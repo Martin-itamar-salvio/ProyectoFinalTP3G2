@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/core/constants.dart';
-import 'package:proyecto_final_grupo_6/presentations/providers/cart_provider.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/carrito_provider.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/home_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/registro_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/exit.dart';
 import 'package:proyecto_final_grupo_6/services/firebase_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/usuario_provider.dart';
 
 class LoginScreen extends ConsumerWidget {
   static const String name = "login_screen";
@@ -27,16 +27,16 @@ class LoginScreen extends ConsumerWidget {
 }
 
 class _LoginView extends ConsumerWidget {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nombreUsuarioController = TextEditingController();
+  final TextEditingController _contraseniaController = TextEditingController();
 
   Future<void> _login(BuildContext context, WidgetRef ref) async {
-    final username = _usernameController.text;
-    final password = _passwordController.text;
+    final nombreUsuario = _nombreUsuarioController.text;
+    final contrasenia = _contraseniaController.text;
 
-    final usuario = await getUser(username, password);
+    final usuario = await getUsuario(nombreUsuario, contrasenia);
     if (usuario != null) {
-      ref.read(userProvider.notifier).setUser(usuario);
+      ref.read(usuarioProvider.notifier).setUsuario(usuario);
       context.pushNamed(HomeScreen.name);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -71,7 +71,7 @@ class _LoginView extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
             child: TextField(
-              controller: _usernameController,
+              controller: _nombreUsuarioController,
               decoration: const InputDecoration(
                 hintText: "Usuario",
                 fillColor: Color.fromARGB(255, 255, 255, 255),
@@ -82,7 +82,7 @@ class _LoginView extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
             child: TextField(
-              controller: _passwordController,
+              controller: _contraseniaController,
               obscureText: true,
               decoration: const InputDecoration(
                 hintText: "Contraseña",

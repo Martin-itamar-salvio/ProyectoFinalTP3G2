@@ -2,21 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/compra.dart';
-import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
+import 'package:proyecto_final_grupo_6/presentations/entities/usuario.dart';
 
 // Login
-Future<void> registerUser(User user) async {
+Future<void> registrarUsuario(Usuario usuario) async {
   await FirebaseFirestore.instance
-      .collection('Users')
-      .doc(user.username)
-      .set(user.toMap());
+      .collection('Usuarios')
+      .doc(usuario.nombreUsuario)
+      .set(usuario.toMap());
 }
 
-Future<User?> getUser(String username, String password) async {
+Future<Usuario?> getUsuario(String nombreUsuario, String contrasenia) async {
   final querySnapshot = await FirebaseFirestore.instance
-      .collection('Users')
-      .where('username', isEqualTo: username)
-      .where('password', isEqualTo: password)
+      .collection('Usuarios')
+      .where('nombreUsuario', isEqualTo: nombreUsuario)
+      .where('contrasenia', isEqualTo: contrasenia)
       .get();
 
   if (querySnapshot.docs.isEmpty) {
@@ -24,39 +24,39 @@ Future<User?> getUser(String username, String password) async {
   }
 
   final userData = querySnapshot.docs.first.data();
-  return User.fromMap(userData);
+  return Usuario.fromMap(userData);
 }
 
 // Actualizar datos del perfil
-Future<void> updateUserInFirestore(User user) async {
+Future<void> actualizarUsuario(Usuario usuario) async {
   await FirebaseFirestore.instance
-      .collection('Users')
-      .doc(user.username)
-      .update(user.toMap());
+      .collection('Usuarios')
+      .doc(usuario.nombreUsuario)
+      .update(usuario.toMap());
 }
 
 // Agregar compra al historial de compras del usuario y a la colección "Compras"
-Future<void> addCompraToUser(User user, Compra compra) async {
-  final userDoc = FirebaseFirestore.instance.collection('Users').doc(user.username);
+Future<void> agregarCompraAlUsuario(Usuario usuario, Compra compra) async {
+  final usuarioDoc = FirebaseFirestore.instance.collection('Usuarios').doc(usuario.nombreUsuario);
   final compraDoc = FirebaseFirestore.instance.collection('Compras').doc(compra.id);
   
   // Agregar compra a la colección "Compras"
   await compraDoc.set(compra.toMap());
   
   // Agregar compra al historial del usuario
-  final snapshot = await userDoc.get();
+  final snapshot = await usuarioDoc.get();
   if (snapshot.exists) {
     List<dynamic> historial = snapshot.data()?['historialCompras'] ?? [];
     historial.add(compra.toMap());
-    await userDoc.update({'historialCompras': historial});
+    await usuarioDoc.update({'historialCompras': historial});
   }
 }
 
 // Mostrar historial de compra
-Stream<List<Compra>> fetchCompras(User user) {
+Stream<List<Compra>> listarComprasDeUsuario(Usuario usuario) {
   return FirebaseFirestore.instance
-      .collection('Users')
-      .doc(user.username)
+      .collection('Usuarios')
+      .doc(usuario.nombreUsuario)
       .snapshots()
       .map((snapshot) {
     final data = snapshot.data();
@@ -66,7 +66,7 @@ Stream<List<Compra>> fetchCompras(User user) {
 }
 
 // Método para obtener todas las compras
-Stream<List<Compra>> fetchAllCompras() {
+Stream<List<Compra>> listarCompras() {
   return FirebaseFirestore.instance
       .collection('Compras')
       .snapshots()
@@ -78,7 +78,7 @@ Stream<List<Compra>> fetchAllCompras() {
 }
 
 // Mostrar carteras menu
-Stream<List<Cartera>> fetchCarteras() {
+Stream<List<Cartera>> listarCarteras() {
   return FirebaseFirestore.instance
       .collection('Carteras')
       .where('estado', isNotEqualTo: 'delete')
@@ -91,11 +91,11 @@ Stream<List<Cartera>> fetchCarteras() {
 }
 
 // Conseguir url de firestore
-Future<List<String>> getUploadedImages() async {
-  final ListResult result = await FirebaseStorage.instance.ref('carteras').listAll();
+Future<List<String>> getImagenesCargadas() async {
+  final ListResult listaImagenes = await FirebaseStorage.instance.ref('carteras').listAll();
   final List<String> urls = [];
-  for (var ref in result.items) {
-    final String url = await ref.getDownloadURL();
+  for (var imagen in listaImagenes.items) {
+    final String url = await imagen.getDownloadURL();
     urls.add(url);
   }
   return urls;
@@ -115,12 +115,12 @@ Future<List<String>> getUploadedImages() async {
     }
   }
 // Agregar cartera
-Future<void> addCartera(Cartera cartera) async {
+Future<void> agregarCartera(Cartera cartera) async {
   await FirebaseFirestore.instance.collection('Carteras').add(cartera.toMap());
 }
 
 // Modificar cartera
-Future<void> updateCartera(Cartera cartera) async {
+Future<void> actualizarCartera(Cartera cartera) async {
   final collectionRef = FirebaseFirestore.instance.collection('Carteras');
   final querySnapshot = await collectionRef.where('nombre', isEqualTo: cartera.nombre).get();
 
@@ -132,7 +132,7 @@ Future<void> updateCartera(Cartera cartera) async {
   }
 }
 // Eliminar cartera
-Future<void> deleteCartera(String nombreCartera) async {
+Future<void> eliminarCartera(String nombreCartera) async {
   final collectionRef = FirebaseFirestore.instance.collection('Carteras');
   final querySnapshot = await collectionRef.where('nombre', isEqualTo: nombreCartera).get();
 
@@ -146,7 +146,7 @@ Future<void> deleteCartera(String nombreCartera) async {
 }
 
 // Actualizar Stock Cartera
-Future<void> updateStockCartera(Cartera cartera) async {
+Future<void> actualizarStockCartera(Cartera cartera) async {
   final collectionRef = FirebaseFirestore.instance.collection('Carteras');
   final querySnapshot = await collectionRef.where('nombre', isEqualTo: cartera.nombre).get();
 

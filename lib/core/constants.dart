@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:proyecto_final_grupo_6/core/menu/menu_item.dart';
 
 const String appName = "BELLIGRAU";
-const String roleDefault = "all";
+const String roleDefault = "todos";
 
 //Items de menu limitados por el rol
 final List<MenuItem> menuItems = [
-  MenuItem(title: 'Inicio', subtitle: 'Inicio de Aplicacion', icon: Icons.home, link: '/inicio', role: "all", params: true),
-  MenuItem(title: 'Perfil', subtitle: 'Perfil de Usuario', icon: Icons.person, link: '/perfil', role: "all", params: false),
-  MenuItem(title: 'Historial de Compras', subtitle: 'Historial de Compras', icon: Icons.history, link: '/historial', role: "all", params: false),
-  MenuItem(title: 'Gestion', subtitle: 'Gestion de Tienda', icon: Icons.content_paste_sharp, link: '/gestion', role: "admin", params: false),
-  MenuItem(title: 'Historial de Ventas', subtitle: 'Historial de Ventas', icon: Icons.content_paste_search_sharp, link: '/ventas', role: "admin", params: false),
-  MenuItem(title: 'Cerrar Sesion', subtitle: 'Cerrar de Sesion', icon: Icons.logout, link: '/', role: "all", params: false),
+  MenuItem(titulo: 'Inicio', subtitulo: 'Inicio de Aplicacion', icono: Icons.home, link: '/inicio', rol: "todos", parametros: true),
+  MenuItem(titulo: 'Perfil', subtitulo: 'Perfil de Usuario', icono: Icons.person, link: '/perfil', rol: "todos", parametros: false),
+  MenuItem(titulo: 'Historial de Compras', subtitulo: 'Historial de Compras', icono: Icons.history, link: '/historial', rol: "todos", parametros: false),
+  MenuItem(titulo: 'Gestion', subtitulo: 'Gestion de Tienda', icono: Icons.content_paste_sharp, link: '/gestion', rol: "admin", parametros: false),
+  MenuItem(titulo: 'Historial de Ventas', subtitulo: 'Historial de Ventas', icono: Icons.content_paste_search_sharp, link: '/ventas', rol: "admin", parametros: false),
+  MenuItem(titulo: 'Cerrar Sesion', subtitulo: 'Cerrar de Sesion', icono: Icons.logout, link: '/', rol: "todos", parametros: false),
 ];

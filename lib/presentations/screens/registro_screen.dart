@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
+import 'package:proyecto_final_grupo_6/presentations/entities/usuario.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/exit.dart';
 import 'package:proyecto_final_grupo_6/services/firebase_services.dart';
 
@@ -27,12 +27,12 @@ class _RegistroView extends StatefulWidget {
 }
 
 class __RegistroViewState extends State<_RegistroView> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _nombreUsuarioController = TextEditingController();
+  final TextEditingController _contraseniaController = TextEditingController();
+  final TextEditingController _confirmarContraseniaController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _nombreController = TextEditingController();
+  final TextEditingController _apellidoController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -55,7 +55,7 @@ class __RegistroViewState extends State<_RegistroView> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
               child: TextFormField(
-                controller: _nameController,
+                controller: _nombreController,
                 decoration: const InputDecoration(
                   hintText: "Nombre",
                   fillColor: Color.fromARGB(255, 255, 255, 255),
@@ -72,7 +72,7 @@ class __RegistroViewState extends State<_RegistroView> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
               child: TextFormField(
-                controller: _lastNameController,
+                controller: _apellidoController,
                 decoration: const InputDecoration(
                   hintText: "Apellido",
                   fillColor: Color.fromARGB(255, 255, 255, 255),
@@ -89,7 +89,7 @@ class __RegistroViewState extends State<_RegistroView> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
               child: TextFormField(
-                controller: _usernameController,
+                controller: _nombreUsuarioController,
                 decoration: const InputDecoration(
                   hintText: "Usuario",
                   fillColor: Color.fromARGB(255, 255, 255, 255),
@@ -106,7 +106,7 @@ class __RegistroViewState extends State<_RegistroView> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
               child: TextFormField(
-                controller: _passwordController,
+                controller: _contraseniaController,
                 obscureText: true,
                 decoration: const InputDecoration(
                   hintText: "Contraseña",
@@ -124,7 +124,7 @@ class __RegistroViewState extends State<_RegistroView> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
               child: TextFormField(
-                controller: _confirmPasswordController,
+                controller: _confirmarContraseniaController,
                 obscureText: true,
                 decoration: const InputDecoration(
                   hintText: "Confirmar contraseña",
@@ -135,7 +135,7 @@ class __RegistroViewState extends State<_RegistroView> {
                   if (value == null || value.isEmpty) {
                     return 'Por favor confirme su contraseña';
                   }
-                  if (value != _passwordController.text) {
+                  if (value != _contraseniaController.text) {
                     return 'Las contraseñas no coinciden';
                   }
                   return null;
@@ -184,11 +184,11 @@ class __RegistroViewState extends State<_RegistroView> {
                   ),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      final newUser = User(
-                          nombre: _nameController.text,
-                          apellido: _lastNameController.text,
-                          username: _usernameController.text,
-                          password: _passwordController.text,
+                      final newUser = Usuario(
+                          nombre: _nombreController.text,
+                          apellido: _apellidoController.text,
+                          nombreUsuario: _nombreUsuarioController.text,
+                          contrasenia: _contraseniaController.text,
                           rol: 'cliente',
                           fotoPerfil:
                               'https://firebasestorage.googleapis.com/v0/b/belligrau-e8c3a.appspot.com/o/perfil%20default.png?alt=media&token=44b0e6ca-bb58-4aa7-be36-e9edea117564',
@@ -198,7 +198,7 @@ class __RegistroViewState extends State<_RegistroView> {
                           direccion: '');
 
                       try {
-                        await registerUser(newUser);
+                        await registrarUsuario(newUser);
                         context.pop();
                       } catch (e) {
                         // Mostrar mensaje de error si la operación falla

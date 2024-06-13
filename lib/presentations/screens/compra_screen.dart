@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:proyecto_final_grupo_6/presentations/providers/cart_provider.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/carrito_provider.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
-import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/usuario_provider.dart';
 import 'package:proyecto_final_grupo_6/services/firebase_services.dart';
 import '../entities/compra.dart';
 import '../widgets/drawer_menu.dart';
@@ -18,7 +18,7 @@ class CompraScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final usuario = ref.watch(userProvider);
+    final usuario = ref.watch(usuarioProvider);
     final carrito = ref.watch(carritoProvider);
     final subTotal = ref.watch(subTotalProvider);
 
@@ -247,11 +247,11 @@ class CompraScreen extends ConsumerWidget {
                           for (var cartera in carrito){
                             cartera.stock = cartera.stock - cartera.cantidad;
                             cartera.estado = cartera.stock == 0 ? 'delete' : '';
-                            await updateStockCartera(cartera);
+                            await actualizarStockCartera(cartera);
                           }
 
                           // Agregar a usuarios
-                          await addCompraToUser(usuario, compra);
+                          await agregarCompraAlUsuario(usuario, compra);
                         
                           // Vaciar el carrito
                           ref.read(carritoProvider.notifier).vaciarCarrito();

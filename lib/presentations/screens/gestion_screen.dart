@@ -59,13 +59,13 @@ class _GestionViewState extends State<_GestionView> {
 
     return ExpansionTile(
       title: const Text('Agregar Cartera'),
-      children: <Widget>[
+      children: [
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
             child: Column(
-              children: <Widget>[
+              children: [
                 TextFormField(
                   decoration: const InputDecoration(labelText: 'Nombre'),
                   validator: (value) {
@@ -133,7 +133,7 @@ class _GestionViewState extends State<_GestionView> {
                   },
                 ),
                 FutureBuilder<List<String>>(
-                  future: getUploadedImages(),
+                  future: getImagenesCargadas(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return const Center(child: CircularProgressIndicator());
@@ -179,7 +179,7 @@ class _GestionViewState extends State<_GestionView> {
                         estado: estado,
                         stock: stock,
                       );
-                      addCartera(nuevaCartera);
+                      agregarCartera(nuevaCartera);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                             content: Text('Cartera agregada correctamente')),
@@ -322,7 +322,7 @@ class _GestionViewState extends State<_GestionView> {
                           estado: estado,
                           stock: stock,
                         );
-                        updateCartera(carteraModificada);
+                        actualizarCartera(carteraModificada);
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                               content:
@@ -348,13 +348,13 @@ class _GestionViewState extends State<_GestionView> {
 
     return ExpansionTile(
       title: const Text('Eliminar Cartera'),
-      children: <Widget>[
+      children: [
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
             child: Column(
-              children: <Widget>[
+              children: [
                 StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection('Carteras')
@@ -393,7 +393,7 @@ class _GestionViewState extends State<_GestionView> {
                   onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
                       // Llamar al método para eliminar la cartera
-                      deleteCartera(nombreSeleccionado!);
+                      eliminarCartera(nombreSeleccionado!);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                             content: Text('Cartera eliminada correctamente')),

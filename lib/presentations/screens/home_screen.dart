@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
-import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
+import 'package:proyecto_final_grupo_6/presentations/entities/usuario.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/cartera_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
 import 'package:proyecto_final_grupo_6/services/firebase_services.dart';
-import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/usuario_provider.dart';
 
 class HomeScreen extends ConsumerWidget {
   static const String name = "home_screen";
@@ -16,7 +16,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final usuario = ref.watch(userProvider);
+    final usuario = ref.watch(usuarioProvider);
 
     if (usuario == null) {
       return Scaffold(
@@ -38,7 +38,7 @@ class HomeScreen extends ConsumerWidget {
 }
 
 class _MenuView extends ConsumerWidget {
-  final User usuario;
+  final Usuario usuario;
   const _MenuView({required this.usuario});
 
   @override
@@ -48,7 +48,7 @@ class _MenuView extends ConsumerWidget {
         child: Column(
           children: [
             StreamBuilder<List<Cartera>>(
-              stream: fetchCarteras(),
+              stream: listarCarteras(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -58,7 +58,7 @@ class _MenuView extends ConsumerWidget {
                   return const Center(child: Text('No hay carteras disponibles'));
                 } else {
                   List<Cartera> carteras = snapshot.data!;
-                  return _ProductGrid(products: carteras, usuario: usuario);
+                  return _ProductoGrid(productos: carteras);
                 }
               },
             ),
@@ -70,11 +70,10 @@ class _MenuView extends ConsumerWidget {
 }
 
 //Tocar aca para modificar la grilla
-class _ProductGrid extends StatelessWidget {
-  final List<Cartera> products;
-  final User usuario;
+class _ProductoGrid extends StatelessWidget {
+  final List<Cartera> productos;
 
-  const _ProductGrid({required this.products, required this.usuario});
+  const _ProductoGrid({required this.productos});
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +82,7 @@ class _ProductGrid extends StatelessWidget {
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: products.length,
+        itemCount: productos.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2, //definir columnas
           crossAxisSpacing: 10, //margin y
@@ -91,8 +90,8 @@ class _ProductGrid extends StatelessWidget {
         ),
         itemBuilder: (context, index) {
           //crea los item dentro de la grilla
-          final product = products[index];
-          return ProductCard(product: product, usuario: usuario);
+          final producto = productos[index];
+          return ProductoCard(producto: producto);
         },
       ),
     );
@@ -100,18 +99,17 @@ class _ProductGrid extends StatelessWidget {
 }
 
 //Tocar aca para modificar las carteras
-class ProductCard extends StatelessWidget {
-  final Cartera product;
-  final User usuario;
+class ProductoCard extends StatelessWidget {
+  final Cartera producto;
 
-  const ProductCard({super.key, required this.product, required this.usuario});
+  const ProductoCard({super.key, required this.producto});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         context.pushNamed(CarteraScreen.name,
-            extra: {"product": product, "usuario": usuario});
+            extra: {"producto": producto});
       },
       child: Card(
         elevation: 4,
@@ -125,7 +123,7 @@ class ProductCard extends StatelessWidget {
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(10)),
               child: Image.network(
-                product.imagen,
+                producto.imagen,
                 width: double.infinity,
                 height: 110,
                 fit: BoxFit.cover,
@@ -155,7 +153,7 @@ class ProductCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product.nombre,
+                    producto.nombre,
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -166,7 +164,7 @@ class ProductCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "\$${product.precio.round()}",
+                        "\$${producto.precio.round()}",
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,

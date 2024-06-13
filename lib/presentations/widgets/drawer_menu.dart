@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/core/constants.dart';
 import 'package:proyecto_final_grupo_6/core/menu/menu_item.dart'; // Asegúrate de importar MenuItem
-import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/usuario_provider.dart';
 
 class DrawerMenu extends ConsumerStatefulWidget {
   const DrawerMenu({super.key});
@@ -17,22 +17,22 @@ class _DrawerMenuState extends ConsumerState<DrawerMenu> {
 
   @override
   Widget build(BuildContext context) {
-    final usuario = ref.watch(userProvider);
+    final usuario = ref.watch(usuarioProvider);
     
     // Filtrar los elementos del menú según el rol del usuario
-    final List<MenuItem> filteredMenuItems = menuItems.where((item) {
-      return item.role == roleDefault || item.role == usuario?.rol;
+    final List<MenuItem> menuItemsFiltrados = menuItems.where((item) {
+      return item.rol == roleDefault || item.rol == usuario?.rol;
     }).toList();
 
     return SafeArea(
       child: NavigationDrawer(
         selectedIndex: selectedScreen,
         onDestinationSelected: (value) {
-          final menuItemsAux = filteredMenuItems;
+          final menuItemsAux = menuItemsFiltrados;
           selectedScreen = value;
           setState(() {});
-          if (menuItemsAux[value].params) {
-            final Object? param = menuItemsAux[value].title == "Inicio" ? usuario : Object();
+          if (menuItemsAux[value].parametros) {
+            final Object? param = menuItemsAux[value].titulo == "Inicio" ? usuario : Object();
             context.push(menuItemsAux[value].link, extra: param);
           } else {
             context.push(menuItemsAux[value].link);
@@ -57,9 +57,9 @@ class _DrawerMenuState extends ConsumerState<DrawerMenu> {
               ],
             ),
           ),
-          ...filteredMenuItems.map((item) => NavigationDrawerDestination(
-            icon: Icon(item.icon),
-            label: Text(item.title),
+          ...menuItemsFiltrados.map((item) => NavigationDrawerDestination(
+            icon: Icon(item.icono),
+            label: Text(item.titulo),
           )),
         ],
       ),

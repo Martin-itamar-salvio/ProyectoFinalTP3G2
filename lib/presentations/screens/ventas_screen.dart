@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/compra.dart';
-import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
-import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
+import 'package:proyecto_final_grupo_6/presentations/entities/usuario.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/usuario_provider.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
 import 'package:proyecto_final_grupo_6/services/firebase_services.dart';
@@ -14,7 +14,7 @@ class VentasScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final usuario = ref.watch(userProvider);
+    final usuario = ref.watch(usuarioProvider);
 
     if (usuario == null) {
       return Scaffold(
@@ -36,7 +36,7 @@ class VentasScreen extends ConsumerWidget {
 }
 
 class _VentasView extends ConsumerWidget {
-  final User usuario;
+  final Usuario usuario;
   const _VentasView({required this.usuario});
 
   @override
@@ -53,7 +53,7 @@ class _VentasView extends ConsumerWidget {
           const SizedBox(height: 20),
           Expanded(
             child: StreamBuilder<List<Compra>>(
-              stream: fetchAllCompras(),
+              stream: listarCompras(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -76,7 +76,7 @@ class _VentasView extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 
-                                Text('Usuario: ${compra.usuario.username}'),
+                                Text('Usuario: ${compra.usuario.nombreUsuario}'),
                                 const SizedBox(height: 5),
                                 Text('Dirección: ${compra.direccion}'),
                                 const SizedBox(height: 5),

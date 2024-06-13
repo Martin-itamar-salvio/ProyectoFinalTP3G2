@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/compra.dart';
-import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
-import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
+import 'package:proyecto_final_grupo_6/presentations/entities/usuario.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/usuario_provider.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
 import 'package:proyecto_final_grupo_6/services/firebase_services.dart';
@@ -14,7 +14,7 @@ class HistorialScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final usuario = ref.watch(userProvider);
+    final usuario = ref.watch(usuarioProvider);
 
     if (usuario == null) {
       return Scaffold(
@@ -36,7 +36,7 @@ class HistorialScreen extends ConsumerWidget {
 }
 
 class _HistorialView extends ConsumerWidget {
-  final User usuario;
+  final Usuario usuario;
   const _HistorialView({required this.usuario});
 
   @override
@@ -53,7 +53,7 @@ class _HistorialView extends ConsumerWidget {
           const SizedBox(height: 20),
           Expanded(
             child: StreamBuilder<List<Compra>>(
-              stream: fetchCompras(usuario),
+              stream: listarComprasDeUsuario(usuario),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());

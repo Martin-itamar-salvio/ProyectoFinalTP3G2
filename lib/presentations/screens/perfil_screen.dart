@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
-import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/usuario_provider.dart';
+import 'package:proyecto_final_grupo_6/presentations/entities/usuario.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
 
@@ -12,7 +12,7 @@ class PerfilScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final usuario = ref.watch(userProvider);
+    final usuario = ref.watch(usuarioProvider);
 
     if (usuario == null) {
       return Scaffold(
@@ -54,26 +54,26 @@ class PerfilScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 20),
-            _buildEditableField(context, 'Nombre de usuario', usuario.username, null), // No editable
-            _buildEditableField(context, 'Nombre', usuario.nombre, (value) {
+            _buildCampoEditable(context, 'Nombre de usuario', usuario.nombreUsuario, null), // No editable
+            _buildCampoEditable(context, 'Nombre', usuario.nombre, (value) {
               usuario.nombre = value;
-              _updateUser(context, ref, usuario);
+              _actualizarUsuario(context, ref, usuario);
             }),
-            _buildEditableField(context, 'Apellido', usuario.apellido, (value) {
+            _buildCampoEditable(context, 'Apellido', usuario.apellido, (value) {
               usuario.apellido = value;
-              _updateUser(context, ref, usuario);
+              _actualizarUsuario(context, ref, usuario);
             }),
-            _buildEditableField(context, 'Correo electrónico', usuario.email, (value) {
+            _buildCampoEditable(context, 'Correo electrónico', usuario.email, (value) {
               usuario.email = value;
-              _updateUser(context, ref, usuario);
+              _actualizarUsuario(context, ref, usuario);
             }),
-            _buildEditableField(context, 'Dirección', usuario.direccion, (value) {
+            _buildCampoEditable(context, 'Dirección', usuario.direccion, (value) {
               usuario.direccion = value;
-              _updateUser(context, ref, usuario);
+              _actualizarUsuario(context, ref, usuario);
             }),
-            _buildEditableField(context, 'Teléfono', usuario.telefono, (value) {
+            _buildCampoEditable(context, 'Teléfono', usuario.telefono, (value) {
               usuario.telefono = value;
-              _updateUser(context, ref, usuario);
+              _actualizarUsuario(context, ref, usuario);
             }),
           ],
         ),
@@ -81,12 +81,12 @@ class PerfilScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildEditableField(BuildContext context, String title, String value, Function(String)? onSave) {
+  Widget _buildCampoEditable(BuildContext context, String titulo, String value, Function(String)? onSave) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          title,
+          titulo,
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 5),
@@ -104,7 +104,7 @@ class PerfilScreen extends ConsumerWidget {
                 IconButton(
                   icon: const Icon(Icons.edit),
                   onPressed: () async {
-                    final newValue = await _showEditDialog(context, title, value);
+                    final newValue = await _mostrarCampoEditable(context, titulo, value);
                     if (newValue != null) {
                       onSave(newValue);
                     }
@@ -118,16 +118,16 @@ class PerfilScreen extends ConsumerWidget {
     );
   }
 
-  Future<String?> _showEditDialog(BuildContext context, String title, String currentValue) async {
-    TextEditingController controller = TextEditingController(text: currentValue);
+  Future<String?> _mostrarCampoEditable(BuildContext context, String titulo, String valueActual) async {
+    TextEditingController controller = TextEditingController(text: valueActual);
 
     return showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Editar $title'),
+        title: Text('Editar $titulo'),
         content: TextField(
           controller: controller,
-          decoration: InputDecoration(hintText: 'Ingrese $title'),
+          decoration: InputDecoration(hintText: 'Ingrese $titulo'),
         ),
         actions: [
           TextButton(
@@ -147,9 +147,9 @@ class PerfilScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _updateUser(BuildContext context, WidgetRef ref, User updatedUser) async {
+  Future<void> _actualizarUsuario(BuildContext context, WidgetRef ref, Usuario updatedUser) async {
     try {
-      await ref.read(userProvider.notifier).updateUser(updatedUser);
+      await ref.read(usuarioProvider.notifier).actualizarUsuarioProvider(updatedUser);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Perfil actualizado')),
       );

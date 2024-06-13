@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_final_grupo_6/presentations/entities/compra.dart';
-import 'package:proyecto_final_grupo_6/presentations/providers/user_provider.dart';
+import 'package:proyecto_final_grupo_6/presentations/providers/usuario_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final_grupo_6/presentations/screens/home_screen.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/app_bar.dart';
 import 'package:proyecto_final_grupo_6/presentations/widgets/drawer_menu.dart';
 
-class ReciboScreen extends ConsumerWidget {
+class ReciboScreen extends StatelessWidget {
   static const String name = "recibo_screen";
   final Compra compra;
 
   const ReciboScreen({required this.compra, super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final usuario = ref.watch(userProvider);
+  Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: const MyAppBar(),
@@ -25,7 +24,7 @@ class ReciboScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Usuario: ${usuario!.username}', style: const TextStyle(fontSize: 18.0)),
+            Text('Usuario: ${compra.usuario.nombreUsuario}', style: const TextStyle(fontSize: 18.0)),
             const SizedBox(height: 10),
             Text('ID Compra: ${compra.id}', style: const TextStyle(fontSize: 18.0)),
             const SizedBox(height: 10),
@@ -39,7 +38,7 @@ class ReciboScreen extends ConsumerWidget {
             ...compra.carteras.map((cartera) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 5.0),
               child: Text('${cartera.nombre} x${cartera.cantidad} - \$${cartera.precio * cartera.cantidad}', style: const TextStyle(fontSize: 16.0)),
-            )).toList(),
+            )),
             const Spacer(),
             Center(
               child: ElevatedButton(

@@ -1,8 +1,8 @@
 import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
-import 'package:proyecto_final_grupo_6/presentations/entities/user.dart';
+import 'package:proyecto_final_grupo_6/presentations/entities/usuario.dart';
 
 class Compra {
-  User usuario;
+  Usuario usuario;
   String id;
   String direccion;
   String codigoPostal;
@@ -31,7 +31,7 @@ class Compra {
 
   factory Compra.fromMap(Map<String, dynamic> map) {
     return Compra(
-      usuario: User.fromMap(map['usuario']),
+      usuario: Usuario.fromMap(map['usuario']),
       id: map['id'],
       direccion: map['direccion'],
       codigoPostal: map['codigoPostal'],

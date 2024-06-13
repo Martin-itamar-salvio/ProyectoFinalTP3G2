@@ -61,7 +61,7 @@ final appRouter = GoRouter(
       path: '/carteraProducto',
       builder: (context, state) {
         final data = state.extra! as Map<Object, dynamic>;
-        return CarteraScreen(product: data["product"]);
+        return CarteraScreen(producto: data["producto"]);
       },
     ),
     GoRoute(
