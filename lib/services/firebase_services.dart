@@ -109,7 +109,7 @@ Future<List<String>> getImagenesCargadas() async {
 
     if (snapshot.docs.isNotEmpty) {
       final doc = snapshot.docs.first;
-      return Cartera.fromMap(doc.data() as Map<String, dynamic>);
+      return Cartera.fromMap(doc.data());
     } else {
       return null;
     }

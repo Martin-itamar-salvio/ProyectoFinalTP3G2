@@ -67,7 +67,7 @@ final appRouter = GoRouter(
     GoRoute(
       name: CompraScreen.name,
       path: '/compra',
-      builder: (context, state) => CompraScreen(),
+      builder: (context, state) => const CompraScreen(),
     ),
     GoRoute(
       name: CargaScreen.name,

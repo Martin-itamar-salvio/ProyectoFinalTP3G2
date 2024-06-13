@@ -150,10 +150,12 @@ class PerfilScreen extends ConsumerWidget {
   Future<void> _actualizarUsuario(BuildContext context, WidgetRef ref, Usuario updatedUser) async {
     try {
       await ref.read(usuarioProvider.notifier).actualizarUsuarioProvider(updatedUser);
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Perfil actualizado')),
       );
     } catch (e) {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error al actualizar el perfil: $e')),
       );

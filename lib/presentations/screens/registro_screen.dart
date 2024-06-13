@@ -199,9 +199,11 @@ class __RegistroViewState extends State<_RegistroView> {
 
                       try {
                         await registrarUsuario(newUser);
+                        // ignore: use_build_context_synchronously
                         context.pop();
                       } catch (e) {
                         // Mostrar mensaje de error si la operación falla
+                        // ignore: use_build_context_synchronously
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Error al registrar usuario: $e')),
                         );

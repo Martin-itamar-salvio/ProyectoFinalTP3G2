@@ -47,7 +47,7 @@ class _GestionViewState extends State<_GestionView> {
 
   // Agregar cartera
   Widget _buildAgregarCartera(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     String nombre = '';
     double precio = 0.0;
     String imagen = '';
@@ -63,7 +63,7 @@ class _GestionViewState extends State<_GestionView> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
-            key: _formKey,
+            key: formKey,
             child: Column(
               children: [
                 TextFormField(
@@ -167,8 +167,8 @@ class _GestionViewState extends State<_GestionView> {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      _formKey.currentState?.save();
+                    if (formKey.currentState?.validate() ?? false) {
+                      formKey.currentState?.save();
                       final nuevaCartera = Cartera(
                         nombre: nombre,
                         precio: precio,
@@ -229,6 +229,7 @@ class _GestionViewState extends State<_GestionView> {
                         _carteraEncontrada = cartera;
                       });
                     } else {
+                      // ignore: use_build_context_synchronously
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Cartera no encontrada')),
                       );
@@ -343,7 +344,7 @@ class _GestionViewState extends State<_GestionView> {
 
   // Eliminar cartera
   Widget _buildEliminarCartera(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     String? nombreSeleccionado;
 
     return ExpansionTile(
@@ -352,7 +353,7 @@ class _GestionViewState extends State<_GestionView> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
-            key: _formKey,
+            key: formKey,
             child: Column(
               children: [
                 StreamBuilder<QuerySnapshot>(
@@ -391,7 +392,7 @@ class _GestionViewState extends State<_GestionView> {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
+                    if (formKey.currentState?.validate() ?? false) {
                       // Llamar al método para eliminar la cartera
                       eliminarCartera(nombreSeleccionado!);
                       ScaffoldMessenger.of(context).showSnackBar(

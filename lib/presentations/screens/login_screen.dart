@@ -37,8 +37,10 @@ class _LoginView extends ConsumerWidget {
     final usuario = await getUsuario(nombreUsuario, contrasenia);
     if (usuario != null) {
       ref.read(usuarioProvider.notifier).setUsuario(usuario);
+      // ignore: use_build_context_synchronously
       context.pushNamed(HomeScreen.name);
     } else {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Error al iniciar sesión. Usuario o contraseña incorrectos.'),

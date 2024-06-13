@@ -5,7 +5,7 @@ import 'package:proyecto_final_grupo_6/presentations/entities/cartera.dart';
 final carritoProvider = StateNotifierProvider<CarritoStateNotifier, List<Cartera>>((ref) => CarritoStateNotifier([]));
 
 class CarritoStateNotifier extends StateNotifier<List<Cartera>> {
-  CarritoStateNotifier(List<Cartera> state) : super(state);
+  CarritoStateNotifier(super.state);
 
   void agregarProducto(Cartera producto) {
     List<Cartera> carritoAux = [...state];

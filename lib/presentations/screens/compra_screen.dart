@@ -12,9 +12,10 @@ import 'carga_screen.dart';
 class CompraScreen extends ConsumerStatefulWidget {
   static const String name = "compra_screen";
 
-  CompraScreen({Key? key}) : super(key: key);
+  const CompraScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _CompraScreenState createState() => _CompraScreenState();
 }
 
@@ -248,10 +249,12 @@ class _CompraScreenState extends ConsumerState<CompraScreen> {
                           ref.read(carritoProvider.notifier).vaciarCarrito();
 
                           // Ir a la pantalla de carga
+                          // ignore: use_build_context_synchronously
                           context.goNamed(CargaScreen.name, extra: compra);
                         }
                       } catch (e) {
                         // Manejar error si falla la compra
+                        // ignore: use_build_context_synchronously
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Error al realizar la compra: $e')),
                         );
