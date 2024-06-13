@@ -9,15 +9,51 @@ import '../entities/compra.dart';
 import '../widgets/drawer_menu.dart';
 import 'carga_screen.dart';
 
-class CompraScreen extends ConsumerWidget {
+class CompraScreen extends ConsumerStatefulWidget {
   static const String name = "compra_screen";
 
-  CompraScreen({super.key});
-
-  final _formKey = GlobalKey<FormState>();
+  CompraScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _CompraScreenState createState() => _CompraScreenState();
+}
+
+class _CompraScreenState extends ConsumerState<CompraScreen> {
+  final _formKey = GlobalKey<FormState>();
+
+  late TextEditingController tarjetaController;
+  late TextEditingController codigoController;
+  late TextEditingController titularController;
+  late TextEditingController emailController;
+  late TextEditingController codigoPostalController;
+  late TextEditingController direccionController;
+
+  String? _selectedCountry;
+
+  @override
+  void initState() {
+    super.initState();
+    tarjetaController = TextEditingController();
+    codigoController = TextEditingController();
+    titularController = TextEditingController();
+    emailController = TextEditingController();
+    codigoPostalController = TextEditingController();
+    direccionController = TextEditingController();
+  }
+//esto es para sacar de la memoria dps de usado cada controlador de input de texto
+  @override
+  void dispose() {
+    tarjetaController.dispose();
+    codigoController.dispose();
+    titularController.dispose();
+    emailController.dispose();
+    codigoPostalController.dispose();
+    direccionController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final usuario = ref.watch(usuarioProvider);
     final carrito = ref.watch(carritoProvider);
     final subTotal = ref.watch(subTotalProvider);
@@ -32,14 +68,6 @@ class CompraScreen extends ConsumerWidget {
         ),
       );
     }
-
-    final tarjetaController = TextEditingController();
-    final codigoController = TextEditingController();
-    final titularController = TextEditingController();
-    final emailController = TextEditingController();
-    final paisController = TextEditingController();
-    final codigoPostalController = TextEditingController();
-    final direccionController = TextEditingController();
 
     return Scaffold(
       appBar: const MyAppBar(),
@@ -104,116 +132,79 @@ class CompraScreen extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                TextFormField(
+                _buildTextFormField(
                   controller: tarjetaController,
-                  decoration: const InputDecoration(
-                    labelText: 'Número de tarjeta',
-                    hintText: '1234 5678 9012 3456',
-                  ),
+                  labelText: 'Número de tarjeta',
+                  hintText: '1234 5678 9012 3456',
                   keyboardType: TextInputType.number,
-                  style: const TextStyle(fontSize: 16.0),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor, ingrese el número de tarjeta';
-                    }
-                    return null;
-                  },
+                  errorMessage: 'Por favor, ingrese el número de tarjeta',
+                  validator: _validateCreditCardNumber,
                 ),
                 const SizedBox(height: 10),
-                TextFormField(
+                _buildTextFormField(
                   controller: codigoController,
-                  decoration: const InputDecoration(
-                    labelText: 'Código verificador',
-                    hintText: '123',
-                  ),
+                  labelText: 'Código verificador',
+                  hintText: '123',
                   keyboardType: TextInputType.number,
-                  style: const TextStyle(fontSize: 16.0),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor, ingrese el código verificador';
-                    }
-                    return null;
-                  },
+                  errorMessage: 'Por favor, ingrese el código verificador',
+                  validator: _validateCVV,
                 ),
                 const SizedBox(height: 10),
-                TextFormField(
+                _buildTextFormField(
                   controller: titularController,
-                  decoration: const InputDecoration(
-                    labelText: 'Nombre del titular',
-                    hintText: 'Nombre y apellido',
-                  ),
-                  style: const TextStyle(fontSize: 16.0),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor, ingrese el nombre del titular';
-                    }
-                    return null;
-                  },
+                  labelText: 'Nombre del titular',
+                  hintText: 'Nombre y apellido',
+                  keyboardType: TextInputType.text,
+                  errorMessage: 'Por favor, ingrese el nombre del titular',
                 ),
                 const SizedBox(height: 10),
-                TextFormField(
+                _buildTextFormField(
                   controller: emailController,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    hintText: 'correo@example.com',
-                  ),
+                  labelText: 'Email',
+                  hintText: 'correo@example.com',
                   keyboardType: TextInputType.emailAddress,
-                  style: const TextStyle(fontSize: 16.0),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor, ingrese su email';
-                    }
-                    if (!RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$').hasMatch(value)) {
-                      return 'Por favor, ingrese un email valido';
-                    }
-                    return null;
-                  },
+                  errorMessage: 'Por favor, ingrese su email',
+                  validator: _validateEmail,
                 ),
                 const SizedBox(height: 10),
-                TextFormField(
-                  controller: paisController,
+                DropdownButtonFormField<String>(
                   decoration: const InputDecoration(
                     labelText: 'País',
-                    hintText: 'Nombre del país',
                   ),
-                  style: const TextStyle(fontSize: 16.0),
+                  value: _selectedCountry,
+                  items: ['Argentina', 'Brasil', 'Chile', 'Uruguay']
+                      .map((country) => DropdownMenuItem<String>(
+                            value: country,
+                            child: Text(country),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedCountry = value;
+                    });
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Por favor, ingrese el país';
+                      return 'Por favor, seleccione un país';
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 10),
-                TextFormField(
+                _buildTextFormField(
                   controller: codigoPostalController,
-                  decoration: const InputDecoration(
-                    labelText: 'Código postal',
-                    hintText: 'Código postal',
-                  ),
+                  labelText: 'Código postal',
+                  hintText: 'Código postal',
                   keyboardType: TextInputType.number,
-                  style: const TextStyle(fontSize: 16.0),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor, ingrese el código postal';
-                    }
-                    return null;
-                  },
+                  errorMessage: 'Por favor, ingrese el código postal',
                 ),
                 const SizedBox(height: 10),
-                TextFormField(
+                _buildTextFormField(
                   controller: direccionController,
-                  decoration: const InputDecoration(
-                    labelText: 'Dirección',
-                    hintText: 'Dirección de facturación',
-                  ),
-                  style: const TextStyle(fontSize: 16.0),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor, ingrese la dirección';
-                    }
-                    return null;
-                  },
+                  labelText: 'Dirección',
+                  hintText: 'Dirección de facturación',
+                  keyboardType: TextInputType.text,
+                  errorMessage: 'Por favor, ingrese la dirección',
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
@@ -281,5 +272,63 @@ class CompraScreen extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildTextFormField({
+    required TextEditingController controller,
+    required String labelText,
+    required String hintText,
+    required TextInputType keyboardType,
+    required String errorMessage,
+    String? Function(String?)? validator,
+  }) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: labelText,
+        hintText: hintText,
+      ),
+      keyboardType: keyboardType,
+      style: const TextStyle(fontSize: 16.0),
+      validator: validator ?? (value) {
+        if (value == null || value.isEmpty) {
+          return errorMessage;
+        }
+        return null;
+      },
+    );
+  }
+
+  String? _validateCreditCardNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingrese el número de tarjeta';
+    }
+    // Validacin simple para el número de tarjeta de crédito (longitud y dígitos)
+    if (!RegExp(r'^[0-9]{16}$').hasMatch(value)) {
+      return 'Número de tarjeta inválido';
+    }
+    return null;
+  }
+
+  String? _validateCVV(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingrese el código verificador';
+    }
+    // Validación para el código verificador (CVV) (esto se fja q sea numero de 3 o 4 digitos)
+    if (!RegExp(r'^[0-9]{3,4}$').hasMatch(value)) {
+      return 'Código verificador inválido';
+    }
+    return null;
+  }
+
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, ingrese su email';
+    }
+    // Validación para el formato del email, exp regular de "texto, @ texto.texto"
+    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+      return 'Por favor, ingrese un email válido';
+    }
+    return null;
   }
 }
